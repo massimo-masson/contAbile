@@ -34,7 +34,7 @@ class Form(BaseComponent):
         fb = pane.formbuilder(cols=4, border_spacing='4px')
         fb.field('codice')
         fb.field('descrizione')
-        fb.field('sm_classe')
+        fb.field('sm_classe', hasDownArrow=True)
         fb.field('@sm_classe.descrizione', readonly=True,
             lbl=':', lbl_color='darkblue', fld_background='lightgrey')
         fb.field('note', colspan=4, width='100%', 

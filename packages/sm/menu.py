@@ -9,6 +9,7 @@ def config(root,application=None):
 
     # menu configurazione -> schemi
     sm_config = config.branch(u'!![it]Gestione Schemi')
+    sm_config.thpage(u'!![it]Tipologie righe',table='sm.sm_riga_tipo')
     sm_config.thpage(u'!![it]Classificazione schemi',table='sm.sm_classe')
     sm_config.thpage(u'!![it]Anagrafiche schemi', table='sm.sm_anagrafica')
     #sm_config.thpage(u'!![it]--Righe schema', table='sm.sm_anagrow')
