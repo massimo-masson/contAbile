@@ -3,8 +3,6 @@
 	<db dbname="contAbile" implementation="sqlite"/>
 
 	<packages>
-		<gnrcore_sys pkgcode="gnrcore:sys" />
-		<gnrcore_adm pkgcode="gnrcore:adm" />
 		<sm pkgcode="contAbile:sm"/>
 	</packages>
 
