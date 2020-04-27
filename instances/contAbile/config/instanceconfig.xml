@@ -8,7 +8,10 @@
 		<sm pkgcode="contAbile:sm"/>
 	</packages>
 
-	<authentication pkg="adm">
+	<authentication pkg="gnrcore:sys">
 		<py_auth defaultTags="user" method="authenticate" pkg="adm"/>
+        	<xml_auth defaultTags="user,xml">
+			<admin pwd="admin" tags="superadmin,_DEV_,admin,user"/>
+        	</xml_auth>
 	</authentication>
 </GenRoBag>
