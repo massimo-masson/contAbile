@@ -16,6 +16,7 @@ class View(BaseComponent):
         r.fieldcell('date_ref_from')
         r.fieldcell('date_ref_to')
         r.fieldcell('is_protected')
+        r.fieldcell('model_category')
 
     def th_order(self):
         return 'code'
@@ -23,25 +24,51 @@ class View(BaseComponent):
     def th_query(self):
         return dict(column='code', op='contains', val='', runOnStart=True)
 
+    #def th_top_barmodel_category(self, top):
+    #    top.slotToolbar('5,sections@model_category,*',
+    #            childname='dummy',
+    #            _position='<bar', 
+    #            sections_model_category_multiButton=6)
+
+    def th_top_barcategory(self, top):
+        top.slotToolbar('5,sections@category,*',
+                childname='category', _position='<bar', 
+                sections_category_multiButton=6)
+
+    def th_sections_category(self):
+        categories=self.db.table('sm.sm_category').query(
+                        columns='$code, $description',
+                        #where='$sm_model_id=:model_id', model_id=current_model,
+                        order_by='$description'
+                        ).fetch()
+
+        dict_categories = []
+        dict_categories.append(dict(code='tutti', caption='!![it]Tutti'))
+        
+        for d in categories:
+            dict_categories.append(
+                dict(code=d['description'], 
+                        caption=d['description'],
+                        condition='@sm_model_id.@sm_category_id.description=:desc',
+                        condition_desc=d['description'])
+            )
+
+        #return [
+        #    dict(code='tutti', caption='!![it]Tutti'),
+        #    dict(code='clienti', caption='!![it]Clienti', condition='$is_cliente=1'),
+        #    dict(code='fornitori', caption='!![it]Fornitori', condition='$is_fornitore=1')
+        #]
+        return dict_categories
+
 
 class Form(BaseComponent):
 
     def th_form(self, form):
         pane = form.record
-        # fb = pane.formbuilder(cols=2, border_spacing='4px')
-        # fb.field('code')
-        # fb.field('description')
-        # fb.field('notes')
-        # fb.field('status', readOnly=True)
-        # fb.field('date_ref_from')
-        # fb.field('date_ref_to')
-        # fb.field('date_ref_period')
-        # fb.field('is_protected')
-        #fb.field('storebag', tag='simpletextarea', colspan=2, width='100%')
         bc = pane.borderContainer()
         self.registryHeader(bc.contentPane(region='top'))
         self.registryBody(bc.contentPane(region='center'))
-        self.registryButtons(bc.contentPane(region='bottom'))
+        # self.registryButtons(bc.contentPane(region='bottom'))
 
     def registryHeader(self, pane):
         div1 = pane.div(margin='2px', 
@@ -51,10 +78,15 @@ class Form(BaseComponent):
 
         fb = div1.formbuilder(cols=3, border_spacing='4px')
 
-        fb.field('code', validate_nodup=True)
-        fb.field('sm_model_id', hasDownArrow=True)
-        fb.field('@sm_model_id.description', lbl=':', readOnly=True,
-                background_color='light_grey')
+        fb.field('code', validate_nodup=True, validate_case='upper')
+        fb.field('@sm_model_id.@sm_category_id.description', readOnly=True)
+        fb.div()
+
+        fb.field('sm_model_id', auxColumns='$description,@sm_category_id.description', 
+                hasDownArrow=True)
+        fb.field('@sm_model_id.description', readOnly=True,
+                background_color='light_grey',
+                colspan=2, width='100%')
 
         fb.field('date_ref_period')
         fb.field('date_ref_from')
