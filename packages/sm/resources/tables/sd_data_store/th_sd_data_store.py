@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+#
+# ATTUALMENTE NON USATA!
+#
+
 from gnr.web.gnrbaseclasses import BaseComponent
 from gnr.core.gnrdecorator import public_method
 
@@ -8,19 +12,14 @@ class View(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('code')
-        r.fieldcell('description')
-        r.fieldcell('notes')
+        r.fieldcell('id')
+        r.fieldcell('data')
 
     def th_order(self):
-        return 'code'
+        return 'data'
 
     def th_query(self):
-        return dict(column='code', op='contains', val='', runOnStart=True)
-
-    def th_options(self):
-        return dict(widget='border')
-
+        return dict(column='data', op='contains', val='')
 
 
 class Form(BaseComponent):
@@ -28,10 +27,8 @@ class Form(BaseComponent):
     def th_form(self, form):
         pane = form.record
         fb = pane.formbuilder(cols=2, border_spacing='4px')
-        fb.field('code')
-        fb.field('description')
-        fb.field('notes', colspan=2, width='100%', height='100%')
-
+        fb.field('id')
+        fb.field('data')
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')

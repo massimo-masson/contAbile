@@ -17,6 +17,8 @@ class View(BaseComponent):
     def th_query(self):
         return dict(column='code', op='contains', val='', runOnStart=True)
 
+    def th_options(self):
+        return dict(widget='border')
 
 
 class Form(BaseComponent):

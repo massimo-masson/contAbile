@@ -11,21 +11,21 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_codice=tbl.column('code', dtype='A', size=':22', 
+        tbl_code=tbl.column('code', dtype='A', size=':22', 
                 name_long='!![it]Codice modello',
                 unique=True, validate_notnull=True, indexed=True)
 
-        tbl_descrizione=tbl.column('description', dtype='A', size=':256', 
+        tbl_description=tbl.column('description', dtype='A', size=':256', 
                 name_long='!![it]Descrizione modello', 
                 validate_notnull=True)
 
-        tbl_note=tbl.column('notes', dtype='A', size=':1024', 
+        tbl_notes=tbl.column('notes', dtype='A', size=':1024', 
                 name_long='!![it]Note')
 
         # foreign key to sm_category
-        tbl_classe=tbl.column('sm_category_id', dtype='A', size='22',
+        tbl_category_id=tbl.column('sm_category_id', dtype='A', size='22',
                 name_long='!![it]Categoria schema',
                 validate_notnull=True)
-        tbl_classe.relation('sm.sm_category.id', mode='foreignkey',
+        tbl_category_id.relation('sm.sm_category.id', mode='foreignkey',
                 relation_name='models',
                 onDelete='raise')

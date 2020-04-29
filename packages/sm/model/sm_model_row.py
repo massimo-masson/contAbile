@@ -11,11 +11,11 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_codice=tbl.column('code', dtype='A', size=':22', 
+        tbl_code=tbl.column('code', dtype='A', size=':22', 
                 name_long='!![it]Riga modello',
                 unique=True, validate_notnull=True, indexed=True)
 
-        tbl_descrizione=tbl.column('description', dtype='A', size=':256', 
+        tbl_description=tbl.column('description', dtype='A', size=':256', 
                 name_long='!![it]Descrizione riga', 
                 validate_notnull=True)
 
@@ -29,23 +29,23 @@ class Table(object):
         #        name_long='!![it]Tipo riga')
 
         # sm_tipo_riga: foreign key to sm_riga_tipo
-        tbl_tipo_riga=tbl.column('sm_row_type_id', dtype='A', size='22',
+        tbl_row_type_id=tbl.column('sm_row_type_id', dtype='A', size='22',
                 name_long='!![it]Tipo riga',
                 validate_notnull=True)
-        tbl_tipo_riga.relation('sm.sm_row_type.id', mode='foreignkey',
+        tbl_row_type_id.relation('sm.sm_row_type.id', mode='foreignkey',
                 relation_name='rows',
                 onDelete='raise')
 
-        tbl_posizione=tbl.column('position', dtype='N', 
+        tbl_position=tbl.column('position', dtype='N', 
                 name_long='!![it]Posizione riga')
 
-        tbl_note=tbl.column('notes', dtype='A', size=':1024', 
+        tbl_notes=tbl.column('notes', dtype='A', size=':1024', 
                 name_long='!![it]Note')
 
         # sm_anagrafica: foreign key to sm_anagrafica
-        tbl_sm_anagrafica=tbl.column('sm_model_id', dtype='A', size='22',
+        tbl_sm_model_id=tbl.column('sm_model_id', dtype='A', size='22',
                 name_long='!![it]Anagrafica modello',
                 validate_notnull=True)
-        tbl_sm_anagrafica.relation('sm.sm_model.id', mode='foreignkey',
+        tbl_sm_model_id.relation('sm.sm_model.id', mode='foreignkey',
                 relation_name='rows',
                 onDelete='raise')

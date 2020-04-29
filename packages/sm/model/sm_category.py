@@ -11,13 +11,13 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_codice=tbl.column('code', dtype='A', size=':22', 
+        tbl_code=tbl.column('code', dtype='A', size=':22', 
                 name_long='!![it]Codice categoria',
                 unique=True, validate_notnull=True, indexed=True)
 
-        tbl_descrizione=tbl.column('description', dtype='A', size=':256', 
+        tbl_description=tbl.column('description', dtype='A', size=':256', 
                 name_long='!![it]Descrizione categoria', 
                 validate_notnull=True)
 
-        tbl_note=tbl.column('notes', dtype='A', size=':1024', 
+        tbl_notes=tbl.column('notes', dtype='A', size=':1024', 
                 name_long='!![it]Note')
