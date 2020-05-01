@@ -38,7 +38,7 @@ class View(BaseComponent):
     def th_sections_category(self):
         categories=self.db.table('sm.sm_category').query(
                         columns='$code, $description',
-                        #where='$sm_model_id=:model_id', model_id=current_model,
+                        #where='$sm_model__id=:model__id', model__id=current_model,
                         order_by='$description'
                         ).fetch()
 
@@ -49,7 +49,7 @@ class View(BaseComponent):
             dict_categories.append(
                 dict(code=d['description'], 
                         caption=d['description'],
-                        condition='@sm_model_id.@sm_category_id.description=:desc',
+                        condition='@sm_model__id.@sm_category__id.description=:desc',
                         condition_desc=d['description'])
             )
 
@@ -79,12 +79,12 @@ class Form(BaseComponent):
         fb = div1.formbuilder(cols=3, border_spacing='4px')
 
         fb.field('code', validate_nodup=True, validate_case='upper')
-        fb.field('@sm_model_id.@sm_category_id.description', readOnly=True)
+        fb.field('@sm_model__id.@sm_category__id.description', readOnly=True)
         fb.div()
 
-        fb.field('sm_model_id', auxColumns='$description,@sm_category_id.description', 
+        fb.field('sm_model__id', auxColumns='$description,@sm_category__id.description', 
                 hasDownArrow=True)
-        fb.field('@sm_model_id.description', readOnly=True,
+        fb.field('@sm_model__id.description', readOnly=True,
                 background_color='light_grey',
                 colspan=2, width='100%')
 

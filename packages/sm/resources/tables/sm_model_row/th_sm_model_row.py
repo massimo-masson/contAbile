@@ -10,11 +10,10 @@ class View(BaseComponent):
         r = struct.view().rows()
         r.fieldcell('code')
         r.fieldcell('description')
-        r.fieldcell('sm_row_type_id')
+        r.fieldcell('sm_row_type__id')
         r.fieldcell('position')
-        #r.fieldcell('tipo_riga')
         r.fieldcell('notes')
-        r.fieldcell('sm_model_id')
+        r.fieldcell('sm_model__id')
 
     def th_order(self):
         return 'code'
@@ -29,10 +28,9 @@ class ViewFromModel(BaseComponent):
         r.fieldcell('code', edit=True)
         r.fieldcell('description', edit=True)
         r.fieldcell('position', edit=True)
-        #r.fieldcell('tipo_riga', edit=True)
-        r.fieldcell('sm_row_type_id', edit=True)
+        r.fieldcell('sm_row_type__id', edit=True)
         r.fieldcell('notes', edit=True)
-        r.fieldcell('sm_model_id', edit=True)
+        r.fieldcell('sm_model__id', edit=True)
 
     def th_order(self):
         return 'position'
@@ -49,10 +47,9 @@ class Form(BaseComponent):
         fb.field('code')
         fb.field('description')
         fb.field('position')
-        fb.field('sm_row_type_id')
-        #fb.field('tipo_riga')
+        fb.field('sm_row_type__id')
         fb.field('notes')
-        fb.field('sm_model_id')
+        fb.field('sm_model__id')
 
 
     def th_options(self):

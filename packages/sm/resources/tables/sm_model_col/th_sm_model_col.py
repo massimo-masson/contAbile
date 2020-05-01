@@ -13,7 +13,7 @@ class View(BaseComponent):
         r.fieldcell('field_type')
         r.fieldcell('position')
         r.fieldcell('notes')
-        r.fieldcell('sm_model_id')
+        r.fieldcell('sm_model__id')
 
     def th_order(self):
         return 'code'
@@ -47,7 +47,7 @@ class Form(BaseComponent):
         fb.field('description')
         fb.field('field_type')
         fb.field('notes')
-        fb.field('sm_model_id')
+        fb.field('sm_model__id')
 
 
     def th_options(self):

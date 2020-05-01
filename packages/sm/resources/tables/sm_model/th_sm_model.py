@@ -11,7 +11,7 @@ class View(BaseComponent):
         r.fieldcell('code')
         r.fieldcell('description')
         r.fieldcell('notes')
-        r.fieldcell('sm_category_id')
+        r.fieldcell('sm_category__id')
 
     def th_order(self):
         return 'code'
@@ -20,10 +20,10 @@ class View(BaseComponent):
         return dict(column='code', op='contains', val='', runOnStart=True)
 
     def th_top_barcategory(self, top):
-        top.slotToolbar('5,sections@sm_category_id,*',
+        top.slotToolbar('5,sections@sm_category__id,*',
                 childname='dummy',
                 _position='<bar', 
-                sections_sm_category_id_multiButton=6)
+                sections_sm_category__id_multiButton=6)
                 #, gradient_from='#999', gradient_to='#666')
 
 
@@ -40,8 +40,8 @@ class Form(BaseComponent):
         fb = pane.formbuilder(cols=4, border_spacing='4px')
         fb.field('code')
         fb.field('description')
-        fb.field('sm_category_id', hasDownArrow=True)
-        fb.field('@sm_category_id.description', readonly=True,
+        fb.field('sm_category__id', hasDownArrow=True)
+        fb.field('@sm_category__id.description', readonly=True,
             lbl=':', lbl_color='darkblue', fld_background='lightgrey')
         fb.field('notes', colspan=4, width='100%', 
             tag='simpleTextArea', height='10ex')

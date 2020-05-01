@@ -30,9 +30,9 @@ class Table(object):
                 name_long='!![it]Note')
 
         # sm_anagrafica: foreign key to sm_anagrafica
-        tbl_sm_model_id=tbl.column('sm_model_id', dtype='A', size='22',
+        tbl_sm_model__id=tbl.column('sm_model__id', dtype='A', size='22',
                 name_long='!![it]Anagrafica modello',
                 validate_notnull=True)
-        tbl_sm_model_id.relation('sm.sm_model.id', mode='foreignkey',
+        tbl_sm_model__id.relation('sm.sm_model.id', mode='foreignkey',
                 relation_name='columns',
                 onDelete='raise')

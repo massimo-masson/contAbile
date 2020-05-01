@@ -23,9 +23,9 @@ class Table(object):
                 name_long='!![it]Note')
 
         # foreign key to sm_category
-        tbl_category_id=tbl.column('sm_category_id', dtype='A', size='22',
+        tbl_category__id=tbl.column('sm_category__id', dtype='A', size='22',
                 name_long='!![it]Categoria schema',
                 validate_notnull=True)
-        tbl_category_id.relation('sm.sm_category.id', mode='foreignkey',
+        tbl_category__id.relation('sm.sm_category.id', mode='foreignkey',
                 relation_name='models',
                 onDelete='raise')

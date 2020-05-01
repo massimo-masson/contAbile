@@ -27,18 +27,18 @@ class Table(object):
                         name_long='!![it]Note')
 
                 # model reference
-                tbl_sm_model_id=tbl.column('sm_model_id', size='22',
+                tbl_sm_model__id=tbl.column('sm_model__id', size='22',
                         unmodifiable=True,
                         name_long='!![it]Modello di riferimento',
                         validate_notnull=True
                         )
-                tbl_sm_model_id.relation('sm.sm_model.id', mode='foreignkey',
+                tbl_sm_model__id.relation('sm.sm_model.id', mode='foreignkey',
                         relation_name='registry',
                         onDelete='raise'
                         )
 
                 tbl_model_category=tbl.aliasColumn('model_category',
-                        relation_path='@sm_model_id.@sm_category_id.description',
+                        relation_path='@sm_model__id.@sm_category__id.description',
                         name_long='!![it]Categoria')
 
                 # local data
@@ -88,16 +88,16 @@ class Table(object):
                 #                 current_storeBag[r][c]=f'{r}:{c}'
                 
                 # model rows and cols
-                current_model = record['sm_model_id']
+                current_model = record['sm_model__id']
                 model_rows = self.db.table('sm.sm_model_row').query(
                         columns='$code, $description',
-                        where='$sm_model_id=:model_id', model_id=current_model,
+                        where='$sm_model__id=:model__id', model__id=current_model,
                         order_by='$position'
                         ).fetch()
 
                 model_cols = self.db.table('sm.sm_model_col').query(
                         columns='$code, $description',
-                        where='$sm_model_id=:model_id', model_id=current_model,
+                        where='$sm_model__id=:model__id', model__id=current_model,
                         order_by='$position'
                         ).fetch()
 
