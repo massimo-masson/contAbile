@@ -68,4 +68,6 @@ class Form(BaseComponent):
         return dict(dialog_height='400px', dialog_width='600px')
 
 class FormFromRuleset(Form):
-    pass
+
+    def th_options(self):
+        return dict(dialog_parentRatio=0.95, modal=True)

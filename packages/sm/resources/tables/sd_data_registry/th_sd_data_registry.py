@@ -64,11 +64,11 @@ class View(BaseComponent):
 class Form(BaseComponent):
 
     def th_form(self, form):
-        pane = form.record
-        bc = pane.borderContainer()
-        self.registryHeader(bc.contentPane(region='top'))
+        bc = form.center.borderContainer()
+
+        self.registryHeader(bc.contentPane(region='top', datapath='.record'))
         self.registryBody(bc.contentPane(region='center'))
-        # self.registryButtons(bc.contentPane(region='bottom'))
+        #self.registryButtons(bc.contentPane(region='bottom'))
 
     def registryHeader(self, pane):
         div1 = pane.div(margin='2px', 
@@ -103,7 +103,15 @@ class Form(BaseComponent):
 
         # storebag schema
         sb = tc.contentPane(title='!![it]Schema')
-        sb.quickGrid('^.storebag', height='auto', widht='auto', margin='20px')
+        sb.quickGrid('^.record.storebag', height='auto', widht='auto', margin='20px')
+
+        # activities log
+        log = tc.contentPane(title='!![it]Log attività')
+        log.dialogTableHandler(relation='@data_registry_log',
+                 viewResource='ViewFromDataRegistry',
+                 formResource='FormFromDataRegistry',
+                 margin='2px')
+
 
     def registryButtons(self, pane):
         fb = pane.formbuilder(cols=10, border_spacing='4px', align='right')

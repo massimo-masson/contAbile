@@ -25,11 +25,15 @@ class View(BaseComponent):
 class Form(BaseComponent):
 
     def th_form(self, form):
-        pane = form.record
-        bc = pane.borderContainer()
-        self.rulesetHeader(bc.contentPane(region='top'))
-        self.rulesetBody(bc.contentPane(region='center'))
+        # pane = form.record
+        # bc = pane.borderContainer()
+        # self.rulesetHeader(bc.contentPane(region='top'))
+        # self.rulesetBody(bc.contentPane(region='center'))
         
+        bc = form.center.borderContainer()
+        self.rulesetHeader(bc.contentPane(region='top', datapath='.record'))
+        self.rulesetBody(bc.contentPane(region='center'))
+
     def rulesetHeader(self, pane):
         fb = pane.formbuilder(cols=4, border_spacing='4px')
         fb.field('code')
@@ -54,14 +58,12 @@ class Form(BaseComponent):
         tc = pane.tabContainer()
 
         # storebag schema
-        sb = tc.contentPane(title='!![it]Regole')
-        sb.div('vedremo...')
-        # sb.dialogTableHandler(relation='@ruleset_entries',
-        #         viewResource='ViewFromRuleset',
-        #         formResource='FormFromRuleset',
-        #         margin='2px')
+        sb = tc.contentPane(title='!![it]Operazioni componenti la regola')
+        sb.dialogTableHandler(relation='@ruleset_entries',
+                 viewResource='ViewFromRuleset',
+                 formResource='FormFromRuleset',
+                 margin='2px')
         
-
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
