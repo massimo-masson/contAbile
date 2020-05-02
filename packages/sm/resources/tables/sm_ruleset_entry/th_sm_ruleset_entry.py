@@ -11,11 +11,20 @@ class View(BaseComponent):
         r.fieldcell('code')
         r.fieldcell('description')
         r.fieldcell('sm_ruleset__id')
-        r.fieldcell('src_sm_model_row__id')
-        r.fieldcell('dst_sm_model_row__id')
-        r.fieldcell('src_sm_model_col__id')
-        r.fieldcell('dst_sm_model_col__id')
-        r.fieldcell('operation')
+
+        # columnset row
+        rows=r.columnset('rows', name='!![it]Righe', color='black', background='lightblue')
+        rows.fieldcell('src_sm_model_row__id')
+        rows.fieldcell('dst_sm_model_row__id')
+
+        # columnset col
+        cols=r.columnset('cols', name='!![it]Colonne', color='black', background='lightgreen')
+        cols.fieldcell('src_sm_model_col__id')
+        cols.fieldcell('dst_sm_model_col__id')
+
+        # columnset operations
+        ops=r.columnset('operations', name='!![it]Operazioni', color='darkblue', background='lightyellow')
+        ops.fieldcell('operation')
 
     def th_order(self):
         return 'code'
@@ -38,31 +47,39 @@ class Form(BaseComponent):
         #fb.field('@sm_ruleset__id.@src_sm_model__id.code', readonly=True)
 
         # riga
-        fb.div('!![it]Per poter selezionare righe e colonne, scegliere prima il ruleset', 
-                lbl='!![it]ATTENZIONE', colspan=4, width='100%',
-                background_color='light-yellow')
+        fb.div('!![it]RIGHE', #lbl='!![it]ATTENZIONE', 
+                colspan=2, width='100%',
+                background_color='lightgrey')
+        fb.div('!![it]COLONNE', #lbl='!![it]ATTENZIONE', 
+                colspan=2, width='100%',
+                background_color='lightgrey')
 
         # riga
         fb.field('src_sm_model_row__id', hasDownArrow=True,
                 condition='@sm_model__id.code=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.code')
-        fb.field('@src_sm_model_row__id.description', readonly=True)
+                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.code',
+                fld_background='lightyellow')
+        fb.field('@src_sm_model_row__id.description', readonly=True, fld_background='lightyellow')
         fb.field('src_sm_model_col__id', hasDownArrow=True,
                 condition='@sm_model__id.code=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.code')
-        fb.field('@src_sm_model_col__id.description', readonly=True)
+                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.code',
+                fld_background='lightyellow')
+        fb.field('@src_sm_model_col__id.description', readonly=True, fld_background='lightyellow')
 
         # riga
         fb.field('dst_sm_model_row__id', hasDownArrow=True,
                 condition='@sm_model__id.code=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.code')
-        fb.field('@dst_sm_model_row__id.description', readonly=True)
+                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.code',
+                fld_background='lightgreen')
+        fb.field('@dst_sm_model_row__id.description', readonly=True, fld_background='lightgreen')
         fb.field('dst_sm_model_col__id', hasDownArrow=True,
                 condition='@sm_model__id.code=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.code')
-        fb.field('@dst_sm_model_col__id.description', readonly=True)
+                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.code',
+                fld_background='lightgreen')
+        fb.field('@dst_sm_model_col__id.description', readonly=True, fld_background='lightgreen')
 
-        fb.field('operation')
+        valori='0:set=0,1:sum,2:subtract'
+        fb.field('operation', tag='filteringSelect', values=valori)
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
