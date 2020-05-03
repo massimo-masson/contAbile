@@ -8,7 +8,8 @@ class View(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('code')
+        #r.fieldcell('code')
+        r.fieldcell('rule_order')
         r.fieldcell('description')
         r.fieldcell('sm_ruleset__id')
 
@@ -27,10 +28,10 @@ class View(BaseComponent):
         ops.fieldcell('operation')
 
     def th_order(self):
-        return 'code'
+        return 'rule_order'
 
     def th_query(self):
-        return dict(column='code', op='contains', val='', runOnStart=True)
+        return dict(column='rule_order', op='contains', val='', runOnStart=True)
 
 class ViewFromRuleset(View):
     pass
@@ -46,7 +47,7 @@ class Form(BaseComponent):
 
     def rulesetEntryHeader(self, pane):
         fb = pane.div(margin='10px').formbuilder(cols=4, border_spacing='4px')
-        fb.field('code')
+        fb.field('rule_order')
         fb.field('description')
         fb.field('sm_ruleset__id', hasDownArrow=True)
         fb.field('@sm_ruleset__id.code', readonly=True)
@@ -84,7 +85,7 @@ class Form(BaseComponent):
                 fld_background='lightgreen')
         fb.field('@dst_sm_model_col__id.description', readonly=True, fld_background='lightgreen')
 
-        valori='0:set=0,1:sum,2:subtract'
+        valori='erase:=0,sum:+,subtract:-'
         fb.field('operation', tag='filteringSelect', values=valori)
 
     def rulesetEntryBody(self, pane):
