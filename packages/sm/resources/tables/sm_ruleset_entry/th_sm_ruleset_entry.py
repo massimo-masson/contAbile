@@ -23,7 +23,7 @@ class View(BaseComponent):
         cols.fieldcell('dst_sm_model_col__id')
 
         # columnset operations
-        ops=r.columnset('operations', name='!![it]Operazioni', color='darkblue', background='lightyellow')
+        ops=r.columnset('operations', name='!![it]Operazioni', color='black', background='lightgrey')
         ops.fieldcell('operation')
 
     def th_order(self):
@@ -38,7 +38,13 @@ class ViewFromRuleset(View):
 class Form(BaseComponent):
 
     def th_form(self, form):
-        pane = form.record
+        #pane = form.record
+        bc = form.center.borderContainer()
+
+        self.rulesetEntryHeader(bc.contentPane(region='top', datapath='.record'))
+        self.rulesetEntryBody(bc.contentPane(region='center'))
+
+    def rulesetEntryHeader(self, pane):
         fb = pane.div(margin='10px').formbuilder(cols=4, border_spacing='4px')
         fb.field('code')
         fb.field('description')
@@ -80,6 +86,13 @@ class Form(BaseComponent):
 
         valori='0:set=0,1:sum,2:subtract'
         fb.field('operation', tag='filteringSelect', values=valori)
+
+    def rulesetEntryBody(self, pane):
+        tc = pane.tabContainer()
+
+        # schema
+        sb = tc.contentPane(title='!![it]qualcosa')
+        sb.div('todo')
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
