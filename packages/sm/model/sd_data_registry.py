@@ -72,7 +72,7 @@ class Table(object):
                 tbl_date_ref_period=tbl.column('date_ref_period', dtype='A', size=':22',
                         name_long='!![it]Periodo di riferimento', validate_notnull=True)
 
-        def trigger_onInserted(self, record=None):
+        def trigger_onInserting(self, record=None):
                 self.buildUpStoreBag(record)
 
         def buildUpStoreBag(self, record=None):
@@ -121,7 +121,13 @@ class Table(object):
                         for c in model_cols:
                                 current_storeBag[i][c['code']]=None
 
-                # update the storeBag
-                with self.recordToUpdate(record['id']) as currentRecord:
-                        currentRecord['storebag']=current_storeBag
-                        currentRecord['status']='ELABORABILE'
+                # i keep the following lines as an example
+                # they where the way to update a record to dbms
+                # changing from onInserted to onInserting, they have no more meaning
+                # ...but i have something to copy from in the future...
+                # # update the storeBag
+                # with self.recordToUpdate(record['id']) as currentRecord:
+                #         currentRecord['storebag']=current_storeBag
+                #         currentRecord['status']='ELABORABILE'
+                record['storebag']=current_storeBag
+                record['status']='ELABORABILE'

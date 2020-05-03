@@ -23,7 +23,7 @@ class View(BaseComponent):
         cols.fieldcell('dst_sm_model_col__id')
 
         # columnset operations
-        ops=r.columnset('operations', name='!![it]Operazioni', color='black', background='lightgrey')
+        ops=r.columnset('operations', name='!![it]Operazioni', color='black', background='gold')
         ops.fieldcell('operation')
 
     def th_order(self):
