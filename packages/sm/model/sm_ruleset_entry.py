@@ -8,22 +8,20 @@ class Table(object):
                 tbl = pkg.table('sm_ruleset_entry', pkey='id', 
                         name_long='!![it]Trasformazione cella modello',
                         name_plural='!![it]Trasformazione celle modello',
-                        caption_field='rule_order')
+                        caption_field='code_description')
 
                 self.sysFields(tbl)
 
-                # tbl_code=tbl.column('code', dtype='A', size=':22',
-                #         unmodifiable=True,      # can set code only on new record
-                #         name_long='!![it]Regola trasformazione cella')
-                #         #unique=True, validate_notnull=True, indexed=True)
+                tbl_code=tbl.column('code', dtype='A', size=':22',
+                        unmodifiable=True,      # can set code only on new record
+                        name_long='!![it]Regola trasformazione cella',
+                        unique=True, validate_notnull=True, indexed=True)
                 
-                tbl_rule_order=tbl.column('rule_order', dtype='N', name_long='!![it]Ordine')
-
                 tbl_description=tbl.column('description', dtype='A', size=':256', 
                         name_long='!![it]Descrizione')
 
-                # tbl_code_description=tbl.formulaColumn('code_description', 
-                #         '"("||$code||") - "||$description', name_long='!![it]Regole')
+                tbl_code_description=tbl.formulaColumn('code_description', 
+                        '"("||$code||") - "||$description', name_long='!![it]Regole')
 
                 # ruleset reference entry
                 tbl_sm_ruleset__id=tbl.column('sm_ruleset__id', size='22',
@@ -78,5 +76,4 @@ class Table(object):
 
                 # operation set entry
                 tbl_operation=tbl.column('operation', dtype='A', size=':22',
-                        default='sum',
                         name_long='!![it]Operazione')
