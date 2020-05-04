@@ -64,25 +64,25 @@ class Form(BaseComponent):
 
         # riga
         fb.field('src_sm_model_row__id', hasDownArrow=True,
-                condition='@sm_model__id.id=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.id',
+                condition='@sm_model__id.code=:selected_model',
+                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.code',
                 fld_background='lightyellow')
         fb.field('@src_sm_model_row__id.description', readonly=True, fld_background='lightyellow')
         fb.field('src_sm_model_col__id', hasDownArrow=True,
-                condition='@sm_model__id.id=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.id',
+                condition='@sm_model__id.code=:selected_model',
+                condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.code',
                 fld_background='lightyellow')
         fb.field('@src_sm_model_col__id.description', readonly=True, fld_background='lightyellow')
 
         # riga
         fb.field('dst_sm_model_row__id', hasDownArrow=True,
-                condition='@sm_model__id.id=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.id',
+                condition='@sm_model__id.code=:selected_model',
+                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.code',
                 fld_background='lightgreen')
         fb.field('@dst_sm_model_row__id.description', readonly=True, fld_background='lightgreen')
         fb.field('dst_sm_model_col__id', hasDownArrow=True,
-                condition='@sm_model__id.id=:selected_model',
-                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.id',
+                condition='@sm_model__id.code=:selected_model',
+                condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.code',
                 fld_background='lightgreen')
         fb.field('@dst_sm_model_col__id.description', readonly=True, fld_background='lightgreen')
 

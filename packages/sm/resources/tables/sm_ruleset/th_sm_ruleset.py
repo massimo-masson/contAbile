@@ -31,7 +31,7 @@ class Form(BaseComponent):
         # self.rulesetBody(bc.contentPane(region='center'))
         
         bc = form.center.borderContainer()
-        self.rulesetHeader(bc.contentPane(region='top', datapath='.record'))
+        self.rulesetHeader(bc.contentPane(region='top', datapath='.record', nodeId='PIERO'))
         self.rulesetBody(bc.contentPane(region='center'))
 
     def rulesetHeader(self, pane):

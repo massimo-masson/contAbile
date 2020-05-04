@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+
 from gnr.core.gnrbag import Bag
 
 class Table(object):
@@ -77,8 +78,21 @@ class Table(object):
 
         def buildUpStoreBag(self, record=None):
                 '''Make a storage schema based on selected model'''
-                current_storeBag = Bag()
+                current_model = record['sm_model__id']
+                model_storeBag = self.getStoreBagFromModel(current_model)
 
+                # i keep the following lines as an example
+                # they where the way to update a record to dbms
+                # changing from onInserted to onInserting, they have no more meaning
+                # ...but i have something to copy from in the future...
+                # # update the storeBag
+                # with self.recordToUpdate(record['id']) as currentRecord:
+                #         currentRecord['storebag']=current_storeBag
+                #         currentRecord['status']='ELABORABILE'
+                record['storebag']=model_storeBag
+                record['status']='ELABORABILE'
+
+        def getStoreBagFromModel(self, model):
                 # # that's only for testing purposes...
                 # righe=('riga1', 'riga2', 'riga3', 'riga4')
                 # colonne=('col1','col2')
@@ -86,18 +100,18 @@ class Table(object):
                 #         current_storeBag[r]=Bag()
                 #         for c in colonne:
                 #                 current_storeBag[r][c]=f'{r}:{c}'
+                current_storeBag = Bag()
                 
                 # model rows and cols
-                current_model = record['sm_model__id']
                 model_rows = self.db.table('sm.sm_model_row').query(
                         columns='$code, $description',
-                        where='$sm_model__id=:model__id', model__id=current_model,
+                        where='$sm_model__id=:model__id', model__id=model,
                         order_by='$position'
                         ).fetch()
 
                 model_cols = self.db.table('sm.sm_model_col').query(
                         columns='$code, $description',
-                        where='$sm_model__id=:model__id', model__id=current_model,
+                        where='$sm_model__id=:model__id', model__id=model,
                         order_by='$position'
                         ).fetch()
 
@@ -120,14 +134,5 @@ class Table(object):
 
                         for c in model_cols:
                                 current_storeBag[i][c['code']]=None
-
-                # i keep the following lines as an example
-                # they where the way to update a record to dbms
-                # changing from onInserted to onInserting, they have no more meaning
-                # ...but i have something to copy from in the future...
-                # # update the storeBag
-                # with self.recordToUpdate(record['id']) as currentRecord:
-                #         currentRecord['storebag']=current_storeBag
-                #         currentRecord['status']='ELABORABILE'
-                record['storebag']=current_storeBag
-                record['status']='ELABORABILE'
+                
+                return current_storeBag

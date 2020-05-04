@@ -43,6 +43,9 @@ class Table(object):
                         relation_name='ruleset_rows_src',
                         onDelete='raise'
                         )
+                # and it's reference id model
+                tbl.aliasColumn('src_sm_model__id', name_long='!![it]src_sm_model__id',
+                        relation_path='@src_sm_model_row__id.@sm_model__id.id')
 
                 # source col
                 tbl_src_sm_model_col__id=tbl.column('src_sm_model_col__id', size='22',
@@ -63,6 +66,9 @@ class Table(object):
                         relation_name='ruleset_rows_dst',
                         onDelete='raise'
                         )
+                # and it's reference id model
+                tbl.aliasColumn('dst_sm_model__id', name_long='!![it]dst_sm_model__id',
+                        relation_path='@dst_sm_model_row__id.@sm_model__id.id')
 
                 # destination col
                 tbl_dst_sm_model_col__id=tbl.column('dst_sm_model_col__id', size='22',

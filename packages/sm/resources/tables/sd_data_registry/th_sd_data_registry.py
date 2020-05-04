@@ -4,6 +4,8 @@
 from gnr.web.gnrbaseclasses import BaseComponent
 from gnr.core.gnrdecorator import public_method
 
+from gnr.core.gnrbag import Bag
+
 class View(BaseComponent):
 
     def th_struct(self,struct):
@@ -103,7 +105,16 @@ class Form(BaseComponent):
 
         # storebag schema
         sb = tc.contentPane(title='!![it]Schema')
-        sb.quickGrid('^.record.storebag', height='auto', widht='auto', margin='20px')
+        #sb.quickGrid('^.record.storebag', height='auto', widht='auto', margin='20px')
+        # sb.quickGrid('^.record.storebag',connect_onCellDblClick="""
+        # console.log('onclick',this,$1)
+        # 
+        # """)
+
+        frame = sb.bagGrid(frameCode='registry_model',datapath='#FORM.model_dati',
+                            storepath='#FORM.record.storebag',
+                            structpath='#FORM.record.registrystruct')
+
 
         # activities log
         log = tc.contentPane(title='!![it]Log attività')
@@ -129,3 +140,13 @@ class Form(BaseComponent):
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
+
+    @public_method
+    def th_onLoading(self, record, newrecord, loadingParameters, recInfo):
+        
+        rstruct = Bag()
+        r = rstruct['view_0.rows_0'] = Bag()
+        r.addItem('cod',None,name='Codice',width='6em')
+        r.addItem('desc',None,nome='Descrizione',width='20em')
+
+        record['registrystruct'] = rstruct
