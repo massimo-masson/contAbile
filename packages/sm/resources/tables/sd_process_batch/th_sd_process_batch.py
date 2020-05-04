@@ -35,6 +35,9 @@ class Form(BaseComponent):
 
         fb.field('description', colspan=2, width='100%')
 
+        fb.field('notes', tag='simpleTextArea',
+                colspan=2, width='100%', height='6em')
+
     def batchBody(self, pane):
         tc = pane.tabContainer()
         entries = tc.contentPane(title='!![it]Fasi del processo di elaborazione')

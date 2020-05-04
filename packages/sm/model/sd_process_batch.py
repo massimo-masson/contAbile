@@ -27,5 +27,8 @@ class Table(object):
         tbl.formulaColumn('code_description', 
                 '"("||$code||") - "||$description', name_long='!![it]Lotti')
         
+        tbl.column('notes', dtype='A', size=':1024', 
+                name_long='!![it]Note')
+
         tbl.column('date_ref_period', dtype='A', size=':22',
                 name_long='!![it]Periodo di riferimento')
