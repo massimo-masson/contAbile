@@ -11,7 +11,6 @@ class View(BaseComponent):
     def th_struct(self,struct):
         r = struct.view().rows()
         r.fieldcell('position')
-        r.fieldcell('code')
         r.fieldcell('description')
         r.fieldcell('sm_ruleset__id')
 
@@ -49,17 +48,16 @@ class Form(BaseComponent):
 
     def rulesetEntryHeader(self, pane):
         fb = pane.div(margin='10px').formbuilder(cols=4, border_spacing='4px')
-        fb.field('code')
+        fb.field('position')
         fb.field('description')
         fb.field('sm_ruleset__id', hasDownArrow=True)
         fb.field('@sm_ruleset__id.code', readonly=True)
-        #fb.field('@sm_ruleset__id.@src_sm_model__id.code', readonly=True)
 
         # riga
-        fb.div('!![it]RIGHE', #lbl='!![it]ATTENZIONE', 
+        fb.div('!![it]RIGHE', 
                 colspan=2, width='100%',
                 background_color='lightgrey')
-        fb.div('!![it]COLONNE', #lbl='!![it]ATTENZIONE', 
+        fb.div('!![it]COLONNE', 
                 colspan=2, width='100%',
                 background_color='lightgrey')
 
@@ -89,71 +87,22 @@ class Form(BaseComponent):
 
         valori = self.db.table('sm.sm_ruleset_entry').CONST_operation()
         fb.field('operation', tag='filteringSelect', values=valori)
-        fb.div()
-        fb.div()
-        fb.field('position')
+        # fb.div()
+        # fb.div()
+        # fb.div()
 
-        fb.field('src_sm_model__id')
-        fb.field('dst_sm_model__id')
-
+        # fb.field('src_sm_model__id')
+        # fb.field('dst_sm_model__id')
 
     def rulesetEntryBody(self, pane):
         tc = pane.tabContainer()
 
-        # tab models
-        tm = tc.contentPane(title='!![it]Modelli')
-        bc = tm.borderContainer()
-        self.getModelSrc(bc.contentPane(region='left', width='50%'))
-        self.getModelDst(bc.contentPane(region='right', width='50%'))
+        # tab operations
+        tm = tc.contentPane(title='!![it]Operazioni')
+        tm.div('...todo...')
     
-    @public_method
-    def proxyStoreBagFromModel(self, model=None, **kwargs):
-        modelBag = self.db.table('sm.sd_data_registry').getStoreBagFromModel(model)
-        return modelBag
-
-    def getModelSrc(self, pane):
-        pane.div('!![it]Modello sorgente', color='black', background='gold')
-        #modello='TByjdvAUMF2LHrA1XoPkaQ'
-        #srcModelBag = self.db.table('sm.sd_data_registry').getStoreBagFromModel(modello)
-
-        # VERSIONE CON DUE BAG CONTEMPORANEAMENTE
-        # pane.dataRpc('.ModelBag', self.proxyStoreBagFromModel, 
-        #             #modello='^#FORM.record.src_sm_model_row__id', _if='modello')
-        #             model_src='^#PIERO.src_sm_model_row__id', #_if='model_src',
-        #             model_dst='=#PIERO.dst_sm_model_row__id')
-
-        pane.dataRpc('.srcModelBag', self.proxyStoreBagFromModel, 
-                    model='^.record.src_sm_model__id',
-                    _fired='^.record.src_sm_model__id')
-        
-        pane.quickGrid('^.srcModelBag', border='1px solid silver',
-                height='85%', width='90%', margin='20px')
-
-    # QUESTA VERSIONE RESTITUISCE LE DUE BAG CONTEMPORANEAMENTE
-    # ---------------------------------------------------------
-    # @public_method
-    # def proxyStoreBagFromModel(self, model_src=None, model_dst=None, **kwargs):
-    #     print(x)
-    #     srcModelBag = self.db.table('sm.sd_data_registry').getStoreBagFromModel(model_src)
-    #     dstModelBag = self.db.table('sm.sd_data_registry').getStoreBagFromModel(model_dst)
-    #     return Bag(dict(srcModelBag=srcModelBag, dstModelBag=dstModelBag))
-
-
-    def getModelDst(self, pane):
-        pane.div('!![it]Modello destinazione', color='black', background='lightgreen')
-        pane.dataRpc('.dstModelBag', self.proxyStoreBagFromModel, 
-                    model='^.record.dst_sm_model__id',
-                    _fired='^.record.dst_sm_model__id')
-        
-        pane.quickGrid('^.dstModelBag', border='1px solid silver',
-                height='85%', widht='100%', margin='20px')
-
-
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
-
-    # def th_hiddencolumns(self):
-    #     return '$src_sm_model__id,$dst_sm_model__id'
 
 class FormFromRuleset(Form):
 

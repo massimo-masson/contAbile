@@ -15,11 +15,6 @@ class Table(object):
         tbl_position=tbl.column('position', dtype='N',
                 name_long='!![it]Posizione', name_short='!![it]Pos.')
 
-        tbl_code=tbl.column('code', dtype='A', size=':22',
-                unmodifiable=True,      # can set code only on new record
-                name_long='!![it]Regola trasformazione cella',
-                unique=True, validate_notnull=True, indexed=True)
-
         tbl_description=tbl.column('description', dtype='A', size=':256',
                 name_long='!![it]Descrizione')
 
@@ -47,8 +42,8 @@ class Table(object):
                 onDelete='raise'
                 )
         # and it's reference id model
-        tbl.aliasColumn('src_sm_model__id', name_long='!![it]src_sm_model__id',
-                relation_path='@src_sm_model_row__id.@sm_model__id.id')
+        # tbl.aliasColumn('src_sm_model__id', name_long='!![it]src_sm_model__id',
+        #         relation_path='@src_sm_model_row__id.@sm_model__id.id')
 
         # source col
         tbl_src_sm_model_col__id=tbl.column('src_sm_model_col__id', size='22',
@@ -70,8 +65,8 @@ class Table(object):
                 onDelete='raise'
                 )
         # and it's reference id model
-        tbl.aliasColumn('dst_sm_model__id', name_long='!![it]dst_sm_model__id',
-                relation_path='@dst_sm_model_row__id.@sm_model__id.id')
+        # tbl.aliasColumn('dst_sm_model__id', name_long='!![it]dst_sm_model__id',
+        #         relation_path='@dst_sm_model_row__id.@sm_model__id.id')
 
         # destination col
         tbl_dst_sm_model_col__id=tbl.column('dst_sm_model_col__id', size='22',
@@ -95,5 +90,4 @@ class Table(object):
                 2: subtract value from the existing
         '''
         CONST = '0:=0,1:+,2:-'
-
         return CONST
