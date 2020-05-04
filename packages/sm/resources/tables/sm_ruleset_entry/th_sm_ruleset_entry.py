@@ -10,6 +10,7 @@ class View(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
+        r.fieldcell('position')
         r.fieldcell('code')
         r.fieldcell('description')
         r.fieldcell('sm_ruleset__id')
@@ -29,10 +30,10 @@ class View(BaseComponent):
         ops.fieldcell('operation')
 
     def th_order(self):
-        return 'code'
+        return 'position'
 
     def th_query(self):
-        return dict(column='code', op='contains', val='', runOnStart=True)
+        return dict(column='position', op='contains', val='', runOnStart=True)
 
 class ViewFromRuleset(View):
     pass
@@ -66,13 +67,13 @@ class Form(BaseComponent):
         fb.field('src_sm_model_row__id', hasDownArrow=True,
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.id',
-                fld_background='lightyellow')
-        fb.field('@src_sm_model_row__id.description', readonly=True, fld_background='lightyellow')
+                fld_background='gold')
+        fb.field('@src_sm_model_row__id.description', readonly=True, fld_background='gold')
         fb.field('src_sm_model_col__id', hasDownArrow=True,
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.id',
-                fld_background='lightyellow')
-        fb.field('@src_sm_model_col__id.description', readonly=True, fld_background='lightyellow')
+                fld_background='gold')
+        fb.field('@src_sm_model_col__id.description', readonly=True, fld_background='gold')
 
         # riga
         fb.field('dst_sm_model_row__id', hasDownArrow=True,
@@ -86,8 +87,12 @@ class Form(BaseComponent):
                 fld_background='lightgreen')
         fb.field('@dst_sm_model_col__id.description', readonly=True, fld_background='lightgreen')
 
-        valori='0:set=0,1:sum,2:subtract'
+        valori = self.db.table('sm.sm_ruleset_entry').CONST_operation()
         fb.field('operation', tag='filteringSelect', values=valori)
+        fb.div()
+        fb.div()
+        fb.field('position')
+
         fb.field('src_sm_model__id')
         fb.field('dst_sm_model__id')
 
@@ -107,7 +112,7 @@ class Form(BaseComponent):
         return modelBag
 
     def getModelSrc(self, pane):
-        pane.div('!![it]Modello sorgente', color='black', background='lightyellow')
+        pane.div('!![it]Modello sorgente', color='black', background='gold')
         #modello='TByjdvAUMF2LHrA1XoPkaQ'
         #srcModelBag = self.db.table('sm.sd_data_registry').getStoreBagFromModel(modello)
 
@@ -146,6 +151,9 @@ class Form(BaseComponent):
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
+
+    # def th_hiddencolumns(self):
+    #     return '$src_sm_model__id,$dst_sm_model__id'
 
 class FormFromRuleset(Form):
 
