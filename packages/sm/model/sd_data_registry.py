@@ -93,13 +93,6 @@ class Table(object):
         record['status']='ELABORABILE'
 
     def getStoreBagFromModel(self, model):
-        # # that's only for testing purposes...
-        # righe=('riga1', 'riga2', 'riga3', 'riga4')
-        # colonne=('col1','col2')
-        # for r in righe:
-        #         current_storeBag[r]=Bag()
-        #         for c in colonne:
-        #                 current_storeBag[r][c]=f'{r}:{c}'
         current_storeBag = Bag()
         
         # model rows and cols
@@ -118,24 +111,13 @@ class Table(object):
         # build up store Bag as for model
         i=0
 
-        # first row, 0. headers
-        # current_storeBag['0']=Bag()
-        # current_storeBag['0']['cod']=None
-        # current_storeBag['0']['desc']=None
-        # add model columns in row 0
-        # for c in model_cols:
-        #         current_storeBag['0'][c['code']]=c['description']
-        
-        # now for the remaining rows
         for r in model_rows:
                 i+=1
                 current_storeBag[i]=Bag()
                 current_storeBag[i]['cod']=r['code']
                 current_storeBag[i]['desc']=r['description']
                 
-                j=0
                 for c in model_cols:
-                        j+=1
-                        current_storeBag[i][c['code']]=f'{i},{j}'
+                        current_storeBag[i][c['code']] = None  #f'{i},{j}'
         
         return current_storeBag

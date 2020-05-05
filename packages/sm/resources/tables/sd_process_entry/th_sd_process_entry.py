@@ -27,20 +27,43 @@ class Form(BaseComponent):
 
     def th_form(self, form):
         pane = form.record
-        fb = pane.formbuilder(cols=2, border_spacing='4px')
+        fb = pane.formbuilder(cols=4, border_spacing='4px')
+        # row 1, rule
         fb.field('position')
         fb.field('description')
 
+        # row 2, batch
         fb.field('sd_process_batch__id', hasDownArrow=True)
-        fb.field('@sd_process_batch__id.description', readonly=True)
-
+        fb.field('@sd_process_batch__id.description', readonly=True,
+                lbl='!![it]Lotto:')
+        
+        # row 3, ruleset
         fb.field('sm_ruleset__id', hasDownArrow=True)
-        fb.field('@sm_ruleset__id.description', readonly=True)
+        fb.field('@sm_ruleset__id.description', colspan=3, readonly=True,
+                width='100%', lbl='!![it]Set di regole')
 
-        fb.field('src_sd_data_registry__id', hasDownArrow=True)
+        # row
+        fb.field('@sm_ruleset__id.@src_sm_model__id.code', lbl='!![it]Da:',
+                colspan=2, width='100%', fld_background='lightyellow')
+        fb.field('@sm_ruleset__id.@dst_sm_model__id.code', lbl='!![it]A:',
+                colspan=2, width='100%', fld_background='lightgreen')
+
+        # row
+        fb.field('@sm_ruleset__id.@src_sm_model__id.description', lbl='',
+                colspan=2, width='100%', fld_background='lightyellow')
+        fb.field('@sm_ruleset__id.@dst_sm_model__id.description', lbl='',
+                colspan=2, width='100%', fld_background='lightgreen')
+
+        # row, source
+        fb.field('src_sd_data_registry__id', hasDownArrow=True,
+                condition='$sm_model__id=:source_model',
+                condition_source_model='=.@sm_ruleset__id.@src_sm_model__id.id')
         fb.field('@src_sd_data_registry__id.description', readonly=True)
 
-        fb.field('dst_sd_data_registry__id', hasDownArrow=True)
+        # row, destination
+        fb.field('dst_sd_data_registry__id', hasDownArrow=True,
+                condition='$sm_model__id=:source_model',
+                condition_source_model='=.@sm_ruleset__id.@dst_sm_model__id.id')
         fb.field('@dst_sd_data_registry__id.description', readonly=True)
 
 

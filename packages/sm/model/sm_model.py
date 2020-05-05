@@ -53,6 +53,5 @@ class Table(object):
         # add model columns from model
         for c in model_cols:
                 cols.addItem(c['code'], None, name=c['description'], width='10em')
-                #current_storeBag['0'][c['code']]=c['description']
         
         return structBag
