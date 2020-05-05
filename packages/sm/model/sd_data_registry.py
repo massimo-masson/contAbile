@@ -116,14 +116,15 @@ class Table(object):
                 ).fetch()
 
         # build up store Bag as for model
-        # first row, 0. headers
         i=0
-        current_storeBag['0']=Bag()
-        current_storeBag['0']['cod']=None
-        current_storeBag['0']['desc']=None
+
+        # first row, 0. headers
+        # current_storeBag['0']=Bag()
+        # current_storeBag['0']['cod']=None
+        # current_storeBag['0']['desc']=None
         # add model columns in row 0
-        for c in model_cols:
-                current_storeBag['0'][c['code']]=c['description']
+        # for c in model_cols:
+        #         current_storeBag['0'][c['code']]=c['description']
         
         # now for the remaining rows
         for r in model_rows:
@@ -131,8 +132,10 @@ class Table(object):
                 current_storeBag[i]=Bag()
                 current_storeBag[i]['cod']=r['code']
                 current_storeBag[i]['desc']=r['description']
-
+                
+                j=0
                 for c in model_cols:
-                        current_storeBag[i][c['code']]=None
+                        j+=1
+                        current_storeBag[i][c['code']]=f'{i},{j}'
         
         return current_storeBag

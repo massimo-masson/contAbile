@@ -88,7 +88,8 @@ class Form(BaseComponent):
                 hasDownArrow=True)
         fb.field('@sm_model__id.description', readOnly=True,
                 background_color='light_grey',
-                colspan=2, width='100%')
+                colspan=1, width='100%')
+        fb.field('@sm_model__id.id')
 
         fb.field('date_ref_period')
         fb.field('date_ref_from')
@@ -105,6 +106,19 @@ class Form(BaseComponent):
 
         # storebag schema
         sb = tc.contentPane(title='!![it]Schema')
+        #sb.quickGrid('^.record.storebag', height='auto', widht='auto', margin='20px')
+        # sb.quickGrid('^.record.storebag',connect_onCellDblClick="""
+        # console.log('onclick',this,$1)
+        # 
+        # """)
+
+        # fatta da ghigo, funziona:
+        # frame = sb.bagGrid(frameCode='registry_model',datapath='#FORM.model_dati',
+        #                     storepath='#FORM.record.storebag',
+        #                     structpath='#FORM.record.registrystruct')
+        
+        # miei test
+        #print(self.proxyGetStoreGridStructure('0NvfvKopMEqKvEMEgRElyQ'))
 
         frame = sb.bagGrid(#frameCode='registry_model',datapath='#FORM.model_dati',
                             storepath='#FORM.record.storebag',
@@ -116,6 +130,14 @@ class Form(BaseComponent):
                  viewResource='ViewFromDataRegistry',
                  formResource='FormFromDataRegistry',
                  margin='2px')
+
+    @public_method
+    def proxyGetStoreGridStructure(self, modello, **kwargs):
+        print('***********proxyGetStoreGridStructure************')
+        print(modello)
+        structBag = self.db.table('sm.sm_model').getStructBagFromModel(modello)
+
+        return structBag
 
     def registryButtons(self, pane):
         fb = pane.formbuilder(cols=10, border_spacing='4px', align='right')
@@ -134,7 +156,20 @@ class Form(BaseComponent):
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
 
+
     @public_method
     def th_onLoading(self, record, newrecord, loadingParameters, recInfo):
+        #structure_bag = self.proxyGetStoreGridStructure(record['sm_model__id'])
         structure_bag = self.db.table('sm.sm_model').getStructBagFromModel(record['sm_model__id'])
         record['registrystruct'] = structure_bag
+        #print(structure_bag)
+
+    # @public_method
+    # def th_onLoading(self, record, newrecord, loadingParameters, recInfo):
+
+    #     rstruct = Bag()
+    #     r = rstruct['view_0.rows_0'] = Bag()
+    #     r.addItem('cod',None,name='Codice',width='6em')
+    #     r.addItem('desc',None,name='Descrizione',width='20em')
+
+    #     record['registrystruct'] = rstruct

@@ -105,10 +105,16 @@ class Form(BaseComponent):
 
         # storebag schema
         sb = tc.contentPane(title='!![it]Schema')
+        #sb.quickGrid('^.record.storebag', height='auto', widht='auto', margin='20px')
+        # sb.quickGrid('^.record.storebag',connect_onCellDblClick="""
+        # console.log('onclick',this,$1)
+        # 
+        # """)
 
-        frame = sb.bagGrid(#frameCode='registry_model',datapath='#FORM.model_dati',
+        frame = sb.bagGrid(frameCode='registry_model',datapath='#FORM.model_dati',
                             storepath='#FORM.record.storebag',
                             structpath='#FORM.record.registrystruct')
+
 
         # activities log
         log = tc.contentPane(title='!![it]Log attività')
@@ -116,6 +122,7 @@ class Form(BaseComponent):
                  viewResource='ViewFromDataRegistry',
                  formResource='FormFromDataRegistry',
                  margin='2px')
+
 
     def registryButtons(self, pane):
         fb = pane.formbuilder(cols=10, border_spacing='4px', align='right')
@@ -136,5 +143,10 @@ class Form(BaseComponent):
 
     @public_method
     def th_onLoading(self, record, newrecord, loadingParameters, recInfo):
-        structure_bag = self.db.table('sm.sm_model').getStructBagFromModel(record['sm_model__id'])
-        record['registrystruct'] = structure_bag
+        
+        rstruct = Bag()
+        r = rstruct['view_0.rows_0'] = Bag()
+        r.addItem('cod',None,name='Codice',width='6em')
+        r.addItem('desc',None,nome='Descrizione',width='20em')
+
+        record['registrystruct'] = rstruct

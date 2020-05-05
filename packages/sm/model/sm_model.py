@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+from gnr.core.gnrbag import Bag
+
 class Table(object):
     def config_db(self, pkg):
         '''sm: schema management, models'''
@@ -29,3 +31,28 @@ class Table(object):
         tbl_category__id.relation('sm.sm_category.id', mode='foreignkey',
                 relation_name='models',
                 onDelete='raise')
+
+    def getStructBagFromModel(self, model):
+        structBag = Bag()
+        
+        # model columns
+        model_cols = self.db.table('sm.sm_model_col').query(
+                columns='$code, $description',
+                where='$sm_model__id=:model__id', model__id=model,
+                order_by='$position'
+                ).fetch()
+
+        # first two columns, fixed:
+        # code: row code
+        # description: row description
+        # view_0 is "magic" (legacy)
+        cols = structBag['view_0.rows_0'] = Bag()
+        cols.addItem('cod', None, name='!![it]Codice', width='6em')
+        cols.addItem('desc',None, name='!![it]Descrizione',width='20em')
+
+        # add model columns from model
+        for c in model_cols:
+                cols.addItem(c['code'], None, name=c['description'], width='10em')
+                #current_storeBag['0'][c['code']]=c['description']
+        
+        return structBag
