@@ -55,15 +55,19 @@ class Form(BaseComponent):
                 colspan=2, width='100%', fld_background='lightgreen')
 
         # row, source
+        # source schema's model must match ruleset source model
         fb.field('src_sd_data_registry__id', hasDownArrow=True,
                 condition='$sm_model__id=:source_model',
                 condition_source_model='=.@sm_ruleset__id.@src_sm_model__id.id')
         fb.field('@src_sd_data_registry__id.description', readonly=True)
 
         # row, destination
+        # destination schema's model must match ruleset destination model
+        # AND the destination schema must not be "protected" (0 or NULL)
         fb.field('dst_sd_data_registry__id', hasDownArrow=True,
-                condition='$sm_model__id=:source_model',
-                condition_source_model='=.@sm_ruleset__id.@dst_sm_model__id.id')
+                condition='($sm_model__id=:source_model) AND (($is_protected=:protect) OR ($is_protected IS NULL))',
+                condition_source_model='=.@sm_ruleset__id.@dst_sm_model__id.id',
+                condition_protect='0')
         fb.field('@dst_sd_data_registry__id.description', readonly=True)
 
 
