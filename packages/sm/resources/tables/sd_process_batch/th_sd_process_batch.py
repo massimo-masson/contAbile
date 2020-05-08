@@ -27,6 +27,7 @@ class Form(BaseComponent):
         bc = form.center.borderContainer()
         self.batchHeader(bc.contentPane(region='top', datapath='.record'))
         self.batchBody(bc.contentPane(region='center'))
+        self.batchButtons(bc.contentPane(region='bottom'))
 
     def batchHeader(self, pane):
         fb = pane.formbuilder(cols=2, border_spacing='4px')
@@ -45,6 +46,39 @@ class Form(BaseComponent):
                  viewResource='ViewFromProcessBatch',
                  formResource='FormFromProcessBatch',
                  margin='2px')        
+
+    def batchButtons(self, pane):
+
+        fb = pane.formbuilder(cols=10, border_spacing='4px', align='left')
+        action_run_batch = '''
+            var optsel = confirm("Avviare elaborazione?"); 
+            if (optsel == true) {  
+                FIRE .action_run_batch;
+                }  
+            else {  
+                alert("Elaborazione non avviata.");
+                }
+            '''
+        # Attento, max!
+        # in batch_id, NON usare ^.record.id, perche' sottoscrive il path
+        # e verrebbe chiamato anche al load della form, che NON voglio!!!
+        # con '=.record.id' invece prende il valore attuale, e basta. 
+        # E all'on load non c'è l'id.
+        # Quando invece viene attivato il "fired", allora scatta.
+        fb.dataRpc('.runBatch', self.runBatch, 
+                batch_id='=.record.id', 
+                _fired='^.action_run_batch')
+
+        # button enabled only if form is not locked (edit mode)
+        fb.button('!![it]Elabora batch', action=action_run_batch,
+                disabled='^.controller.locked',
+                fire='.action_run_batch')
+
+    @public_method
+    def runBatch(self, batch_id=None, **kwargs):
+        #print('********run batch***************', batch_id)
+        status = self.db.table('sm.sd_process_batch').runBatch(batch_id)
+        return status
 
     def th_options(self):
         #return dict(dialog_height='400px', dialog_width='600px')
