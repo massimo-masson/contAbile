@@ -84,7 +84,7 @@ class Table(object):
 
             # 9. loop on every rule (ordered)
             for rule_entry in rs_ruleset_entries:
-                print('operazione', rule_entry['operation'])
+                #print('operazione', rule_entry['operation'])
                 src_row = self.getModelRowById(rule_entry['src_sm_model_row__id'])
                 src_col = self.getModelColById(rule_entry['src_sm_model_col__id'])
                 dst_row = self.getModelRowById(rule_entry['dst_sm_model_row__id'])
@@ -102,7 +102,9 @@ class Table(object):
                         src_storeBag, sr, sc,
                         dst_storeBag, dr, dc)
 
-                
+            # 11. update destination schema
+            self.updateDataRegistryStoreBag(rs_dst_store['id'], dst_storeBag)
+
         # END OF runBatch()
         return status
 
@@ -148,7 +150,24 @@ class Table(object):
         return rs
 
     def applySingleRule(self, operation=None, 
-        srcBag=None, sr=None, sc=None,
-        dstBag=None, dr=None, dc=None):
-        '''apply single rule'''
-        dstBag[dr][dc]=srcBag[sr][sc] + 123
+            srcBag=None, sr=None, sc=None,
+            dstBag=None, dr=None, dc=None):
+        if operation=='0':
+            # set value
+            dstBag[dr][dc] = srcBag[sr][sc]
+        elif operation=='1':
+            # sum
+            dstBag[dr][dc] = dstBag[dr][dc] + srcBag[sr][sc]
+        elif operation=='2':
+            # subtraction
+            dstBag[dr][dc] = dstBag[dr][dc] - srcBag[sr][sc]
+        else:
+            pass
+
+    def updateDataRegistryStoreBag(self, registry_id, storeBag):
+        # update the storeBag
+        with self.db.table('sm.sd_data_registry').recordToUpdate(registry_id) as record:
+                record['storebag']=storeBag
+                record['status']='ELABORATA'
+        self.db.commit()
+        return record

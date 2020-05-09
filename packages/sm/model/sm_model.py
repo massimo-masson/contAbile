@@ -47,8 +47,8 @@ class Table(object):
         # description: row description
         # view_0 is "magic" (legacy)
         cols = structBag['view_0.rows_0'] = Bag()
-        cols.addItem('cod', None, name='!![it]Codice', width='6em')
-        cols.addItem('desc',None, name='!![it]Descrizione',width='20em')
+        cols.addItem('code', None, name='!![it]Codice', width='6em')
+        cols.addItem('description',None, name='!![it]Descrizione',width='20em')
 
         # add model columns from model
         for c in model_cols:

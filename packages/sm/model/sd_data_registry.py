@@ -118,7 +118,11 @@ class Table(object):
                 # current_storeBag[i]['cod']=r['code']
                 # current_storeBag[i]['desc']=r['description']
                 current_storeBag.setItem(r['code'], Bag())
-                
+
+                # first 2 columns, fixed: 'code', 'description'
+                current_storeBag[r['code']].setItem('code', r['code'])
+                current_storeBag[r['code']].setItem('description', r['description'])
+
                 for c in model_cols:
                         #current_storeBag[i][c['code']] = filler  #f'{i},{j}'
                         current_storeBag[r['code']].setItem(c['code'], filler)
