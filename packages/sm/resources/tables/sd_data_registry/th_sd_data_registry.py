@@ -70,7 +70,7 @@ class Form(BaseComponent):
 
         self.registryHeader(bc.contentPane(region='top', datapath='.record'))
         self.registryBody(bc.contentPane(region='center'))
-        #self.registryButtons(bc.contentPane(region='bottom'))
+        self.registryButtons(bc.contentPane(region='bottom'))
 
     def registryHeader(self, pane):
         div1 = pane.div(margin='2px', 
@@ -118,18 +118,24 @@ class Form(BaseComponent):
                  margin='2px')
 
     def registryButtons(self, pane):
-        fb = pane.formbuilder(cols=10, border_spacing='4px', align='right')
-        action_ricostruzione = '''
+        fb = pane.formbuilder(cols=10, border_spacing='4px', align='left')
+
+        fb.dataRpc('.reloadSchema', self.proxyRebuildStoreBag, 
+        record='=.record', 
+        _fired='^.action_recreate_storeBag')
+
+        action_ricrea = '''
             var optsel = confirm("Ricostruzione schema?"); 
             if (optsel == true) {  
-                alert("Ora dovrei ricostruire...");
+                FIRE .action_recreate_storeBag;
                 }  
             else {  
-                alert("Allora resta uguale...");
+                alert("Operazione annullata...");
                 }
             '''
-        fb.button('!![it]Ricostruzione schema', action=action_ricostruzione)
-        fb.button('!![it]BU!!', action='alert("Bu!")')
+        fb.button('!![it]Ricrea schema', action=action_ricrea,
+                disabled='^.controller.locked')
+                #fire='.action_run_batch')
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
@@ -138,3 +144,7 @@ class Form(BaseComponent):
     def th_onLoading(self, record, newrecord, loadingParameters, recInfo):
         structure_bag = self.db.table('sm.sm_model').getStructBagFromModel(record['sm_model__id'])
         record['registrystruct'] = structure_bag
+
+    @public_method
+    def proxyRebuildStoreBag(self, record=None, **kwargs):
+        return self.db.table('sm.sd_data_registry').buildUpStoreBag(record, 0)

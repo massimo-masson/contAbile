@@ -41,32 +41,68 @@ class Table(object):
         # 1.    get the batch from sd_process_batch, based on batch_id
         # 2.    get the batch_entries from the batch
         # 3.    loop on batch entries, get single sd_proces_entry
-        # 4.        get the ruleset for the sd_process_entry
-        # 5.        get the source schema from sd_process_entry
-        # 6.        get the destination schema from sd_process_entry
-        # 7.        verify that the destination is not protected
-        # 8.            make "history/backup" copy of source schema before processing
-        # 9.            apply the ruleset from source to destination
-        # 10.            update destination schema
-        # 11.            log activities and previous version schema
-        # 12.   update status
-        # 13.   protect destination schemas? (maybe not...)
+        # 4.        get the destination schema from sd_process_entry
+        # 5.        verify that the destination is not protected
+        # 6.        make "history/backup" copy of destination schema "before processing"
+        # 7.        get the source schema from sd_process_entry
+        # 8.        get the ruleset_entry list for the current sd_process_entry
+        # 9.        loop on every rule of the ruleset
+        # 10.          apply the rule from source to destination
+        # 11.       update destination schema record
+        # 12.       log activities and previous version schema
+        # 13.   update status
+        # 14.   protect destination schemas? (maybe not...)
 
         status = 'process_batch starting...'
 
         # 1. get batch record to work on, in rsbag_batch
         # rsbag is recordset in bag form
         rsbag_batch = self.getBatchFromId(batch_id)
-        #print('****running batch: ', rsbag_batch)
 
         # 2. get batch entries
-        rs_entries = self.getBatchEntriesList(batch_id)
-        #print('****rsbag_entries: ', rs_entries_id)
+        rs_batch_entries = self.getBatchEntriesList(batch_id)
 
-        # 3. loop every entry for processing
-        for entry in rs_entries:
-            print('elabora sd_batch_entry:', entry['description'])
+        # 3. loop every entry for processing, IN ORDER!
+        for batch_entry in rs_batch_entries:
 
+            # 4. get destination schema from sd_process_entry
+            rs_dst_store = self.getSchemaStore(batch_entry['dst_sd_data_registry__id'])
+            dst_storeBag = rs_dst_store['storebag']
+
+            # 5. verify that destination is not protected
+            # ***TO DO...
+
+            # 6. make a history copy of original storeBag before processing
+            bkup_dst_storeBag = dst_storeBag.deepcopy()
+
+            # 7. get source schema from sd_process_entry
+            rs_src_store = self.getSchemaStore(batch_entry['src_sd_data_registry__id'])
+            src_storeBag = rs_src_store['storebag']
+
+            # 8. get ruleset enries list to apply, one by one, IN ORDER!
+            rs_ruleset_entries = self.getRulesetEntriesList(batch_entry['sm_ruleset__id'])
+
+            # 9. loop on every rule (ordered)
+            for rule_entry in rs_ruleset_entries:
+                print('operazione', rule_entry['operation'])
+                src_row = self.getModelRowById(rule_entry['src_sm_model_row__id'])
+                src_col = self.getModelColById(rule_entry['src_sm_model_col__id'])
+                dst_row = self.getModelRowById(rule_entry['dst_sm_model_row__id'])
+                dst_col = self.getModelColById(rule_entry['dst_sm_model_col__id'])
+                sr = src_row['code']
+                sc = src_col['code']
+                dr = dst_row['code']
+                dc = dst_col['code']
+                # print ('FROM: ', src_row['code'], '-', src_col['code'])
+                # print ('  TO: ', dst_row['code'], '-', dst_col['code'])
+
+                # 10. apply the single rule
+                #dst_storeBag[dr][dc] = src_storeBag[sr][sc]
+                self.applySingleRule(rule_entry['operation'], 
+                        src_storeBag, sr, sc,
+                        dst_storeBag, dr, dc)
+
+                
         # END OF runBatch()
         return status
 
@@ -77,7 +113,7 @@ class Table(object):
         return rs
 
     def getBatchEntriesList(self, batch_id):
-        '''return the ordered list of entries for the given process_batch'''
+        '''returns the ordered list of entries for the given process_batch'''
         rs = self.db.table('sm.sd_process_entry').query(
                 columns='*',
                 where='$sd_process_batch__id = :selected_batch_id',
@@ -87,3 +123,32 @@ class Table(object):
                 ).fetch()
         return rs
 
+    def getRulesetEntriesList(self, ruleset_id):
+        '''returns the ordered list of entries for the give ruleset'''
+        rs = self.db.table('sm.sm_ruleset_entry').query(
+                columns='*',
+                where='$sm_ruleset__id = :selected_ruleset_id',
+                order_by='position',
+                selected_ruleset_id=ruleset_id,
+                mode='bag'
+                ).fetch()
+        return rs
+
+    def getSchemaStore(self, data_registry_id):
+        '''return the record from schema registry'''
+        rs = self.db.table('sm.sd_data_registry').record(data_registry_id).output('bag')
+        return rs
+
+    def getModelRowById(self, model_row_id):
+        rs = self.db.table('sm.sm_model_row').record(model_row_id).output('bag')
+        return rs
+
+    def getModelColById(self, model_col_id):
+        rs = self.db.table('sm.sm_model_col').record(model_col_id).output('bag')
+        return rs
+
+    def applySingleRule(self, operation=None, 
+        srcBag=None, sr=None, sc=None,
+        dstBag=None, dr=None, dc=None):
+        '''apply single rule'''
+        dstBag[dr][dc]=srcBag[sr][sc] + 123

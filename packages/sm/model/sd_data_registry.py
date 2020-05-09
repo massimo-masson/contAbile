@@ -76,10 +76,10 @@ class Table(object):
     def trigger_onInserting(self, record=None):
         self.buildUpStoreBag(record)
 
-    def buildUpStoreBag(self, record=None):
+    def buildUpStoreBag(self, record=None, filler=0):
         '''Make a storage schema based on selected model'''
         current_model = record['sm_model__id']
-        model_storeBag = self.getStoreBagFromModel(current_model)
+        model_storeBag = self.getStoreBagFromModel(current_model, filler)
 
         # i keep the following lines as an example
         # they where the way to update a record to dbms
@@ -91,8 +91,9 @@ class Table(object):
         #         currentRecord['status']='ELABORABILE'
         record['storebag']=model_storeBag
         record['status']='ELABORABILE'
+        return model_storeBag
 
-    def getStoreBagFromModel(self, model):
+    def getStoreBagFromModel(self, model, filler=None):
         current_storeBag = Bag()
         
         # model rows and cols
@@ -113,11 +114,13 @@ class Table(object):
 
         for r in model_rows:
                 i+=1
-                current_storeBag[i]=Bag()
-                current_storeBag[i]['cod']=r['code']
-                current_storeBag[i]['desc']=r['description']
+                # current_storeBag[i]=Bag()
+                # current_storeBag[i]['cod']=r['code']
+                # current_storeBag[i]['desc']=r['description']
+                current_storeBag.setItem(r['code'], Bag())
                 
                 for c in model_cols:
-                        current_storeBag[i][c['code']] = None  #f'{i},{j}'
+                        #current_storeBag[i][c['code']] = filler  #f'{i},{j}'
+                        current_storeBag[r['code']].setItem(c['code'], filler)
         
         return current_storeBag
