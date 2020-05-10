@@ -89,5 +89,5 @@ class Table(object):
                 1: sum value to the existing
                 2: subtract value from the existing
         '''
-        CONST = '0:=0,1:+,2:-'
+        CONST = '0:=,1:+,2:-'
         return CONST

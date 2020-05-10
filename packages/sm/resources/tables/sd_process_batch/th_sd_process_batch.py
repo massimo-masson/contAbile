@@ -74,9 +74,10 @@ class Form(BaseComponent):
                 disabled='^.controller.locked',
                 fire='.action_run_batch')
 
+        # END OF Form
+        
     @public_method
     def runBatch(self, batch_id=None, **kwargs):
-        #print('********run batch***************', batch_id)
         status = self.db.table('sm.sd_process_batch').runBatch(batch_id)
         return status
 

@@ -14,6 +14,8 @@ class View(BaseComponent):
         r.fieldcell('current_user')
         r.fieldcell('ruleset')
         r.fieldcell('schema_source')
+        r.fieldcell('source_storebag')
+        r.fieldcell('previous_storebag')
 
     def th_order(self):
         return 'sd_data_registry__id'
@@ -35,6 +37,8 @@ class Form(BaseComponent):
         fb.field('current_user')
         fb.field('ruleset')
         fb.field('schema_source')
+        fb.field('source_storebag', readonly=True)
+        fb.field('previous_storebag', readonly=True)
 
 
     def th_options(self):

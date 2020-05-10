@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
+import datetime
 from gnr.core.gnrbag import Bag
 
 class Table(object):
@@ -50,10 +51,9 @@ class Table(object):
         # 10.          apply the rule from source to destination
         # 11.       update destination schema record
         # 12.       log activities and previous version schema
-        # 13.   update status
-        # 14.   protect destination schemas? (maybe not...)
+        # 13.   update batch status
 
-        status = 'process_batch starting...'
+        status = ''
 
         # 1. get batch record to work on, in rsbag_batch
         # rsbag is recordset in bag form
@@ -68,9 +68,10 @@ class Table(object):
             # 4. get destination schema from sd_process_entry
             rs_dst_store = self.getSchemaStore(batch_entry['dst_sd_data_registry__id'])
             dst_storeBag = rs_dst_store['storebag']
+            status += '\nprocessing ' + rs_dst_store['code']
 
             # 5. verify that destination is not protected
-            # ***TO DO...
+            # ***TO DO...***
 
             # 6. make a history copy of original storeBag before processing
             bkup_dst_storeBag = dst_storeBag.deepcopy()
@@ -105,6 +106,14 @@ class Table(object):
             # 11. update destination schema
             self.updateDataRegistryStoreBag(rs_dst_store['id'], dst_storeBag)
 
+            # 12. log processing for the destination schema
+            self.logDestSchemaProcessing(rsbag_batch, rule_entry, 
+                                            rs_src_store, rs_dst_store,
+                                            src_storeBag,
+                                            bkup_dst_storeBag)
+        
+        # 13. update status
+        status += '\nprocessed.'
         # END OF runBatch()
         return status
 
@@ -168,6 +177,23 @@ class Table(object):
         # update the storeBag
         with self.db.table('sm.sd_data_registry').recordToUpdate(registry_id) as record:
                 record['storebag']=storeBag
-                record['status']='ELABORATA'
+                record['status']='PROCESSED'
         self.db.commit()
         return record
+
+    def logDestSchemaProcessing(self, batch, rs_ruleset, 
+                                src_recordset, dst_recordset, 
+                                source_storebag, previous_storebag,
+                                **kwargs):
+        record = self.newrecord()
+        record['sd_data_registry__id'] = dst_recordset['id']
+        record['date_elab'] = datetime.datetime.now()
+        record['ruleset'] = 'todo'
+        record['schema_source'] = src_recordset['code']
+        record['current_user'] = 'unused'
+        record['notes'] = 'process batch: ' + batch['code']
+        record['source_storebag'] = source_storebag
+        record['previous_storebag'] = previous_storebag
+        self.db.table('sm.sd_data_registry_log').insert(record)
+        self.db.commit()
+        return
