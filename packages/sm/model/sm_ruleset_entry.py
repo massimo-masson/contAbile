@@ -88,6 +88,8 @@ class Table(object):
                 0: set value to 0
                 1: sum value to the existing
                 2: subtract value from the existing
+                f: formula
+                p: python code
         '''
-        CONST = '0:=,1:+,2:-'
+        CONST = '0:=,1:+,2:-,f:formula,p:python'
         return CONST
