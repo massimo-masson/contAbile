@@ -12,7 +12,9 @@ class View(BaseComponent):
         r.fieldcell('ext_code')
         r.fieldcell('ext_description')
         r.fieldcell('sm_model_row__id')
+        r.fieldcell('@sm_model_row__id.description')
         r.fieldcell('sm_model_col__id')
+        r.fieldcell('@sm_model_col__id.description')
 
     def th_order(self):
         return 'si_bilver_01_model__id'
@@ -27,12 +29,31 @@ class Form(BaseComponent):
     def th_form(self, form):
         pane = form.record
         fb = pane.formbuilder(cols=2, border_spacing='4px')
-        fb.field('si_bilver_01_model__id')
-        fb.field('ext_code')
-        fb.field('ext_description')
-        fb.field('sm_model_row__id')
-        fb.field('sm_model_col__id')
+        fb.field('si_bilver_01_model__id', hasDownArrow=True)
+        fb.field('ext_code', hasDownArrow=True)
+        
+        fb.field('ext_description', hasDownArrow=True,
+                colspan=2, width='100%')
+
+        fb.field('sm_model_row__id', hasDownArrow=True,
+                condition='@sm_model__id.id=:selected_model',
+                condition_selected_model='=.@si_bilver_01_model__id.@sm_model__id.id')
+        fb.field('@sm_model_row__id.description', readonly=True)
+        
+        fb.field('sm_model_col__id', hasDownArrow=True,
+                condition='@sm_model__id.id=:selected_model',
+                condition_selected_model='=.@si_bilver_01_model__id.@sm_model__id.id')
+        fb.field('@sm_model_col__id.description', readonly=True)
 
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
+
+class ViewFromBilVer01Model(View):
+    def th_top_lotrows(self, top):
+        top.bar.replaceSlots('#','#,importer') 
+
+class FormFromBilVer01Model(Form):
+    
+    def th_options(self):
+        return dict(dialog_parentRatio=0.8, modal=False)
