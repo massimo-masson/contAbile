@@ -47,6 +47,7 @@ class Form(BaseComponent):
         cp.dialogTableHandler(relation='@bilver_01_rows',
                  viewResource='ViewFromLot',
                  formResource='FormFromLot',
+                 export=True,
                  margin='2px')
 
     def th_options(self):

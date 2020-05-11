@@ -12,9 +12,16 @@ def config(root,application=None):
     
     # menu schema import
     schema_import = schema.branch('!![it]Importazioni')
+
+    schema_import.thpage('!![it]Da bilancio di verifica', table='sm.si_bilver_01_lot')
     
-    schema_import.thpage('!![it]Bilanci di verifica 01', table='sm.si_bilver_01_lot')
-    schema_import.thpage('!![it]Righe bilanci di verifica 01', table='sm.si_bilver_01_lot_row')
+    # # menu schema import bilver
+    # schema_import_bilver01 = schema_import.branch('!![it]Da Bilancio di verifica')
+
+    # schema_import_bilver01.thpage('!![it]Lotti importazione', 
+    #                 table='sm.si_bilver_01_lot')
+    # schema_import_bilver01.thpage('!![it]Righe lotti', 
+    #                 table='sm.si_bilver_01_lot_row')
 
 
     # menu configurazione
@@ -31,7 +38,7 @@ def config(root,application=None):
     # menu importazioni
     config_import = config.branch('!![it]Importazioni')
     
-    config_import.thpage('!![it]Collegamenti bilver_01',table='sm.si_bilver_01_model')
+    config_import.thpage('!![it]Collegamenti bilancio di verifica',table='sm.si_bilver_01_model')
 
     # menu utilities
     #utilities = contAbile.branch('!![it]Utilities')

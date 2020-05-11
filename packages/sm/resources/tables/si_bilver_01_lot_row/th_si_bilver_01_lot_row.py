@@ -44,7 +44,9 @@ class Form(BaseComponent):
 
 
 class ViewFromLot(View):
-    pass
+    def th_top_lotrows(self, top):
+        #th.view.top.bar.replaceSlots('#','#,importer') 
+        top.bar.replaceSlots('#','#,importer') 
 
 class FormFromLot(Form):
     pass

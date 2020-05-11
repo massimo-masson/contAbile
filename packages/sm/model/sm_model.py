@@ -13,7 +13,8 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_code=tbl.column('code', dtype='A', size=':22', 
+        tbl_code=tbl.column('code', dtype='A', size=':22',
+                unmodifiable=True,
                 name_long='!![it]Codice modello',
                 unique=True, validate_notnull=True, indexed=True)
 

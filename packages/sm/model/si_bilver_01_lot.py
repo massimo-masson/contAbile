@@ -11,7 +11,8 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl.column('lot_code', dtype='A', size=':22', 
+        tbl.column('lot_code', dtype='A', size=':22',
+                unmodifiable=True,
                 name_long='!![it]Codice lotto importazione',
                 unique=True, validate_notnull=True)
 
