@@ -34,7 +34,12 @@ class Form(BaseComponent):
 
         fb = div1.formbuilder(cols=2, border_spacing='4px')
         fb.field('sm_model__id', hasDownArrow=True)
-        fb.field('description')
+        fb.field('description', lbl='')
+
+        fb.field('id', background='lightgreen', readonly=True,
+                lbl='!![it]Codice per importazione'
+                )
+        fb.div('!![it]Utilizzare il codice indicato come colonna chiave per importazione dati.')
 
     def ModelBody(self, pane):
         tc = pane.tabContainer()

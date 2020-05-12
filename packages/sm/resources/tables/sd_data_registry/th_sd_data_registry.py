@@ -128,6 +128,7 @@ class Form(BaseComponent):
             var optsel = confirm("Ricostruzione schema?"); 
             if (optsel == true) {  
                 FIRE .action_recreate_storeBag;
+                window.location.reload(false);
                 }  
             else {  
                 alert("Operazione annullata...");
@@ -147,4 +148,10 @@ class Form(BaseComponent):
 
     @public_method
     def proxyRebuildStoreBag(self, record=None, **kwargs):
-        return self.db.table('sm.sd_data_registry').buildUpStoreBag(record, 0)
+        b = self.db.table('sm.sd_data_registry').buildUpStoreBag(record, 0)
+
+        record['storebag'] = b
+        record['status'] = 'ELABORABILE'
+        self.db.table('sm.sd_data_registry').update(record)
+        self.db.commit()
+        return b

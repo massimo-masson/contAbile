@@ -36,6 +36,9 @@ class Form(BaseComponent):
         fb.field('lot_code')
         fb.field('description')
 
+        fb.div('!![it]Per importazione dati utilizzare nella prima colonna il codice del lotto.',
+                colspan=2, width='100%', background='lightgreen')
+
     def LotBody(self, pane):
         tc = pane.tabContainer()
 
