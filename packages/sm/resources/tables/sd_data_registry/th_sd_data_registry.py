@@ -5,6 +5,7 @@ from gnr.web.gnrbaseclasses import BaseComponent
 from gnr.core.gnrdecorator import public_method
 
 from gnr.core.gnrbag import Bag
+import random
 
 class View(BaseComponent):
 
@@ -106,7 +107,8 @@ class Form(BaseComponent):
         # storebag schema
         sb = tc.contentPane(title='!![it]Schema')
 
-        frame = sb.bagGrid(#frameCode='registry_model',datapath='#FORM.model_dati',
+        frame = sb.bagGrid(#frameCode='registry_model',
+                            datapath='#FORM.model_dati',
                             storepath='#FORM.record.storebag',
                             structpath='#FORM.record.registrystruct')
 
@@ -117,10 +119,29 @@ class Form(BaseComponent):
                  formResource='FormFromDataRegistry',
                  margin='2px')
 
+        # Import data tab
+        imp = tc.contentPane(title='!![it]Importazione dati')
+        self.registryImportPanel(imp)
+
+    def registryImportPanel(self, pane):
+        fb = pane.formbuilder(cols=1, border_spacing='4px', colswidth='auto')
+        fb.div('!![it]Selezionare un lotto di dati da bilancio di verifica e importare')
+        fb.dbselect(value='^.import.lot',
+                    table='sm.si_bilver_01_lot', rowcaption='$lot_code,$description',
+                    lbl='!![it]Lotto da importare',
+                    hasDownArrow=True
+                    )
+        fb.button('!![it]Importazione', width='20em')
+
+
     def registryButtons(self, pane):
         fb = pane.formbuilder(cols=10, border_spacing='4px', align='left')
+        
+        self.registryButtonRicrea(fb)
+        self.registryButtonValoriACaso(fb)
 
-        fb.dataRpc('.reloadSchema', self.proxyRebuildStoreBag, 
+    def registryButtonRicrea(self, pane):
+        pane.dataRpc('.reloadSchema', self.proxyRebuildStoreBag, 
         record='=.record', 
         _fired='^.action_recreate_storeBag')
 
@@ -134,9 +155,23 @@ class Form(BaseComponent):
                 alert("Operazione annullata...");
                 }
             '''
-        fb.button('!![it]Ricrea schema', action=action_ricrea,
+        pane.button('!![it]Ricrea schema', action=action_ricrea,
                 disabled='^.controller.locked')
                 #fire='.action_run_batch')
+
+    def registryButtonValoriACaso(self, pane):
+        pane.dataRpc('.dummy', self.ValoriACaso, 
+        record='=.record',
+        _fired='^.ValoriACaso')
+
+        action_random = '''
+            var optsel = confirm("Riempio con valori a caso?"); 
+            if (optsel == true) {  
+                FIRE .ValoriACaso;
+                }  
+            '''
+        pane.button('!![it]Valori a caso', action=action_random,
+                disabled='^.controller.locked')
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
@@ -155,3 +190,18 @@ class Form(BaseComponent):
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()
         return b
+
+    @public_method
+    def ValoriACaso(self, record=None, **kwargs):
+        for r in record['storebag'].keys():
+            for c in record['storebag'][r].keys():
+                if c=='code':
+                    pass
+                elif c=='description':
+                    pass
+                else:
+                    record['storebag'][r][c] = random.randrange(200, 3000)
+        record['status'] = 'CASUALE'
+        self.db.table('sm.sd_data_registry').update(record)
+        self.db.commit()
+        return
