@@ -125,13 +125,38 @@ class Form(BaseComponent):
 
     def registryImportPanel(self, pane):
         fb = pane.formbuilder(cols=1, border_spacing='4px', colswidth='auto')
-        fb.div('!![it]Selezionare un lotto di dati da bilancio di verifica e importare')
-        fb.dbselect(value='^.import.lot',
-                    table='sm.si_bilver_01_lot', rowcaption='$lot_code,$description',
-                    lbl='!![it]Lotto da importare',
-                    hasDownArrow=True
+        fb.div('!![it]Selezionare un lotto di dati da bilancio di verifica e importare',
+                background_color='lightgreen')
+        fb.div('!![it]Si possono selezionare solo lotti con modello corrispondente \
+                a quello dello schema corrente', background_color='lightgreen'
+                )
+
+        action_runImport = '''
+            var optsel = confirm("Importazione dati lotto nello schema?"); 
+            if (optsel == true) {  
+                FIRE .action_run_import;
+                window.location.reload(false);
+                }  
+            else {  
+                alert("Operazione annullata...");
+                }
+            '''
+        pane.dataRpc('.dummy', self.proxyImportBilVer01_lot, 
+                    record='=.record', 
+                    lot_code='=.import.lot',
+                    _fired='^.action_run_import'
                     )
-        fb.button('!![it]Importazione', width='20em')
+
+        fb.dbselect(value = '^.import.lot',
+                    lbl = '!![it]Lotto da importare',
+                    table = 'sm.si_bilver_01_lot', rowcaption='$lot_code,$description',
+                    condition = '@si_bilver_01_model__id.@sm_model__id.id=:current_model',
+                    condition_current_model = '=.record.@sm_model__id.id',
+                    hasDownArrow = True
+                    )
+
+        fb.button('!![it]Importazione', width='20em', action=action_runImport,
+                disabled='^.controller.locked')
 
 
     def registryButtons(self, pane):
@@ -168,6 +193,7 @@ class Form(BaseComponent):
             var optsel = confirm("Riempio con valori a caso?"); 
             if (optsel == true) {  
                 FIRE .ValoriACaso;
+                window.location.reload(false);
                 }  
             '''
         pane.button('!![it]Valori a caso', action=action_random,
@@ -187,6 +213,19 @@ class Form(BaseComponent):
 
         record['storebag'] = b
         record['status'] = 'ELABORABILE'
+        self.db.table('sm.sd_data_registry').update(record)
+        self.db.commit()
+        return b
+
+    @public_method
+    def proxyImportBilVer01_lot(self, record, lot_code, **kwargs):
+        b = self.db.table('sm.si_bilver_01_lot').import_lot(
+                        record['id'],
+                        lot_code
+                        )
+        #print('storebag ottenuta:', b)
+        record['storebag'] = b
+        record['status'] = 'IMPORTATA'
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()
         return b

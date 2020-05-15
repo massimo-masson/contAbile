@@ -10,6 +10,9 @@ class View(BaseComponent):
         r = struct.view().rows()
         r.fieldcell('lot_code')
         r.fieldcell('description')
+        r.fieldcell('@si_bilver_01_model__id.description', lbl='!![it]Modello import')
+        # r.fieldcell('ref_model')
+        # r.fieldcell('@ref_model.description')
 
     def th_order(self):
         return 'lot_code'
@@ -35,6 +38,12 @@ class Form(BaseComponent):
         fb = div1.formbuilder(cols=2, border_spacing='4px')
         fb.field('lot_code')
         fb.field('description')
+
+        fb.field('si_bilver_01_model__id', hasDownArrow=True)
+        fb.field('@si_bilver_01_model__id.description', enabled=False)
+
+        # fb.field('ref_model', hasDownArrow=True)
+        # fb.field('@ref_model.description', enabled=False)
 
         fb.div('!![it]Per importazione dati utilizzare nella prima colonna il codice del lotto.',
                 colspan=2, width='100%', background='lightgreen')
