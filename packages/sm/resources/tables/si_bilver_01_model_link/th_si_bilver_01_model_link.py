@@ -36,11 +36,15 @@ class Form(BaseComponent):
                 colspan=2, width='100%')
 
         fb.field('sm_model_row__id', hasDownArrow=True,
+                columns='$code,$description',       # colonne su cui si ricerca
+                auxColumns='$code,$description',    # colonne visualizzate
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@si_bilver_01_model__id.@sm_model__id.id')
         fb.field('@sm_model_row__id.description', readonly=True)
         
         fb.field('sm_model_col__id', hasDownArrow=True,
+                columns='$code,$description',
+                auxColumns='$code,$description',
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@si_bilver_01_model__id.@sm_model__id.id')
         fb.field('@sm_model_col__id.description', readonly=True)
