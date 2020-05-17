@@ -135,7 +135,7 @@ class Form(BaseComponent):
             var optsel = confirm("Importazione dati lotto nello schema?"); 
             if (optsel == true) {  
                 FIRE .action_run_import;
-                window.location.reload(false);
+                //window.location.reload(false);
                 }  
             else {  
                 alert("Operazione annullata...");
@@ -150,7 +150,7 @@ class Form(BaseComponent):
         fb.dbselect(value = '^.import.lot',
                     lbl = '!![it]Lotto da importare',
                     table = 'sm.si_bilver_01_lot', rowcaption='$lot_code,$description',
-                    condition = '@si_bilver_01_model__id.@sm_model__id.id=:current_model',
+                    condition = '@si_bilver_01_model__code.@sm_model__id.id=:current_model',
                     condition_current_model = '=.record.@sm_model__id.id',
                     hasDownArrow = True
                     )

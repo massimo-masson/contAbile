@@ -10,7 +10,7 @@ class View(BaseComponent):
         r = struct.view().rows()
         r.fieldcell('lot_code')
         r.fieldcell('description')
-        r.fieldcell('@si_bilver_01_model__id.description', lbl='!![it]Modello import')
+        r.fieldcell('@si_bilver_01_model__code.description', lbl='!![it]Modello import')
         # r.fieldcell('ref_model')
         # r.fieldcell('@ref_model.description')
 
@@ -39,8 +39,8 @@ class Form(BaseComponent):
         fb.field('lot_code')
         fb.field('description')
 
-        fb.field('si_bilver_01_model__id', hasDownArrow=True)
-        fb.field('@si_bilver_01_model__id.description', enabled=False)
+        fb.field('si_bilver_01_model__code', hasDownArrow=True)
+        fb.field('@si_bilver_01_model__code.description', enabled=False)
 
         # fb.field('ref_model', hasDownArrow=True)
         # fb.field('@ref_model.description', enabled=False)

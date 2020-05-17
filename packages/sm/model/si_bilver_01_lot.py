@@ -27,10 +27,10 @@ class Table(object):
         # fk.relation('sm.sm_model.id', relation_name='bilver_01_lot_codes', 
         #             mode='foreignkey', onDelete='raise')
 
-        fk = tbl.column('si_bilver_01_model__id', dtype='A', size=':22',
+        fk = tbl.column('si_bilver_01_model__code', dtype='A', size=':22',
                 name_long='!![it]Modello di importazione',
                 validate_notnull=True)
-        fk.relation('sm.si_bilver_01_model.id', relation_name='bilver_01_import_lots',
+        fk.relation('sm.si_bilver_01_model.code', relation_name='bilver_01_import_lots',
                     mode='foreignkey', onDelete='raise')
 
 
@@ -66,7 +66,7 @@ class Table(object):
         for row in lot_rows.fetch():
             #print('id modello riferimento:', lot['@si_bilver_01_model__id.id'])
             (dst_row, dst_col) = self.import_lot_get_model_ref(
-                                lot['@si_bilver_01_model__id.id'], row['ext_code'])
+                                lot['@si_bilver_01_model__code.code'], row['ext_code'])
             #print(row['ext_code'], row['ext_value'], ' -> ', dst_row, dst_col)
 
             if storebag.has_key(dst_row):
@@ -82,12 +82,12 @@ class Table(object):
         # end of import_lot
         return storebag
 
-    def import_lot_get_model_ref(self, model_id, ext_code):
+    def import_lot_get_model_ref(self, model_code, ext_code):
         # return storebag row and col for ext_code in si_bilver_01_lot
         qry = self.db.table('sm.si_bilver_01_model_link').query(
                     columns = '@sm_model_row__id.code AS rcode,@sm_model_col__id.code AS ccode',
-                    where = '$si_bilver_01_model__id=:par_model_id AND $ext_code=:par_ext_code',
-                    par_model_id = model_id,
+                    where = '$si_bilver_01_model__code=:par_model_code AND $ext_code=:par_ext_code',
+                    par_model_code = model_code,
                     par_ext_code = ext_code
                     )
         rs = qry.fetch()

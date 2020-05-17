@@ -10,11 +10,17 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        fk = tbl.column('si_bilver_01_model__id', dtype='A', size=':22', 
-                name_long='!![it]Modello di riferimento',
+        fk = tbl.column('si_bilver_01_model__code', dtype='A', size=':22', 
+                name_long='!![it]Modello di impostazione',
                 validate_notnull=True)
-        fk.relation('sm.si_bilver_01_model.id', relation_name='bilver_01_links', 
+        fk.relation('sm.si_bilver_01_model.code', relation_name='bilver_01_links', 
                     mode='foreignkey', onDelete='raise')
+
+        # fk = tbl.column('si_bilver_01_model__id', dtype='A', size=':22', 
+        #         name_long='!![it]Modello di riferimento',
+        #         validate_notnull=True)
+        # fk.relation('sm.si_bilver_01_model.id', relation_name='bilver_01_links', 
+        #             mode='foreignkey', onDelete='raise')
 
         tbl.column('ext_code', dtype='A', size=':22', 
                 name_long='!![it]Codice esterno riga',

@@ -8,14 +8,15 @@ class View(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('sm_model__id')
+        r.fieldcell('code')
         r.fieldcell('description')
+        r.fieldcell('sm_model__id')
 
     def th_order(self):
-        return 'sm_model__id'
+        return 'code'
 
     def th_query(self):
-        return dict(column='sm_model__id', op='contains', val='', runOnStart=True)
+        return dict(column='code', op='contains', val='', runOnStart=True)
 
 
 
@@ -33,10 +34,14 @@ class Form(BaseComponent):
                         rounded=5, shadow='4px 4px 8px #666')
 
         fb = div1.formbuilder(cols=2, border_spacing='4px')
-        fb.field('sm_model__id', hasDownArrow=True)
-        fb.field('description', lbl='')
 
-        fb.field('id', background='lightgreen', readonly=True,
+        fb.field('code')
+        fb.field('description')
+
+        fb.field('sm_model__id', hasDownArrow=True)
+        fb.field('@sm_model__id.description')
+
+        fb.field('code', background='lightgreen', readonly=True,
                 lbl='!![it]Codice per importazione'
                 )
         fb.div('!![it]Utilizzare il codice indicato come colonna chiave per importazione dati.')

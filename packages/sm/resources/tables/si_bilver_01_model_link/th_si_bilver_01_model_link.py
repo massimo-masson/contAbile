@@ -8,7 +8,8 @@ class View(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
-        r.fieldcell('si_bilver_01_model__id')
+        r.fieldcell('si_bilver_01_model__code')
+        #r.fieldcell('si_bilver_01_model__id')
         r.fieldcell('ext_code')
         r.fieldcell('ext_description')
         r.fieldcell('sm_model_row__id')
@@ -17,10 +18,10 @@ class View(BaseComponent):
         r.fieldcell('@sm_model_col__id.description')
 
     def th_order(self):
-        return 'si_bilver_01_model__id'
+        return 'si_bilver_01_model__code'
 
     def th_query(self):
-        return dict(column='si_bilver_01_model__id', op='contains', val='')
+        return dict(column='si_bilver_01_model__code', op='contains', val='')
 
 
 
@@ -29,7 +30,7 @@ class Form(BaseComponent):
     def th_form(self, form):
         pane = form.record
         fb = pane.formbuilder(cols=2, border_spacing='4px')
-        fb.field('si_bilver_01_model__id', hasDownArrow=True)
+        fb.field('si_bilver_01_model__code', hasDownArrow=True)
         fb.field('ext_code', hasDownArrow=True)
         
         fb.field('ext_description', hasDownArrow=True,
@@ -39,14 +40,16 @@ class Form(BaseComponent):
                 columns='$code,$description',       # colonne su cui si ricerca
                 auxColumns='$code,$description',    # colonne visualizzate
                 condition='@sm_model__id.id=:selected_model',
-                condition_selected_model='=.@si_bilver_01_model__id.@sm_model__id.id')
+                condition_selected_model='=.@si_bilver_01_model__code.@sm_model__id.id'
+                )
         fb.field('@sm_model_row__id.description', readonly=True)
         
         fb.field('sm_model_col__id', hasDownArrow=True,
                 columns='$code,$description',
                 auxColumns='$code,$description',
                 condition='@sm_model__id.id=:selected_model',
-                condition_selected_model='=.@si_bilver_01_model__id.@sm_model__id.id')
+                condition_selected_model='=.@si_bilver_01_model__code.@sm_model__id.id'
+                )
         fb.field('@sm_model_col__id.description', readonly=True)
 
 
