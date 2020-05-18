@@ -11,10 +11,10 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_code=tbl.column('code', dtype='A', size=':22', 
+        tbl.column('code', dtype='A', size=':22', 
                 name_long='!![it]Codice tipo riga',
                 unique=True, validate_notnull=True, indexed=True)
 
-        tbl_description=tbl.column('description', dtype='A', size=':256',
+        tbl.column('description', dtype='A', size=':256',
                 name_long='!![it]Descrizione tipo riga', 
                 validate_notnull=True)

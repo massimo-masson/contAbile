@@ -11,22 +11,22 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_code=tbl.column('code', dtype='A', size=':22', 
+        tbl.column('code', dtype='A', size=':22', 
                 name_long='!![it]Colonna modello',
                 unique=True, validate_notnull=True, indexed=True)
 
-        tbl_description=tbl.column('description', dtype='A', size=':256', 
+        tbl.column('description', dtype='A', size=':256', 
                 name_long='!![it]Descrizione colonna', 
                 validate_notnull=True)
 
         # TODO: da sistemare la gestione del tipo di campo
-        tbl_field_type=tbl.column('field_type', dtype='A', size=':22', 
+        tbl.column('field_type', dtype='A', size=':22', 
                 name_long='!![it]tipo campo')
 
-        tbl_position=tbl.column('position', dtype='N', 
+        tbl.column('position', dtype='N', 
                 name_long='!![it]posizione colonna')
 
-        tbl_notes=tbl.column('notes', dtype='A', size=':1024', 
+        tbl.column('notes', dtype='A', size=':1024', 
                 name_long='!![it]Note')
 
         # sm_anagrafica: foreign key to sm_anagrafica
