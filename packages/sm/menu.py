@@ -34,7 +34,7 @@ def config(root,application=None):
     config.thpage('!![it]Modelli', table='sm.sm_model')
     config.thpage('!![it]Regole elaborazione', table='sm.sm_ruleset')
     #config.thpage('!![it]Ruleset entry', table='sm.sm_ruleset_entry')
-    config.thpage('!![it]Tipi riga',table='sm.sm_row_type')
+    #config.thpage('!![it]Tipi riga',table='sm.sm_row_type')
     config.thpage('!![it]Classificazione parametri',table='sm.sm_parameter_class')
 
     # menu importazioni

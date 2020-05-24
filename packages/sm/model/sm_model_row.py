@@ -21,20 +21,13 @@ class Table(object):
 
         # TODO: tipo riga indica la modalita' di visualizzazione del dato
         # nelle colonne. Penso ai seguenti tipi:
-        # descrittiva: marcatore di riga, nessun valore nelle colonne
-        # dati: il dato visualizzato nella cella della colonna va recuperato
+        # desc = descrittiva: marcatore di riga, nessun valore nelle colonne
+        # data = dati: il dato visualizzato nella cella della colonna va recuperato
         #       dalla tabella dati
-        # calcolata: il dato visualizzato deriva da un calcolo
-        #tbl_tipo_riga=tbl.column('tipo_riga', dtype='A', size=':64', 
-        #        name_long='!![it]Tipo riga')
-
-        # sm_tipo_riga: foreign key to sm_riga_tipo
-        tbl_row_type__id=tbl.column('sm_row_type__id', dtype='A', size='22',
+        # formula = calcolata: il dato visualizzato deriva da una formula
+        tbl.column('row_type', dtype='A', size=':22',
                 name_long='!![it]Tipo riga',
                 validate_notnull=True)
-        tbl_row_type__id.relation('sm.sm_row_type.id', mode='foreignkey',
-                relation_name='rows',
-                onDelete='raise')
 
         tbl_position=tbl.column('position', dtype='N', 
                 name_long='!![it]Posizione riga')
@@ -49,3 +42,13 @@ class Table(object):
         tbl_sm_model__id.relation('sm.sm_model.id', mode='foreignkey',
                 relation_name='rows',
                 onDelete='raise')
+
+    def CONST_row_type(self):
+        '''Return the constant values for the "row_type" field.
+            In reference to the value of the destination cell:
+            desc: description
+            data: data
+            formula: formula
+        '''
+        CONST = 'data:Dati,desc:Descrizione,formula:Formula'
+        return CONST

@@ -10,7 +10,7 @@ class View(BaseComponent):
         r = struct.view().rows()
         r.fieldcell('code')
         r.fieldcell('description')
-        r.fieldcell('sm_row_type__id')
+        r.fieldcell('row_type')
         r.fieldcell('position')
         r.fieldcell('notes')
         r.fieldcell('sm_model__id')
@@ -28,7 +28,9 @@ class ViewFromModel(BaseComponent):
         r.fieldcell('code', edit=True)
         r.fieldcell('description', edit=True)
         r.fieldcell('position', edit=True)
-        r.fieldcell('sm_row_type__id', edit=True)
+        valori = self.db.table('sm.sm_model_row').CONST_row_type()
+        #r.fieldcell('row_type', tag='filteringSelect', values=valori, edit=True)
+        r.fieldcell('row_type', edit=dict(tag='filteringSelect', values=valori, edit=True))
         r.fieldcell('notes', edit=True)
         r.fieldcell('sm_model__id', edit=True)
 
@@ -44,10 +46,14 @@ class Form(BaseComponent):
     def th_form(self, form):
         pane = form.record
         fb = pane.formbuilder(cols=2, border_spacing='4px')
+
         fb.field('code')
         fb.field('description')
+
         fb.field('position')
-        fb.field('sm_row_type__id')
+        valori = self.db.table('sm.sm_model_row').CONST_row_type()
+        fb.field('row_type', tag='filteringSelect', values=valori)
+
         fb.field('notes')
         fb.field('sm_model__id')
 
