@@ -12,6 +12,8 @@ class View(BaseComponent):
         r.fieldcell('description')
         r.fieldcell('notes')
         r.fieldcell('sm_category__id')
+        r.fieldcell('dynamic_rows')
+        r.fieldcell('dynamic_cols')
 
     def th_order(self):
         return 'code'
@@ -38,11 +40,19 @@ class Form(BaseComponent):
 
     def anagraficaInfo(self, pane):
         fb = pane.formbuilder(cols=4, border_spacing='4px')
+
         fb.field('code')
         fb.field('description')
         fb.field('sm_category__id', hasDownArrow=True)
         fb.field('@sm_category__id.description', readonly=True,
             lbl=':', lbl_color='darkblue', fld_background='lightgrey')
+
+        fb.field('dynamic_rows')
+        fb.field('dynamic_cols')
+        fb.div(lbl='!![it]Se spuntati, diventa possibile usare righe e colonne non \
+            predefinite nello schema.', 
+            colspan=2, width='100%')
+
         fb.field('notes', colspan=4, width='100%', 
             tag='simpleTextArea', height='10ex')
 

@@ -13,16 +13,16 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_code=tbl.column('code', dtype='A', size=':22',
+        tbl.column('code', dtype='A', size=':22',
                 unmodifiable=True,
                 name_long='!![it]Codice modello',
                 unique=True, validate_notnull=True, indexed=True)
 
-        tbl_description=tbl.column('description', dtype='A', size=':256', 
+        tbl.column('description', dtype='A', size=':256', 
                 name_long='!![it]Descrizione modello', 
                 validate_notnull=True)
 
-        tbl_notes=tbl.column('notes', dtype='A', size=':1024', 
+        tbl.column('notes', dtype='A', size=':1024', 
                 name_long='!![it]Note')
 
         # foreign key to sm_category
@@ -32,6 +32,14 @@ class Table(object):
         tbl_category__id.relation('sm.sm_category.id', mode='foreignkey',
                 relation_name='models',
                 onDelete='raise')
+
+        tbl.column('dynamic_rows', dtype='B', default=False, 
+                name_long='!![it]Righe dinamiche', 
+                name_short='!![it]Righe dinamiche')
+
+        tbl.column('dynamic_cols', dtype='B', default=False, 
+                name_long='!![it]Colonne dinamiche', 
+                name_short='!![it]Colonne dinamiche')
 
     def getStructBagFromModel(self, model):
         structBag = Bag()
