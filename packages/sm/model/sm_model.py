@@ -41,6 +41,7 @@ class Table(object):
                 name_long='!![it]Colonne dinamiche', 
                 name_short='!![it]Colonne dinamiche')
 
+    
     def getStructBagFromModel(self, model):
         structBag = Bag()
         

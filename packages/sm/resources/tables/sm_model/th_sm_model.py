@@ -34,9 +34,7 @@ class Form(BaseComponent):
     def th_form(self, form):
         bc = form.center.borderContainer()
         self.anagraficaInfo(bc.contentPane(region='top', datapath='.record'))
-        self.anagraficaRows(bc.contentPane(region='left', width='50%'))
-        self.anagraficaCols(bc.contentPane(region='right', width='50%'))
-        
+        self.anagraficaBody(bc.contentPane(region='center'))        
 
     def anagraficaInfo(self, pane):
         fb = pane.formbuilder(cols=4, border_spacing='4px')
@@ -56,19 +54,32 @@ class Form(BaseComponent):
         fb.field('notes', colspan=4, width='100%', 
             tag='simpleTextArea', height='10ex')
 
-    def anagraficaRows(self, pane):
-        pane.inlineTableHandler(relation='@rows',
+    def anagraficaBody(self, pane):
+        tc = pane.tabContainer()
+
+        # tab rows
+        tab_rows = tc.contentPane(title='!![it]Righe')
+        tab_rows.inlineTableHandler(relation='@rows',
                 pbl_classes=True,
                 viewResource='ViewFromModel',
                 grid_selfDragRows=True,
                 margin='2px',
                 searchOn=True)
 
-    def anagraficaCols(self, pane):
-        pane.inlineTableHandler(relation='@columns',
+        # tab cols
+        tab_cols = tc.contentPane(title='!![it]Colonne')
+        tab_cols.inlineTableHandler(relation='@columns',
                 pbl_classes=True,
                 viewResource='ViewFromModel',
                 grid_selfDragRows=True,
+                margin='2px',
+                searchOn=True)
+
+        # tab formula
+        tab_formula = tc.contentPane(title='!![it]Formule modello')
+        tab_formula.dialogTableHandler(relation='@model_formula',
+                viewResource='ViewFromModel',
+                formResource='FormFromModel',
                 margin='2px',
                 searchOn=True)
 

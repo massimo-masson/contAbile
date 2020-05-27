@@ -11,11 +11,11 @@ class Table(object):
 
         self.sysFields(tbl)
 
-        tbl_code=tbl.column('code', dtype='A', size=':22', 
+        tbl.column('code', dtype='A', size=':22', 
                 name_long='!![it]Riga modello',
                 unique=True, validate_notnull=True, indexed=True)
 
-        tbl_description=tbl.column('description', dtype='A', size=':256', 
+        tbl.column('description', dtype='A', size=':256', 
                 name_long='!![it]Descrizione riga', 
                 validate_notnull=True)
 
@@ -29,10 +29,14 @@ class Table(object):
                 name_long='!![it]Tipo riga',
                 validate_notnull=True)
 
-        tbl_position=tbl.column('position', dtype='N', 
+        # tbl.column('row_formula', size=':1024', 
+        #         name_long='!![it]Formula riga', 
+        #         name_short='!![it]Formula')
+                
+        tbl.column('position', dtype='N', 
                 name_long='!![it]Posizione riga')
 
-        tbl_notes=tbl.column('notes', dtype='A', size=':1024', 
+        tbl.column('notes', dtype='A', size=':1024', 
                 name_long='!![it]Note')
 
         # sm_anagrafica: foreign key to sm_anagrafica
@@ -42,6 +46,7 @@ class Table(object):
         tbl_sm_model__id.relation('sm.sm_model.id', mode='foreignkey',
                 relation_name='rows',
                 onDelete='raise')
+
 
     def CONST_row_type(self):
         '''Return the constant values for the "row_type" field.

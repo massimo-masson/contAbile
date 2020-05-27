@@ -25,12 +25,12 @@ class ViewFromModel(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
+        r.fieldcell('position', edit=True)
         r.fieldcell('code', edit=True)
         r.fieldcell('description', edit=True)
-        r.fieldcell('position', edit=True)
         valori = self.db.table('sm.sm_model_row').CONST_row_type()
-        #r.fieldcell('row_type', tag='filteringSelect', values=valori, edit=True)
         r.fieldcell('row_type', edit=dict(tag='filteringSelect', values=valori, edit=True))
+        # r.fieldcell('row_formula', edit='$row_type=:f', f='formula')
         r.fieldcell('notes', edit=True)
         r.fieldcell('sm_model__id', edit=True)
 
@@ -56,6 +56,8 @@ class Form(BaseComponent):
 
         fb.field('notes')
         fb.field('sm_model__id')
+
+        # fb.field('row_formula', colspan=2, width='100%')
 
 
     def th_options(self):

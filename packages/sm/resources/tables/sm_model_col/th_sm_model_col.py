@@ -25,10 +25,10 @@ class ViewFromModel(BaseComponent):
 
     def th_struct(self,struct):
         r = struct.view().rows()
+        r.fieldcell('position', edit=True)
         r.fieldcell('code', edit=True)
         r.fieldcell('description', edit=True)
         r.fieldcell('field_type', edit=True)
-        r.fieldcell('position', edit=True)
         r.fieldcell('notes', edit=True)
 
     def th_order(self):
