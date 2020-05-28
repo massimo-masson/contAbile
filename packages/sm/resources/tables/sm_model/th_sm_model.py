@@ -76,7 +76,7 @@ class Form(BaseComponent):
                 searchOn=True)
 
         # tab formula
-        tab_formula = tc.contentPane(title='!![it]Formule modello')
+        tab_formula = tc.contentPane(title='!![it]Formule')
         tab_formula.dialogTableHandler(relation='@model_formula',
                 viewResource='ViewFromModel',
                 formResource='FormFromModel',

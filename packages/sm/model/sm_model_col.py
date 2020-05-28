@@ -36,3 +36,10 @@ class Table(object):
         tbl_sm_model__id.relation('sm.sm_model.id', mode='foreignkey',
                 relation_name='columns',
                 onDelete='raise')
+
+    def trigger_onInserted(self, record = None):
+        self.db.table('sm.sm_model').formulasInsertOrUpdate(record['sm_model__id'])
+
+    def trigger_onUpdated(self, record = None, old_record = None):
+        self.db.table('sm.sm_model').formulasInsertOrUpdate(record['sm_model__id'])
+

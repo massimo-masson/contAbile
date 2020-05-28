@@ -10,33 +10,33 @@ class Table(object):
 
         batch of elaborations from schema to schema
         '''
-        tbl = pkg.table('sd_process_batch', pkey='id', 
-                name_long='!![it]Lotto elaborazioni',
-                name_plural='!![it]Lotti elaborazioni',
-                caption_field='code_description')
+        tbl = pkg.table('sd_process_batch', pkey = 'id', 
+                name_long = '!![it]Lotto elaborazioni',
+                name_plural = '!![it]Lotti elaborazioni',
+                caption_field = 'code_description')
 
         self.sysFields(tbl)
 
-        tbl.column('code', dtype='A', size=':22',
-                unmodifiable=True,      # can set code only on new record
-                name_long='!![it]Codice lotto',
-                unique=True, validate_notnull=True)
+        tbl.column('code', dtype = 'A', size = ':22',
+                unmodifiable = True,      # can set code only on new record
+                name_long = '!![it]Codice lotto',
+                unique = True, validate_notnull = True)
         
-        tbl.column('description', dtype='A', size=':256', 
-                name_long='!![it]Descrizione schema')
+        tbl.column('description', dtype = 'A', size = ':256', 
+                name_long = '!![it]Descrizione schema')
 
         tbl.formulaColumn('code_description', 
-                '"("||$code||") - "||$description', name_long='!![it]Lotti')
+                '"("||$code||") - "||$description', name_long = '!![it]Lotti')
         
-        tbl.column('notes', dtype='A', size=':1024', 
-                name_long='!![it]Note')
+        tbl.column('notes', dtype = 'A', size = ':1024', 
+                name_long = '!![it]Note')
 
-        tbl.column('date_ref_period', dtype='A', size=':22',
-                name_long='!![it]Periodo di riferimento')
+        tbl.column('date_ref_period', dtype = 'A', size = ':22',
+                name_long = '!![it]Periodo di riferimento')
 
-    def runBatch(self, batch_id=None):
+    def runBatch(self, batch_id = None):
         '''Run the process entries on specified schema'''
-        if batch_id==None:
+        if batch_id == None:
             print("No process batch to run")
         
         # 1.    get the batch from sd_process_batch, based on batch_id
@@ -126,22 +126,22 @@ class Table(object):
     def getBatchEntriesList(self, batch_id):
         '''returns the ordered list of entries for the given process_batch'''
         rs = self.db.table('sm.sd_process_entry').query(
-                columns='*',
-                where='$sd_process_batch__id = :selected_batch_id',
-                order_by='position',
-                selected_batch_id=batch_id,
-                mode='bag'
+                columns = '*',
+                where = '$sd_process_batch__id = :selected_batch_id',
+                order_by = 'position',
+                selected_batch_id = batch_id,
+                mode = 'bag'
                 ).fetch()
         return rs
 
     def getRulesetEntriesList(self, ruleset_id):
         '''returns the ordered list of entries for the give ruleset'''
         rs = self.db.table('sm.sm_ruleset_entry').query(
-                columns='*',
-                where='$sm_ruleset__id = :selected_ruleset_id',
-                order_by='position',
-                selected_ruleset_id=ruleset_id,
-                mode='bag'
+                columns = '*',
+                where = '$sm_ruleset__id = :selected_ruleset_id',
+                order_by = 'position',
+                selected_ruleset_id = ruleset_id,
+                mode = 'bag'
                 ).fetch()
         return rs
 
@@ -158,16 +158,16 @@ class Table(object):
         rs = self.db.table('sm.sm_model_col').record(model_col_id).output('bag')
         return rs
 
-    def applySingleRule(self, operation=None, 
-            srcBag=None, sr=None, sc=None,
-            dstBag=None, dr=None, dc=None):
-        if operation=='0':
+    def applySingleRule(self, operation = None, 
+            srcBag = None, sr = None, sc = None,
+            dstBag = None, dr = None, dc = None):
+        if operation == '0':
             # set value
             dstBag[dr][dc] = srcBag[sr][sc]
-        elif operation=='1':
+        elif operation == '1':
             # sum
             dstBag[dr][dc] = dstBag[dr][dc] + srcBag[sr][sc]
-        elif operation=='2':
+        elif operation == '2':
             # subtraction
             dstBag[dr][dc] = dstBag[dr][dc] - srcBag[sr][sc]
         else:
@@ -176,8 +176,8 @@ class Table(object):
     def updateDataRegistryStoreBag(self, registry_id, storeBag):
         # update the storeBag
         with self.db.table('sm.sd_data_registry').recordToUpdate(registry_id) as record:
-                record['storebag']=storeBag
-                record['status']='PROCESSED'
+                record['storebag'] = storeBag
+                record['status'] = 'PROCESSED'
         self.db.commit()
         return record
 

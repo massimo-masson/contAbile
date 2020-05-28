@@ -32,10 +32,17 @@ class Form(BaseComponent):
         fb.field('sm_model__id', hasDownArrow=True)
         fb.field('@sm_model__id.description', readonly=True)
 
-        fb.field('sm_model_row__id', hasDownArrow=True)
+        fb.field('sm_model_row__id', hasDownArrow=True,
+            condition='@sm_model__id.id=:modello AND $row_type=:formula',
+            condition_modello='=.@sm_model__id.id',
+            condition_formula='formula'
+            )
         fb.field('@sm_model_row__id.description', readonly=True)
 
-        fb.field('sm_model_col__id', hasDownArrow=True)
+        fb.field('sm_model_col__id', hasDownArrow=True,
+            condition='@sm_model__id.id=:modello',
+            condition_modello='=.@sm_model__id.id'
+            )
         fb.field('@sm_model_col__id.description', readonly=True)
 
         fb.field('description', colspan=2, width='100%')
@@ -58,4 +65,6 @@ class ViewFromModel(View):
         r.fieldcell('description', edit=True)
 
 class FormFromModel(Form):
-    pass
+
+    def th_options(self):
+        return dict(dialog_parentRatio=0.8, modal=False)
