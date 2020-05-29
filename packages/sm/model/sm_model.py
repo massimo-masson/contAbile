@@ -43,6 +43,10 @@ class Table(object):
 
         # END OF config_db
 
+    def formulasSyncronize(self, model_id=None):
+        self.formulasInsertOrUpdate(model_id)
+        self.formulasDelete(model_id)
+
     def formulasInsertOrUpdate(self, model_id = None):
         if model_id == None:
             return
@@ -103,6 +107,45 @@ class Table(object):
                     pass
 
         # END OF formulasInsertOrUpdate
+
+    def formulasDelete(self, model_id = None):
+        # cycle on every formula, look for presence in model
+        rs_formulas = self.db.table('sm.sm_model_formula').query(
+            columns = '$id, @sm_model_row__id.code AS rowcode, \
+                @sm_model_col__id.code AS colcode',
+            where = '@sm_model__id.id = :current_model',
+            current_model = model_id
+        ).selection()
+
+        found_one = False
+
+        for f in rs_formulas:
+
+            # does the row exists?
+            rs_r = self.db.table('sm.sm_model_row').query(
+                columns = '$id, $code',
+                where = '$code = :frow AND $row_type = :formula',
+                frow = f['rowcode'],
+                formula = 'formula'
+            ).fetch()
+
+            # does the column exists?
+            rs_c = self.db.table('sm.sm_model_col').query(
+                columns = '$id, $code',
+                where = '$code = :fcol',
+                fcol = f['colcode']
+            ).fetch()
+
+            # if both row and column doesn't exists, delete formula row
+            if (len(rs_r) == 0) or (len(rs_c) == 0):
+                self.db.table('sm.sm_model_formula').delete(f['id'])
+                found_one = True
+
+        # if something was found, commit...
+        if found_one:
+            self.db.commit()
+
+        # END OF formulasDelete
 
     def getStructBagFromModel(self, model):
         structBag = Bag()

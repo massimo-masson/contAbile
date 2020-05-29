@@ -38,8 +38,10 @@ class Table(object):
                 onDelete='raise')
 
     def trigger_onInserted(self, record = None):
-        self.db.table('sm.sm_model').formulasInsertOrUpdate(record['sm_model__id'])
+        self.db.table('sm.sm_model').formulasSyncronize(record['sm_model__id'])
 
     def trigger_onUpdated(self, record = None, old_record = None):
-        self.db.table('sm.sm_model').formulasInsertOrUpdate(record['sm_model__id'])
+        self.db.table('sm.sm_model').formulasSyncronize(record['sm_model__id'])
 
+    def trigger_onDeleted(self, record = None):
+        self.db.table('sm.sm_model').formulasSyncronize(record['sm_model__id'])
