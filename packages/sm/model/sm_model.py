@@ -41,7 +41,16 @@ class Table(object):
                 name_long = '!![it]Colonne dinamiche', 
                 name_short = '!![it]Colonne dinamiche')
 
+        tbl.column('progressive_version', dtype='N', default = 1,
+                name_long = '!![it]Progressivo versione interna',
+                name_short = '!![it]int.vers.'
+                )
+
         # END OF config_db
+
+    def trigger_onUpdating(self, record = None, old_record = None):
+        last = old_record['progressive_version'] or 1
+        record['progressive_version'] = last + 1
 
     def formulasSyncronize(self, model_id=None):
         self.formulasInsertOrUpdate(model_id)
