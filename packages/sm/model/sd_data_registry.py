@@ -78,8 +78,8 @@ class Table(object):
 
     def buildUpStoreBag(self, record=None, filler=0):
         '''Make a storage schema based on selected model'''
-        current_model = record['sm_model__id']
-        model_storeBag = self.getStoreBagFromModel(current_model, filler)
+        current_model_id = record['sm_model__id']
+        model_storeBag = self.getStoreBagFromModel(current_model_id, filler)
 
         # i keep the following lines as an example
         # they where the way to update a record to dbms
@@ -89,11 +89,93 @@ class Table(object):
         # with self.recordToUpdate(record['id']) as currentRecord:
         #         currentRecord['storebag']=current_storeBag
         #         currentRecord['status']='ELABORABILE'
-        record['storebag']=model_storeBag
-        record['status']='ELABORABILE'
+        record['storebag'] = model_storeBag
+        record['status'] = 'ELABORABILE'
         return model_storeBag
 
-    def getStoreBagFromModel(self, model, filler=None):
+
+    def setStoreBagCellValue(self, storebag, row, col, value):
+        '''can write only in "data" items'''
+        if storebag.getAttr(row, 'row_type') == 'data':
+            storebag[row][col] = value
+        # end of setStoreBagCellValue
+
+    def setStoreBagFormula(self, storebag, row, col, formula = None):
+        '''set cell to formula. If None, get from model's formula'''
+        # if formula == None use model's formula
+        if storebag.getAttr(row, 'row_type') == 'formula':
+            if formula == None:
+                # get the formula from model
+                ####### TO DO ############
+                set_formula = 'miaFormula'
+            else:
+                set_formula = formula
+
+            storebag[row][col] = set_formula
+        # end of setStoreBagFormula
+
+    def getStoreBagFromModel(self, model_id, filler=None):
+        current_storeBag = Bag()
+
+        model = self.db.table('sm.sm_model').record(model_id).output('bag')
+
+        # model rows and cols
+        row_columns = '$code, $description,$row_type,'
+        model_rows = self.db.table('sm.sm_model_row').query(
+                columns = row_columns,
+                where = '$sm_model__id=:model__id',
+                model__id = model_id,
+                order_by = '$position'
+                ).fetch()
+
+        col_columns = '$code, $description,$field_type'
+        model_cols = self.db.table('sm.sm_model_col').query(
+                columns = col_columns,
+                where = '$sm_model__id=:model__id',
+                model__id = model_id,
+                order_by = '$position'
+                ).fetch()
+
+        for r in model_rows:
+            current_storeBag.setItem(r['code'], Bag())
+            current_storeBag.setAttr(r['code'], row_type = r['row_type'])
+            current_storeBag.setAttr(r['code'], 
+                             progressive_version = model['progressive_version'])
+
+            # first 2 columns, fixed: 'code', 'description'
+            current_storeBag[r['code']].setItem('code', r['code'])
+            current_storeBag[r['code']].setItem('description', r['description'])
+
+            for c in model_cols:
+                current_storeBag[r['code']].setItem(c['code'], '')
+                current_storeBag[r['code']].setAttr(c['code'], field_type = c['field_type'])
+                # data, formula or description?
+                if (r['row_type'] == 'desc'):
+                    # description
+                    pass
+                elif (r['row_type'] == 'formula'):
+                    # formula
+                    self.setStoreBagFormula(current_storeBag, 
+                                        r['code'],
+                                        c['code']#,
+                                        #'formula'
+                                        )
+
+                    ###########  TO DO ##############
+                    
+                elif (r['row_type'] == 'data'):
+                    # data
+                    self.setStoreBagCellValue(current_storeBag, 
+                                        r['code'],
+                                        c['code'],
+                                        filler)
+                else:
+                    # what else?
+                    print("ERRORE TIPO:", r['code'], c['code'])
+    
+        return current_storeBag
+
+    def OLDgetStoreBagFromModel(self, model, filler=None):
         current_storeBag = Bag()
         
         # model rows and cols
