@@ -164,6 +164,7 @@ class Form(BaseComponent):
         
         self.registryButtonRicrea(fb)
         self.registryButtonValoriACaso(fb)
+        self.registryButtonStampaBag(fb)
 
     def registryButtonRicrea(self, pane):
         pane.dataRpc('.reloadSchema', self.proxyRebuildStoreBag, 
@@ -197,6 +198,20 @@ class Form(BaseComponent):
                 }  
             '''
         pane.button('!![it]Valori a caso', action=action_random,
+                disabled='^.controller.locked')
+
+    def registryButtonStampaBag(self, pane):
+        pane.dataRpc('.dummy', self.StampaBag,
+        record='=.record',
+        _fired='^.StampaBag')
+
+        action_StampaBag = '''
+            var optsel = confirm("Stampo Bag?"); 
+            if (optsel == true) {  
+                FIRE .StampaBag;
+                }  
+            '''
+        pane.button('!![it]Stampa Bag', action=action_StampaBag,
                 disabled='^.controller.locked')
 
     def th_options(self):
@@ -239,8 +254,15 @@ class Form(BaseComponent):
                 elif c=='description':
                     pass
                 else:
-                    record['storebag'][r][c] = random.randrange(200, 3000)
+                    #record['storebag'][r][c] = random.randrange(200, 3000)
+                    v  = random.randrange(200, 3000)
+                    self.db.table('sm.sd_data_registry')\
+                        .setStoreBagCellValue(record['storebag'], r, c, v)        
         record['status'] = 'CASUALE'
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()
         return
+
+    @public_method
+    def StampaBag(self, record=None, **kwargs):
+        print(record['storebag'])

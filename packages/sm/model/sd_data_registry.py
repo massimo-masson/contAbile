@@ -93,25 +93,57 @@ class Table(object):
         record['status'] = 'ELABORABILE'
         return model_storeBag
 
-
+    def getFormulaFromModel(self, model_id, row, col):
+        #f = self.db.table('sm.sm_model').record(model_id).output('bag')
+        formula = None
+        rs = self.db.table('sm.sm_model_formula').query(
+                columns = '$formula',
+                where = '$sm_model__id=:model__id',
+                model__id = model_id
+                ).fetch()
+        for r in rs:
+            formula = r['formula']
+        return formula
+        
     def setStoreBagCellValue(self, storebag, row, col, value):
         '''can write only in "data" items'''
+
         if storebag.getAttr(row, 'row_type') == 'data':
             storebag[row][col] = value
-        # end of setStoreBagCellValue
 
-    def setStoreBagFormula(self, storebag, row, col, formula = None):
-        '''set cell to formula. If None, get from model's formula'''
-        # if formula == None use model's formula
+    def setStoreBagFormula(self, model_id, storebag, row, col, formula = None):
+        '''set cell to formula. If formula is None, get from model's formula'''
+
         if storebag.getAttr(row, 'row_type') == 'formula':
             if formula == None:
                 # get the formula from model
-                ####### TO DO ############
-                set_formula = 'miaFormula'
+                model_formula = self.getFormulaFromModel(model_id, row, col)
+                bagFormula = self.db.table('sm.sm_model_formula').modelFormulaToBagFormula( \
+                    model_formula, path_modifier = '../')
             else:
-                set_formula = formula
+                bagFormula = formula
 
-            storebag[row][col] = set_formula
+            #storebag[row][col] = set_formula
+            formula_reference = 'f' + '.'.join((row, col))    # get a 'fRx.Cy'
+            #storebag.defineFormula(formula_reference = bagFormula['formula'])
+            storebag.defineFormula(**{formula_reference: bagFormula['formula']})
+            # i = 0
+            # print(formula_reference)
+            # for p in bagFormula['parameters']:
+            #     storebag.defineSymbol(**{p: bagFormula['values'][i]})
+            #     print(p, bagFormula['values'][i])
+            #     i += 1
+            #print(x)
+
+            # print(formula_reference)
+            for i in range(len(bagFormula['parameters'])):
+                storebag.defineSymbol(**{bagFormula['parameters'][i]: bagFormula['values'][i]})
+                # print(i, bagFormula['parameters'][i], bagFormula['values'][i])
+                # print(x)
+
+
+            storebag[row][col] = storebag.formula(formula_reference)
+
         # end of setStoreBagFormula
 
     def getStoreBagFromModel(self, model_id, filler=None):
@@ -136,6 +168,7 @@ class Table(object):
                 order_by = '$position'
                 ).fetch()
 
+        # create bag rows, columns. placeholder for formulas
         for r in model_rows:
             current_storeBag.setItem(r['code'], Bag())
             current_storeBag.setAttr(r['code'], row_type = r['row_type'])
@@ -155,24 +188,28 @@ class Table(object):
                     pass
                 elif (r['row_type'] == 'formula'):
                     # formula
-                    self.setStoreBagFormula(current_storeBag, 
-                                        r['code'],
-                                        c['code']#,
-                                        #'formula'
-                                        )
-
-                    ###########  TO DO ##############
-                    
+                    # self.setStoreBagFormula(model_id, current_storeBag, 
+                    #                     r['code'], c['code'],
+                    #                     formula = None  # get formula from model
+                    #                     )
+                    current_storeBag[r['code']][c['code']] = 'f(x)'
                 elif (r['row_type'] == 'data'):
                     # data
                     self.setStoreBagCellValue(current_storeBag, 
-                                        r['code'],
-                                        c['code'],
-                                        filler)
+                                        r['code'], c['code'], filler)
                 else:
-                    # what else?
+                    # Nespresso, what else?
                     print("ERRORE TIPO:", r['code'], c['code'])
-    
+
+        # re-scan the bag to set formula(s)
+        for r in model_rows:
+            for c in model_cols:
+                if (r['row_type'] == 'formula'):
+                    self.setStoreBagFormula(model_id, current_storeBag, 
+                                        r['code'], c['code'],
+                                        formula = None  # get formula from model
+                                        )
+
         return current_storeBag
 
     def OLDgetStoreBagFromModel(self, model, filler=None):
