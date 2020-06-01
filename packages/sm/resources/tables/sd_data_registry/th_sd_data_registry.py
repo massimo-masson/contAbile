@@ -259,6 +259,7 @@ class Form(BaseComponent):
                     self.db.table('sm.sd_data_registry')\
                         .setStoreBagCellValue(record['storebag'], r, c, v)        
         record['status'] = 'CASUALE'
+        self.db.table('sm.sd_data_registry').calcStoreBag(record['sm_model__id'], record['storebag'])
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()
         return
