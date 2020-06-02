@@ -176,8 +176,9 @@ class Table(object):
     def updateDataRegistryStoreBag(self, registry_id, storeBag):
         # update the storeBag
         with self.db.table('sm.sd_data_registry').recordToUpdate(registry_id) as record:
-                record['storebag'] = storeBag
-                record['status'] = 'PROCESSED'
+            record['storebag'] = storeBag
+            record['status'] = 'PROCESSED'
+            self.db.table('sm.sd_data_registry').calcStoreBag(record['sm_model__id'], record['storebag'])
         self.db.commit()
         return record
 

@@ -241,6 +241,7 @@ class Form(BaseComponent):
         #print('storebag ottenuta:', b)
         record['storebag'] = b
         record['status'] = 'IMPORTATA'
+        self.db.table('sm.sd_data_registry').calcStoreBag(record['sm_model__id'], record['storebag'])
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()
         return b
