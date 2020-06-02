@@ -12,8 +12,8 @@ class Table(object):
         self.sysFields(tbl)
 
         tbl.column('code', dtype='A', size=':22', 
-                name_long='!![it]Colonna modello',
-                unique=True, validate_notnull=True, indexed=True)
+                name_long='!![it]Colonna modello', #unique=True,
+                validate_notnull=True, indexed=True)
 
         tbl.column('description', dtype='A', size=':256', 
                 name_long='!![it]Descrizione colonna', 
@@ -36,6 +36,30 @@ class Table(object):
         tbl_sm_model__id.relation('sm.sm_model.id', mode='foreignkey',
                 relation_name='columns',
                 onDelete='raise')
+
+    def validateCodeUniquePerModel(self, record = None):
+        '''code must be unique inside a single model'''
+
+        duplicated = False
+
+        rs = self.db.table('sm.sm_model_col').query(
+            columns = '$id, $code, $description',
+            where = '@sm_model__id.id = :current_model \
+                    AND $code = :current_code',
+            current_model = record['sm_model__id'],
+            current_code = record['code']
+        ).fetch()
+
+        if len(rs) > 0:
+            duplicated = True
+
+        return duplicated
+
+    def trigger_onInserting(self, record):
+        if self.validateCodeUniquePerModel(record) == True:
+            raise self.exception('protect_validate', record = record,
+                                msg = '!![it]Codice colonna duplicato nel modello'
+        )
 
     def trigger_onInserted(self, record = None):
         self.db.table('sm.sm_model').formulasSyncronize(record['sm_model__id'])

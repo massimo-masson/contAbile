@@ -117,7 +117,7 @@ class Table(object):
         model = self.db.table('sm.sm_model').record(model_id).output('bag')
 
         # model rows and cols
-        row_columns = '$code, $description,$row_type,'
+        row_columns = '$code,$description,$row_type,$position'
         model_rows = self.db.table('sm.sm_model_row').query(
                 columns = row_columns,
                 where = '$sm_model__id=:model__id',
@@ -211,7 +211,14 @@ class Table(object):
                 # substitute the value found
                 f = f.replace(c, str(tmpval))
             #print('parsed formula:', f)
-        value = eval(f)
+        
+        try:
+            value = eval(f)
+        except TypeError as error:
+            pass
+        except Exception as exception:
+            pass
+
         return value
 
     def parseFormulaCellReference(self, formula):
@@ -219,13 +226,18 @@ class Table(object):
         i = 0
         f = formula
 
-        while (i >= 0):
-            pos_start = f.find('[', i)
-            i = pos_start
-            pos_end = pos_start + 1
-            if (pos_start >= 0):
-                pos_end = f.find(']', i + 1)
-                result.append(f[pos_start:pos_end + 1])
-                i = pos_end
+        try:
+            while (i >= 0):
+                pos_start = f.find('[', i)
+                i = pos_start
+                pos_end = pos_start + 1
+                if (pos_start >= 0):
+                    pos_end = f.find(']', i + 1)
+                    result.append(f[pos_start:pos_end + 1])
+                    i = pos_end
+        except AttributeError as error:
+            pass
+        except Exception as exception:
+            pass
 
         return result
