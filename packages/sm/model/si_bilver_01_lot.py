@@ -65,28 +65,36 @@ class Table(object):
         # loop every lot row
         for row in lot_rows.fetch():
             #print('id modello riferimento:', lot['@si_bilver_01_model__id.id'])
-            (dst_row, dst_col) = self.import_lot_get_model_ref(
+            (dst_row, dst_col, invert_sign) = self.import_lot_get_model_ref(
                                 lot['@si_bilver_01_model__code.code'], row['ext_code'])
             #print(row['ext_code'], row['ext_value'], ' -> ', dst_row, dst_col)
 
+            # assegnazione valore, eventualmente con il segno
+            if (invert_sign == True):
+                value = -1 * row['ext_value']
+            else:
+                value = row['ext_value']
+
             if storebag.has_key(dst_row):
                 # situazione normale, aggiunta del valore imortato
-                storebag[dst_row][dst_col] += row['ext_value']
+                storebag[dst_row][dst_col] += value
             else:
                 # situazione di errore: nuova riga codice err_ e imposta valore
                 storebag.setItem(dst_row, Bag())
                 storebag[dst_row].setItem('code', dst_row)
-                storebag[dst_row].setItem('description', row['ext_value'])
+                storebag[dst_row].setItem('description', value)
                 #storebag[dst_row].setItem(dst_col, row['ext_value'])
 
-        # end of import_lot
         return storebag
 
     def import_lot_get_model_ref(self, model_code, ext_code):
         # return storebag row and col for ext_code in si_bilver_01_lot
         qry = self.db.table('sm.si_bilver_01_model_link').query(
-                    columns = '@sm_model_row__id.code AS rcode,@sm_model_col__id.code AS ccode',
-                    where = '$si_bilver_01_model__code=:par_model_code AND $ext_code=:par_ext_code',
+                    columns = '@sm_model_row__id.code AS rcode, \
+                        @sm_model_col__id.code AS ccode, \
+                        $invert_sign',
+                    where = '$si_bilver_01_model__code = :par_model_code \
+                        AND $ext_code = :par_ext_code',
                     par_model_code = model_code,
                     par_ext_code = ext_code
                     )
@@ -94,11 +102,13 @@ class Table(object):
 
         if len(rs) > 0:
             # record found, use code. should be only one...
-            r = rs[0]['rcode']
-            c = rs[0]['ccode']
+            row_code = rs[0]['rcode']
+            col_code = rs[0]['ccode']
+            invert_sign = rs[0]['invert_sign']
         else:
             # record not found, use err_codes
-            r = 'err_' + ext_code
-            c = 'err'
+            row_code = 'err_' + ext_code
+            col_code = 'err'
+            invert_sign = False
 
-        return r, c
+        return row_code, col_code, invert_sign
