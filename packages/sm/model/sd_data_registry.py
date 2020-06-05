@@ -114,6 +114,9 @@ class Table(object):
     def getStoreBagFromModel(self, model_id, filler=None):
         current_storeBag = Bag()
 
+        if not model_id:
+            return None
+
         model = self.db.table('sm.sm_model').record(model_id).output('bag')
 
         # model rows and cols

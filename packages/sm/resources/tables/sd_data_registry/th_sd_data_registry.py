@@ -50,10 +50,14 @@ class View(BaseComponent):
         
         for d in categories:
             dict_categories.append(
-                dict(code=d['description'], 
+                # dict(code=d['description'], 
+                #         caption=d['description'],
+                #         condition='@sm_model__id.@sm_category__id.description=:desc',
+                #         condition_desc=d['description'])
+                dict(code=d['code'], 
                         caption=d['description'],
-                        condition='@sm_model__id.@sm_category__id.description=:desc',
-                        condition_desc=d['description'])
+                        condition='@sm_model__id.@sm_category__id.code=:code',
+                        condition_code=d['code'])
             )
 
         #return [

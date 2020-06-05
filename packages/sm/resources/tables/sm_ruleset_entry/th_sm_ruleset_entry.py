@@ -65,11 +65,15 @@ class Form(BaseComponent):
         fb.field('src_sm_model_row__id', hasDownArrow=True,
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.id',
+                columns = '$code,$description',
+                auxColumns = '$code,$description',
                 fld_background='gold')
         fb.field('@src_sm_model_row__id.description', readonly=True, fld_background='gold')
         fb.field('src_sm_model_col__id', hasDownArrow=True,
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@sm_ruleset__id.@src_sm_model__id.id',
+                columns = '$code,$description',
+                auxColumns = '$code,$description',
                 fld_background='gold')
         fb.field('@src_sm_model_col__id.description', readonly=True, fld_background='gold')
 
@@ -77,11 +81,15 @@ class Form(BaseComponent):
         fb.field('dst_sm_model_row__id', hasDownArrow=True,
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.id',
+                columns = '$code,$description',
+                auxColumns = '$code,$description',
                 fld_background='lightgreen')
         fb.field('@dst_sm_model_row__id.description', readonly=True, fld_background='lightgreen')
         fb.field('dst_sm_model_col__id', hasDownArrow=True,
                 condition='@sm_model__id.id=:selected_model',
                 condition_selected_model='=.@sm_ruleset__id.@dst_sm_model__id.id',
+                columns = '$code,$description',
+                auxColumns = '$code,$description',
                 fld_background='lightgreen')
         fb.field('@dst_sm_model_col__id.description', readonly=True, fld_background='lightgreen')
 
