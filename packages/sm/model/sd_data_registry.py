@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from gnr.core.gnrbag import Bag
+from simpleeval import simple_eval
 
 class Table(object):
     def config_db(self, pkg):
@@ -216,11 +217,11 @@ class Table(object):
             #print('parsed formula:', f)
         
         try:
-            value = eval(f)
+            value = simple_eval(f)
         except TypeError as error:
-            pass
+            print('TypeError on value(f) for ', f)
         except Exception as exception:
-            pass
+            print('General Error on value(f) for ', f)
 
         return value
 
