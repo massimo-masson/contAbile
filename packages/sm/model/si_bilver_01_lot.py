@@ -57,7 +57,7 @@ class Table(object):
         # get the lot and lot rows
         lot = self.db.table('sm.si_bilver_01_lot').record(lot_code).output('bag')
         lot_rows = self.db.table('sm.si_bilver_01_lot_row').query(
-                        columns = '$ext_code,$ext_value',
+                        columns = '$ext_code, $ext_value, $ext_description',
                         where = '$si_bilver_01_lot__lot_code = :selected_lot_code',
                         selected_lot_code = lot_code,
                         )
@@ -80,9 +80,13 @@ class Table(object):
                 storebag[dst_row][dst_col] += value
             else:
                 # situazione di errore: nuova riga codice err_ e imposta valore
-                storebag.setItem(dst_row, Bag())
-                storebag[dst_row].setItem('code', dst_row)
-                storebag[dst_row].setItem('description', value)
+                # subtle bug, if the imported code has dots, the bag builds
+                # a hierarchy, so replace '.' with something else..
+                normalized_dst_row = dst_row.replace('.', '_')
+                value_and_descr = '(' + str(value) + ') ' + row['ext_description']
+                storebag.setItem(normalized_dst_row, Bag())
+                storebag[normalized_dst_row].setItem('code', dst_row)
+                storebag[normalized_dst_row].setItem('description', value_and_descr)
                 #storebag[dst_row].setItem(dst_col, row['ext_value'])
 
         return storebag
