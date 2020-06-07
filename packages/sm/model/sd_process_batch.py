@@ -44,6 +44,7 @@ class Table(object):
         # 3.    loop on batch entries, get single sd_proces_entry
         # 4.        get the destination schema from sd_process_entry
         # 5.        verify that the destination is not protected
+        # 5a.       initialize destination if entry requires that
         # 6.        make "history/backup" copy of destination schema "before processing"
         # 7.        get the source schema from sd_process_entry
         # 8.        get the ruleset_entry list for the current sd_process_entry
@@ -73,6 +74,13 @@ class Table(object):
             # 5. verify that destination is not protected
             # ***TO DO...***
 
+            # 5a initialize destination if needed
+            ruleset = self.getRuleset(batch_entry['sm_ruleset__id'])
+            if (ruleset['initialize_destination'] == True):
+                self.db.table('sm.sd_data_registry').initializeData(dst_storeBag)
+                self.db.table('sm.sd_data_registry')\
+                    .calcStoreBag(ruleset['dst_sm_model__id'], dst_storeBag)
+
             # 6. make a history copy of original storeBag before processing
             bkup_dst_storeBag = dst_storeBag.deepcopy()
 
@@ -99,6 +107,11 @@ class Table(object):
 
                 # 10. apply the single rule
                 #dst_storeBag[dr][dc] = src_storeBag[sr][sc]
+                # if rule requires destination recalculation, then do it!
+                if (rule_entry['recalculate_before'] == True):
+                    self.db.table('sm.sd_data_registry')\
+                        .calcStoreBag(ruleset['dst_sm_model__id'], dst_storeBag)
+                # proceed with the elaboration rule
                 self.applySingleRule(rule_entry['operation'], 
                         src_storeBag, sr, sc,
                         dst_storeBag, dr, dc)
@@ -132,6 +145,11 @@ class Table(object):
                 selected_batch_id = batch_id,
                 mode = 'bag'
                 ).fetch()
+        return rs
+
+    def getRuleset(self, ruleset_id):
+        '''returns the ruleset'''
+        rs = self.db.table('sm.sm_ruleset').record(pkey = ruleset_id).output('bag')
         return rs
 
     def getRulesetEntriesList(self, ruleset_id):
@@ -170,6 +188,9 @@ class Table(object):
         elif operation == '2':
             # subtraction
             dstBag[dr][dc] = dstBag[dr][dc] - srcBag[sr][sc]
+        elif operation == '3':
+            # set value to negative of source
+            dstBag[dr][dc] = (srcBag[sr][sc] * -1)
         else:
             pass
 

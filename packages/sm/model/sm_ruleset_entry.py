@@ -99,8 +99,9 @@ class Table(object):
                 0: set value equal to source
                 1: sum value to the existing
                 2: subtract value from the existing
+                3: set value equal to -source (source * -1)
                 f: formula
                 p: python code
         '''
-        CONST = '0:=,1:+,2:-,f:formula,p:python'
+        CONST = '0:=(+),3:=(-),1:+,2:-,f:formula,p:python'
         return CONST

@@ -55,9 +55,9 @@ class Form(BaseComponent):
     def rulesetEntryHeader(self, pane):
         fb = pane.div(margin = '10px').formbuilder(cols = 4, border_spacing = '4px')
         fb.field('position')
-        fb.field('recalculate_before')
-        fb.field('description', colspan = 2, width = '100%')
+        fb.field('description', colspan = 3, width = '100%')
 
+        fb.field('recalculate_before')
         fb.field('sm_ruleset__id', hasDownArrow = True)
         fb.field('@sm_ruleset__id.code', colspan = 2, width = '100%', readonly = True)
 

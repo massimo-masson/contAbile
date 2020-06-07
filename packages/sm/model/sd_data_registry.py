@@ -174,6 +174,18 @@ class Table(object):
 
         return current_storeBag
 
+    def initializeData(self, storebag, value = 0):
+        '''Initialize storebag to value'''
+        for row in storebag.keys():
+            for column in storebag[row].keys():
+                if column == 'code':
+                    pass
+                elif column == 'description':
+                    pass
+                else:
+                    self.setStoreBagCellValue(storebag, row, column, value)
+        return
+
     def calcStoreBag(self, model_id, storebag):
         # all rows, get "formula" ones
         for rk, rv, ra in storebag.digest('#k,#v,#a'):
