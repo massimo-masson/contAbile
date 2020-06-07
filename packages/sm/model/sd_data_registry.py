@@ -219,9 +219,11 @@ class Table(object):
         try:
             value = simple_eval(f)
         except TypeError as error:
-            print('TypeError on value(f) for ', f)
+            #print('TypeError on value(f) for ', f)
+            pass
         except Exception as exception:
-            print('General Error on value(f) for ', f)
+            #print('General Error on value(f) for ', f)
+            pass
 
         return value
 

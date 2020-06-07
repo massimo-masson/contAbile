@@ -29,6 +29,7 @@ class View(BaseComponent):
         # columnset operations
         ops = r.columnset('operations', name = '!![it]Operazioni', 
                 color = 'black', background = 'gold')
+        ops.fieldcell('recalculate_before')
         ops.fieldcell('operation')
 
     def th_order(self):
@@ -37,8 +38,10 @@ class View(BaseComponent):
     def th_query(self):
         return dict(column = 'position', op = 'contains', val = '', runOnStart = True)
 
+
 class ViewFromRuleset(View):
     pass
+
 
 class Form(BaseComponent):
 
@@ -52,9 +55,11 @@ class Form(BaseComponent):
     def rulesetEntryHeader(self, pane):
         fb = pane.div(margin = '10px').formbuilder(cols = 4, border_spacing = '4px')
         fb.field('position')
-        fb.field('description')
+        fb.field('recalculate_before')
+        fb.field('description', colspan = 2, width = '100%')
+
         fb.field('sm_ruleset__id', hasDownArrow = True)
-        fb.field('@sm_ruleset__id.code', readonly = True)
+        fb.field('@sm_ruleset__id.code', colspan = 2, width = '100%', readonly = True)
 
         # riga
         fb.div('!![it]RIGHE', 
