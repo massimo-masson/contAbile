@@ -177,31 +177,39 @@ class Table(object):
         return rs
 
     def applySingleRule(self, operation = None, 
-            srcBag = None, sr = None, sc = None,
-            dstBag = None, dr = None, dc = None):
+                        srcBag = None, sr = None, sc = None,
+                        dstBag = None, dr = None, dc = None):
+        # find the value to write
         if operation == '100':
             # set value to 0
-            dstBag[dr][dc] = 0
+            # dstBag[dr][dc] = 0
+            value = 0
         elif operation == '110':
             # set value
-            dstBag[dr][dc] = srcBag[sr][sc]
+            # dstBag[dr][dc] = srcBag[sr][sc]
+            value = srcBag[sr][sc]
         elif operation == '120':
             # set value to negative of source value
-            dstBag[dr][dc] = (srcBag[sr][sc] * -1)
+            # dstBag[dr][dc] = (srcBag[sr][sc] * -1)
+            value = (srcBag[sr][sc] * -1)
         elif operation == '130':
             # sum
-            dstBag[dr][dc] = dstBag[dr][dc] + srcBag[sr][sc]
+            # dstBag[dr][dc] = dstBag[dr][dc] + srcBag[sr][sc]
+            value = dstBag[dr][dc] + srcBag[sr][sc]
         elif operation == '140':
             # subtraction
-            dstBag[dr][dc] = dstBag[dr][dc] - srcBag[sr][sc]
+            # dstBag[dr][dc] = dstBag[dr][dc] - srcBag[sr][sc]
+            value = dstBag[dr][dc] - srcBag[sr][sc]
         elif operation == 'f':
             # formula
-            pass
+            value = 0
         elif operation == 'py':
             # python
-            pass
+            value = 0
         else:
-            pass
+            value = 0
+        # write the found value        
+        self.db.table('sm.sd_data_registry').setStoreBagCellValue(dstBag, dr, dc, value)
 
     def updateDataRegistryStoreBag(self, registry_id, storeBag):
         # update the storeBag
