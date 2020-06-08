@@ -96,12 +96,13 @@ class Table(object):
     def CONST_operation(self):
         '''Return the constant values for the "operation" field.
             In reference to the value of the destination cell:
-                0: set value equal to source
-                1: sum value to the existing
-                2: subtract value from the existing
-                3: set value equal to -source (source * -1)
+                100: set value to 0
+                110: set value equal to source_value
+                120: set value equal to -source_value (source_value * -1)
+                130: sum value to the existing
+                140: subtract value from the existing
                 f: formula
                 p: python code
         '''
-        CONST = '0:=(+),3:=(-),1:+,2:-,f:formula,p:python'
+        CONST = '100:=0,110:=(+),120:=(-),130:+,140:-,f:formula,py:python'
         return CONST

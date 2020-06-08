@@ -14,9 +14,9 @@ def config(root,application=None):
     # menu schema parameters
     schema_parameters = schema.branch('!![it]Parametri')
     schema_parameters.thpage('!![it]Parametri globali', table = 'sm.sd_parameter_global')
-    schema_parameters.thpage('!![it]Parametri categorie', table = 'sm.sd_parameter_category')
-    schema_parameters.thpage('!![it]Parametri modelli', table = 'sm.sd_parameter_model')
-    schema_parameters.thpage('!![it]Parametri modelli', table = 'sm.sd_parameter_schema')
+    schema_parameters.thpage('!![it](Parametri categorie)', table = 'sm.sd_parameter_category')
+    schema_parameters.thpage('!![it](Parametri modelli)', table = 'sm.sd_parameter_model')
+    schema_parameters.thpage('!![it](Parametri schemi)', table = 'sm.sd_parameter_schema')
 
     # menu schema import
     schema_import = schema.branch('!![it]Importazioni')

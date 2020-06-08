@@ -179,18 +179,27 @@ class Table(object):
     def applySingleRule(self, operation = None, 
             srcBag = None, sr = None, sc = None,
             dstBag = None, dr = None, dc = None):
-        if operation == '0':
+        if operation == '100':
+            # set value to 0
+            dstBag[dr][dc] = 0
+        elif operation == '110':
             # set value
             dstBag[dr][dc] = srcBag[sr][sc]
-        elif operation == '1':
+        elif operation == '120':
+            # set value to negative of source value
+            dstBag[dr][dc] = (srcBag[sr][sc] * -1)
+        elif operation == '130':
             # sum
             dstBag[dr][dc] = dstBag[dr][dc] + srcBag[sr][sc]
-        elif operation == '2':
+        elif operation == '140':
             # subtraction
             dstBag[dr][dc] = dstBag[dr][dc] - srcBag[sr][sc]
-        elif operation == '3':
-            # set value to negative of source
-            dstBag[dr][dc] = (srcBag[sr][sc] * -1)
+        elif operation == 'f':
+            # formula
+            pass
+        elif operation == 'py':
+            # python
+            pass
         else:
             pass
 
