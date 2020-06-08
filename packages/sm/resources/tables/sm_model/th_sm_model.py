@@ -60,7 +60,7 @@ class Form(BaseComponent):
         tc = pane.tabContainer()
 
         # tab rows
-        tab_rows = tc.contentPane(title='!![it]Righe')
+        tab_rows = tc.contentPane(title = '!![it]Righe')
         tab_rows.inlineTableHandler(relation = '@rows',
                 pbl_classes = True,
                 viewResource = 'ViewFromModel',
@@ -80,6 +80,14 @@ class Form(BaseComponent):
         # tab formula
         tab_formula = tc.contentPane(title = '!![it]Formule')
         tab_formula.dialogTableHandler(relation = '@model_formula',
+                viewResource = 'ViewFromModel',
+                formResource = 'FormFromModel',
+                margin = '2px',
+                searchOn = True)
+
+        # tab parameters
+        tab_params = tc.contentPane(title = '!![it]Parametri modello')
+        tab_params.dialogTableHandler(relation = '@model_parameters',
                 viewResource = 'ViewFromModel',
                 formResource = 'FormFromModel',
                 margin = '2px',

@@ -7,14 +7,20 @@ def config(root,application=None):
     # menu schema
     schema = contAbile.branch('!![it]Gestione')
 
-    schema.thpage('!![it]Schemi', table='sm.sd_data_registry')
-    schema.thpage('!![it]Elaborazioni', table='sm.sd_process_batch')
-    schema.thpage('!![it]Parametri', table='sm.sd_parameter')
-    
+    schema.thpage('!![it]Schemi', table = 'sm.sd_data_registry')
+    schema.thpage('!![it]Elaborazioni', table = 'sm.sd_process_batch')
+
+    #schema.thpage('!![it]Parametri globali', table='sm.sd_parameter_global')
+    # menu schema parameters
+    schema_parameters = schema.branch('!![it]Parametri')
+    schema_parameters.thpage('!![it]Parametri globali', table = 'sm.sd_parameter_global')
+    schema_parameters.thpage('!![it]Parametri categorie', table = 'sm.sd_parameter_category')
+    schema_parameters.thpage('!![it]Parametri modelli', table = 'sm.sd_parameter_model')
+    schema_parameters.thpage('!![it]Parametri modelli', table = 'sm.sd_parameter_schema')
+
     # menu schema import
     schema_import = schema.branch('!![it]Importazioni')
-
-    schema_import.thpage('!![it]Da bilancio di verifica', table='sm.si_bilver_01_lot')
+    schema_import.thpage('!![it]Da bilancio di verifica', table = 'sm.si_bilver_01_lot')
     
     # # menu schema import bilver
     # schema_import_bilver01 = schema_import.branch('!![it]Da Bilancio di verifica')
@@ -30,17 +36,18 @@ def config(root,application=None):
 
     # menu modelli
     #config_model = config.branch('!![it]Modelli')
-    config.thpage('!![it]Categorie',table='sm.sm_category')
-    config.thpage('!![it]Modelli', table='sm.sm_model')
-    config.thpage('!![it]Regole elaborazione', table='sm.sm_ruleset')
+    config.thpage('!![it]Categorie',table = 'sm.sm_category')
+    config.thpage('!![it]Modelli', table = 'sm.sm_model')
+    config.thpage('!![it]Regole elaborazione', table = 'sm.sm_ruleset')
     #config.thpage('!![it]Ruleset entry', table='sm.sm_ruleset_entry')
     #config.thpage('!![it]Tipi riga',table='sm.sm_row_type')
-    config.thpage('!![it]Classificazione parametri',table='sm.sm_parameter_class')
+    config.thpage('!![it]Classificazione parametri', table = 'sm.sm_parameter_class')
 
     # menu importazioni
     config_import = config.branch('!![it]Importazioni')
     
-    config_import.thpage('!![it]Collegamenti bilancio di verifica',table='sm.si_bilver_01_model')
+    config_import.thpage('!![it]Collegamenti bilancio di verifica', \
+                        table='sm.si_bilver_01_model')
 
     # menu utilities
     #utilities = contAbile.branch('!![it]Utilities')
