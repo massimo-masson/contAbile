@@ -88,6 +88,10 @@ class Table(object):
         tbl.column('operation', dtype = 'A', size = ':22',
                 name_long = '!![it]Operazione')
 
+        # formula, used if operation equals to f
+        tbl.column('formula', dtype = 'A', size = ':4096', 
+                name_long = '!![it]Formula', name_short = '!![it]fn')
+
         # virtual columns
         tbl.formulaColumn('code_description',
                 '"("||$position||") - "||$description',
