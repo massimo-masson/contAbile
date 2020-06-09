@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+
 from gnr.core.gnrbag import Bag
+from simpleeval import simple_eval
 
 class Table(object):
     def config_db(self, pkg):
@@ -110,3 +112,53 @@ class Table(object):
         '''
         CONST = '100:=0,110:=(+),120:=(-),130:+,140:-,f:formula,py:python'
         return CONST
+
+    def parseFormula(self, formula, 
+                    src_schema_id, src_bag, src_row, src_col, \
+                    dst_schema_id, dst_bag, dst_row, dst_col):
+        '''Parse the formula. Schema is mandatory, needed to dig parameters.
+
+        src_bag, src_row, src_col needed to get source values
+        dst_bag, dst_row, dst_col needed to get destination values
+
+        Formula parse works the following way:
+        parse the result with simpleeval module, so normal operators are used.
+
+        Parameters are replaced with values
+        Parameters begin with [ and end with ]
+        Special characters are used to identify parameter's meaning:
+
+        [$] the source schema row and column, as given in the ruleset
+        [$Rx.Cy] source schema, row Rx and column Cy
+
+        [@] the destination schema row and column, as given in the ruleset
+        [@Rx.Cy] destination schema, row Rx and column Cy
+
+        [#G#name] global parameter, code "name"
+        [#C#name] category parameter, code "name"
+        [#M#name] model parameter, code "name"
+        [#S#name] schema parameter, code "name"
+        '''
+        parsed_formula = formula
+        
+        # get references, from current schema to associated model and category
+        # schema
+        src_schema = self.db.table('sm.sd_data_registry').record(pkey = src_schema_id).output('bag')
+        dst_schema = self.db.table('sm.sd_data_registry').record(pkey = dst_schema_id).output('bag')
+        # model
+        src_model_id = src_schema['sm_model__id']
+        dst_model_id = dst_schema['sm_model__id']
+        src_model = self.db.table('sm.sm_model').record(pkey = src_model_id).output('bag')
+        dst_model = self.db.table('sm.sm_model').record(pkey = dst_model_id).output('bag')
+        # category
+        src_category_id = src_model['sm_category__id']
+        dst_category_id = dst_model['sm_category__id']
+        src_category = self.db.table('sm.sm_category').record(pkey = src_category_id).output('bag')
+        dst_category = self.db.table('sm.sm_category').record(pkey = dst_category_id).output('bag')
+
+
+
+
+
+        value = simple_eval(parsed_formula)
+        return value

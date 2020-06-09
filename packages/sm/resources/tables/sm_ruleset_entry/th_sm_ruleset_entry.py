@@ -50,7 +50,7 @@ class Form(BaseComponent):
         bc = form.center.borderContainer()
 
         self.rulesetEntryHeader(bc.contentPane(region = 'top', datapath = '.record'))
-        self.rulesetEntryBody(bc.contentPane(region = 'center'))
+        self.rulesetEntryBody(bc.contentPane(region = 'center', datapath = '.record'))
 
     def rulesetEntryHeader(self, pane):
         fb = pane.div(margin = '10px').formbuilder(cols = 4, border_spacing = '4px')
@@ -121,7 +121,7 @@ class Form(BaseComponent):
         tab_formula = tc.contentPane(title = '!![it]Formula')
         fb = tab_formula.div(margin = '10px').formbuilder(cols = 1, border_spacing = '4px')
         fb.field('formula', tag = 'simpleTextArea', lbl = '',
-                disabled = '^.record.operation?=#v!="f"',
+                disabled = '^.operation?=#v!="f"',
                 width = '80em', height = '6em')
 
         fb.div('!![it]Promemoria sintassi formule: \

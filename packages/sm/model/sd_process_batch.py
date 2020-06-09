@@ -114,7 +114,10 @@ class Table(object):
                 # proceed with the elaboration rule
                 self.applySingleRule(rule_entry['operation'], 
                         src_storeBag, sr, sc,
-                        dst_storeBag, dr, dc)
+                        dst_storeBag, dr, dc,
+                        rs_src_store['id'], rs_dst_store['id'],
+                        rule_entry['formula']
+                        )
 
             # 11. update destination schema
             self.updateDataRegistryStoreBag(rs_dst_store['id'], dst_storeBag)
@@ -178,7 +181,11 @@ class Table(object):
 
     def applySingleRule(self, operation = None, 
                         srcBag = None, sr = None, sc = None,
-                        dstBag = None, dr = None, dc = None):
+                        dstBag = None, dr = None, dc = None,
+                        src_schema_id = None, dst_schema_id = None,
+                        formula = None
+                        ):
+        '''formula and schema_id if needed to evaluate formula'''
         # find the value to write
         if operation == '100':
             # set value to 0
@@ -202,13 +209,16 @@ class Table(object):
             value = dstBag[dr][dc] - srcBag[sr][sc]
         elif operation == 'f':
             # formula
-            value = 0
+            value = self.db.table('sm.sm_ruleset_entry').parseFormula(formula, 
+                                    src_schema_id, srcBag, sr, sc,
+                                    dst_schema_id, dstBag, dr, dc
+                                    )
         elif operation == 'py':
             # python
             value = 0
         else:
             value = 0
-        # write the found value        
+        # write the calculated value
         self.db.table('sm.sd_data_registry').setStoreBagCellValue(dstBag, dr, dc, value)
 
     def updateDataRegistryStoreBag(self, registry_id, storeBag):
