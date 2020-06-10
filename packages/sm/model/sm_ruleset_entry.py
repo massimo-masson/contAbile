@@ -284,8 +284,9 @@ class Table(object):
         '''Get "parameter" from category parameters'''
         value = '0'
         try:
-            record = self.db.table('sm.sd_parameter_category') \
-                .record(code = parameter).output('bag')
+            record = self.db.table('sm.sd_parameter_category').record(
+                    sm_category__id = category_id, 
+                    code = parameter).output('bag')
             value = str(record['value'])
         except:
             pass
@@ -295,8 +296,9 @@ class Table(object):
         '''Get "parameter" from model parameters'''
         value = '0'
         try:
-            record = self.db.table('sm.sd_parameter_model') \
-                .record(code = parameter).output('bag')
+            record = self.db.table('sm.sd_parameter_model').record(
+                    sm_model__id = model_id, 
+                    code = parameter).output('bag')
             value = str(record['value'])
         except:
             pass
@@ -306,8 +308,9 @@ class Table(object):
         '''Get "parameter" from schema parameters'''
         value = '0'
         try:
-            record = self.db.table('sm.sd_parameter_schema') \
-                .record(code = parameter).output('bag')
+            record = self.db.table('sm.sd_parameter_schema').record(
+                    sd_data_registry__id = schema_id, 
+                    code = parameter).output('bag')
             value = str(record['value'])
         except:
             pass
