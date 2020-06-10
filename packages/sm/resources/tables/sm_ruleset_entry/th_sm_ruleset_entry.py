@@ -31,6 +31,7 @@ class View(BaseComponent):
                 color = 'black', background = 'gold')
         ops.fieldcell('recalculate_before')
         ops.fieldcell('operation')
+        ops.fieldcell('formula')
 
     def th_order(self):
         return 'position'
@@ -119,23 +120,44 @@ class Form(BaseComponent):
 
         # tab formula
         tab_formula = tc.contentPane(title = '!![it]Formula')
-        fb = tab_formula.div(margin = '10px').formbuilder(cols = 1, border_spacing = '4px')
+        fb = tab_formula.div(margin = '10px').formbuilder(cols = 2, border_spacing = '4px')
         fb.field('formula', tag = 'simpleTextArea', lbl = '',
                 disabled = '^.operation?=#v!="f"',
-                width = '80em', height = '6em')
+                width = '80em', height = '6em',
+                colspan = 2)
 
         fb.div('!![it]Promemoria sintassi formule: \
                 Valgono le normali operazioni aritmetiche.\
-                I parametri sono delimitati da parentesi quadre, \
-                e vengono interpretati nel modo seguente:')
-        fb.div('!![it]<b>[$]</b> valore della cella sorgente indicata nella regola.\
-                <b>[@]</b> valore della cella destinazione indicata nella regola (vedi sopra)')
-        fb.div('!![it]<b>[$Rx.Cy]</b> valore della cella sorgente Rx.Cy. \
-                <b>[@Rx.Cy]</b> valore della cella destinazione Rx.Cy')
-        fb.div('!![it]<b>[#G#nome]</b> valore del parametro globale definito da "nome"')
-        fb.div('!![it]<b>[#C#nome]</b> valore del parametro di categoria definito da "nome"')
-        fb.div('!![it]<b>[#M#nome]</b> valore del parametro di modello definito da "nome"')
-        fb.div('!![it]<b>[#S#nome]</b> valore del parametro di schema definito da "nome"')
+                I parametri sono delimitati da parentesi quadre [ e ], \
+                e vengono interpretati nel modo seguente:'
+                , colspan = 2, width = '100%')
+
+        fb.div('!![it]DA SORGENTE', fld_background = 'gold')
+        fb.div('!![it]DA DESTINAZIONE', fld_background = 'lightgreen')
+
+        fb.div('!![it]<b>[$]</b> valore della cella sorgente indicata nella regola (vedi sopra)')
+        fb.div('!![it]<b>[@]</b> valore della cella destinazione indicata nella regola (vedi sopra)')
+
+        fb.div('!![it]<b>[$Rx.Cy]</b> valore della cella sorgente riga Rx colonna Cy')
+        fb.div('!![it]<b>[@Rx.Cy]</b> valore della cella destinazione riga Rx colonna Cy')
+
+        fb.div('!![it]<b>[#G#nome]</b> valore del parametro globale definito da "nome"',
+                colspan = 2, width = '100%', align = 'center')
+        
+        fb.div('!![it]<b>[#C$nome]</b> valore del parametro della categoria \
+                sorgente definito da "nome"')
+        fb.div('!![it]<b>[#C@nome]</b> valore del parametro della categoria \
+                destinazione definito da "nome"')
+
+        fb.div('!![it]<b>[#M$nome]</b> valore del parametro del modello \
+                sorgente definito da "nome"')
+        fb.div('!![it]<b>[#M@nome]</b> valore del parametro del modello \
+                destinazione definito da "nome"')
+
+        fb.div('!![it]<b>[#S$nome]</b> valore del parametro dello schema \
+                sorgente definito da "nome"')
+        fb.div('!![it]<b>[#S@nome]</b> valore del parametro dello schema \
+                destinazione definito da "nome"')
 
         # tab python
         tab_python = tc.contentPane(title = '!![it]Python')

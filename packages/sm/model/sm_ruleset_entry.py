@@ -118,8 +118,8 @@ class Table(object):
                     dst_schema_id, dst_bag, dst_row, dst_col):
         '''Parse the formula. Schema is mandatory, needed to dig parameters.
 
-        src_bag, src_row, src_col needed to get source values
-        dst_bag, dst_row, dst_col needed to get destination values
+        src_schema_id, src_bag, src_row, src_col needed to get source values
+        dst_schema_id, dst_bag, dst_row, dst_col needed to get destination values
 
         Formula parse works the following way:
         parse the result with simpleeval module, so normal operators are used.
@@ -127,6 +127,8 @@ class Table(object):
         Parameters are replaced with values
         Parameters begin with [ and end with ]
         Special characters are used to identify parameter's meaning:
+        $ refers to source context
+        @ refers to destination context
 
         [$] the source schema row and column, as given in the ruleset
         [$Rx.Cy] source schema, row Rx and column Cy
@@ -135,9 +137,14 @@ class Table(object):
         [@Rx.Cy] destination schema, row Rx and column Cy
 
         [#G#name] global parameter, code "name"
-        [#C#name] category parameter, code "name"
-        [#M#name] model parameter, code "name"
-        [#S#name] schema parameter, code "name"
+
+        [#C$name] category parameter, code "name", from source schema
+        [#M$name] model parameter, code "name", from source schema
+        [#S$name] schema parameter, code "name", from source schema
+
+        [#C@name] category parameter, code "name", from destination schema
+        [#M@name] model parameter, code "name", from destination schema
+        [#S@name] schema parameter, code "name", from destination schema
         '''
         parsed_formula = formula
         
@@ -156,9 +163,152 @@ class Table(object):
         src_category = self.db.table('sm.sm_category').record(pkey = src_category_id).output('bag')
         dst_category = self.db.table('sm.sm_category').record(pkey = dst_category_id).output('bag')
 
+        # let's start with simple task.
+        # replace source [$] and destination [@] for ruleset_entry
 
+        # parse [$]
+        src_value = src_bag[src_row][src_col]
+        parsed_formula = parsed_formula.replace('[$]', str(src_value))
 
+        # parse [@]
+        src_value = src_bag[src_row][src_col]
+        parsed_formula = parsed_formula.replace('[@]', str(src_value))
 
+        # now the longest part. search for [] pattern.
+        # when found, process $, @, #
+        # note that, from now on, [$] and [@] are not present, so we can
+        # deal with the [$...], [@...], [#...] patterns
+
+        i = 0
+        while (i >= 0):
+            pos_start = parsed_formula.find('[', i)
+            i = pos_start
+            pos_end = pos_start + 1
+            if (pos_start >= 0):
+                pos_end = parsed_formula.find(']', i + 1)
+                found_token = parsed_formula[pos_start:pos_end + 1]
+                i = pos_end     # note: if i >= 0 we've found a formula token
+            
+            # now, if i >= 0 we have a token, otherwise not, and exit while
+            if (i >= 0):
+                # found_token has the surrounding []
+                # token_content is the found token without the surrounding []
+                token_content = found_token[1:-1]
+                operation_set = token_content[0]
+
+                if operation_set == '#':
+                    # PARAMETERS PATTERN
+                    # token_content has now the form '#XYname'
+                    # X = [G|C|M|S], Y = [#|$|@]
+                    # first 3 char are pattern, the remaining is the name
+                    parameter_category = token_content[1].upper()
+                    parameter_name = token_content[3:]
+                    if parameter_category == 'G':
+                        # global parameter
+                        param_value = self.getParameterGlobal(parameter_name)
+
+                    elif parameter_category == 'C':
+                        # category paremeter, could be $ source or @ destination.
+                        # final pattern char is in 3rd position, so index = 2
+                        #print('parameter category, token_content:', token_content)
+                        if token_content[2] == '$':
+                            param_value = self.getParameterCategory(src_category_id, parameter_name)
+                        elif token_content[2] == '@':
+                            param_value = self.getParameterCategory(dst_category_id, parameter_name)
+                        else:
+                            # bad pattern
+                            pass
+                    elif parameter_category == 'M':
+                        # model paremeter, could be $ source or @ destination.
+                        # final pattern char is in 3rd position, so index = 2
+                        if token_content[2] == '$':
+                            param_value = self.getParameterModel(src_model_id, parameter_name)
+                        elif token_content[2] == '@':
+                            param_value = self.getParameterModel(dst_model_id, parameter_name)
+                        else:
+                            # bad pattern
+                            pass
+                    elif parameter_category == 'S':
+                        # schema paremeter, could be $ source or @ destination.
+                        # final pattern char is in 3rd position, so index = 2
+                        if token_content[2] == '$':
+                            param_value = self.getParameterSchema(src_schema_id, parameter_name)
+                        elif token_content[2] == '@':
+                            param_value = self.getParameterSchema(dst_schema_id, parameter_name)
+                        else:
+                            # bad pattern
+                            pass
+                    else:
+                        # unknown parameter pattern
+                        pass
+
+                elif operation_set == '$':
+                    # SOURCE SCHEMA PATTERN
+                    # token_content is in the form: $Rx.Cy
+                    reference_token = token_content[1:]
+                    param_value = str(src_bag[reference_token])
+
+                elif operation_set == '@':
+                    # DESTINATION SCHEMA PATTERN
+                    reference_token = token_content[1:]
+                    param_value = str(dst_bag[reference_token])
+
+                else:
+                    # unknown pattern...
+                    pass
+                
+                # here, we've found a token, and got his value in param_value
+                # now replace the parameter with it's value
+                #print('****replacing ', found_token, ' with ', param_value)
+                parsed_formula = parsed_formula.replace(found_token, param_value)
+
+                # string containing formula in parsing has changed, lenght probably
+                # was changed too, so we must restart scanning from the beginng
+                i = 0
 
         value = simple_eval(parsed_formula)
+        return value
+
+    def getParameterGlobal(self, parameter):
+        '''Get "parameter" from global parameters'''
+        value = '0'
+        try:
+            record = self.db.table('sm.sd_parameter_global') \
+                .record(code = parameter).output('bag')
+            value = str(record['value'])
+        except:
+            pass
+        return value
+
+    def getParameterCategory(self, category_id, parameter):
+        '''Get "parameter" from category parameters'''
+        value = '0'
+        try:
+            record = self.db.table('sm.sd_parameter_category') \
+                .record(code = parameter).output('bag')
+            value = str(record['value'])
+        except:
+            pass
+        return value
+
+    def getParameterModel(self, model_id, parameter):
+        '''Get "parameter" from model parameters'''
+        value = '0'
+        try:
+            record = self.db.table('sm.sd_parameter_model') \
+                .record(code = parameter).output('bag')
+            value = str(record['value'])
+        except:
+            pass
+        return value
+
+    def getParameterSchema(self, schema_id, parameter):
+        '''Get "parameter" from schema parameters'''
+        value = '0'
+        try:
+            record = self.db.table('sm.sd_parameter_schema') \
+                .record(code = parameter).output('bag')
+            value = str(record['value'])
+        except:
+            pass
         return value
