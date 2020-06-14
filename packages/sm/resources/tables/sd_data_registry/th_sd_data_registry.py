@@ -36,7 +36,7 @@ class View(BaseComponent):
     def th_top_barcategory(self, top):
         top.slotToolbar('5,sections@category,*',
                 childname = 'category', _position = '<bar', 
-                sections_category_multiButton = 6)
+                sections_category_multiButton = 7)
 
     def th_sections_category(self):
         categories = self.db.table('sm.sm_category').query(
