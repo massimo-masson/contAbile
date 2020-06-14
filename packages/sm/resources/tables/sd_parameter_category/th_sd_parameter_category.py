@@ -30,8 +30,12 @@ class Form(BaseComponent):
     def th_form(self, form):
         pane = form.record
         fb = pane.formbuilder(cols = 3, border_spacing = '4px')
+        
         fb.field('code')
         fb.field('description', colspan = 2)
+
+        fb.field('value')
+        fb.div(colspan = 2)
 
         fb.field('sm_parameter_class__id')
         fb.field('@sm_parameter_class__id.description', readonly = True, 
@@ -40,9 +44,6 @@ class Form(BaseComponent):
         fb.field('sm_category__id')
         fb.field('@sm_category__id.description', readonly = True,
                 colspan = 2, width = '100%')
-
-        fb.field('value')
-        fb.div(colspan = 2)
 
     def th_options(self):
         return dict(dialog_height = '400px', dialog_width = '600px')

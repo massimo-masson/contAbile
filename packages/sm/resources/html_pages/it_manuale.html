@@ -1,3 +1,213 @@
-<body>
-    no go scrito ancora nient...
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
+	<meta name="created" content="2020-06-10T23:55:17.037766151"/>
+	<meta name="changed" content="2020-06-14T20:34:44.973233023"/>
+	<style type="text/css">
+		@page { size: 21cm 29.7cm; margin: 2cm }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 115%; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
+		h1.cjk { font-family: "DejaVu Sans"; font-size: 18pt; font-weight: bold }
+		h1.ctl { font-family: "Noto Sans Devanagari"; font-size: 18pt; font-weight: bold }
+		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h2.western { font-family: "Liberation Sans", sans-serif; font-size: 16pt; font-weight: bold }
+		h2.cjk { font-family: "DejaVu Sans"; font-size: 16pt; font-weight: bold }
+		h2.ctl { font-family: "Noto Sans Devanagari"; font-size: 16pt; font-weight: bold }
+		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h3.western { font-family: "Liberation Sans", sans-serif; font-size: 14pt; font-weight: bold }
+		h3.cjk { font-family: "DejaVu Sans"; font-size: 14pt; font-weight: bold }
+		h3.ctl { font-family: "Noto Sans Devanagari"; font-size: 14pt; font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="it-IT" link="#000080" vlink="#800000" dir="ltr"><p align="center" style="margin-top: 0.42cm; margin-bottom: 0.21cm; line-height: 100%; page-break-after: avoid">
+<font face="Liberation Sans, sans-serif"><font size="6" style="font-size: 28pt"><b>contAbile</b></font></font></p>
+<p align="center" style="margin-top: 0.11cm; margin-bottom: 0.21cm; line-height: 100%; page-break-after: avoid">
+<font face="Liberation Sans, sans-serif"><font size="5" style="font-size: 18pt">manuale
+utente</font></font></p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<h1 class="western">Scopo del programma</h1>
+<p style="margin-bottom: 0cm; line-height: 100%">Il package “sm”
+di contAbile ha come scopo l’elaborazione semi-automatica di schemi
+e prospetti, sulla base di regole predefinite.</p>
+<p style="margin-bottom: 0cm; line-height: 100%">SM = Schema Manager.</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 100%">Il flusso standard
+del programma consiste in una sequenza tipo:</p>
+<p style="margin-bottom: 0cm; line-height: 100%">acquisizione dati →
+trasformazione dati verso uno o più schemi</p>
+<p style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<h1 class="western">Entità operative</h1>
+<p>Il programma si presenta con 3 principali funzioni:</p>
+<p>Gestione schemi</p>
+<p>Gestione lotti di elaborazione</p>
+<p>Gestione importazione dati</p>
+<h2 class="western">Gestione schemi</h2>
+<p>Gli schemi sono prospetti nel formato righe/colonne.</p>
+<p>Servono per rappresentare una elaborazione di un precedente schema
+nel flusso, o i dati importati.</p>
+<p>Un esempio tipico di gestione schemi potrebbe essere il seguente:</p>
+<ol>
+	<li><p>importazione dati da bilancio di verifica dell’ERP, e/o da
+	altre fonti</p>
+	<li><p>quick closing: attività di chiusura di periodo con
+	integrazione del dato “grezzo” contabile (ratei, risconti,
+	fatture e n.c. da emettere e ricevere, stima ammortamenti, stima
+	rimanenze, …)</p>
+	<li><p>trasformazione degli schemi di quick-close in schemi di
+	forecast: rappresentano la proiezione del dato a fine anno</p>
+	<li><p>trasformazione degli schemi di forecast in budget per l’anno
+	successivo.</p>
+</ol>
+<p>Ovviamente la sequenza è configurabile e definibile, quindi una
+sequenza alternativa, perfettamente legittima, che potrebbe
+coesistere, potrebbe essere la seguente:</p>
+<ol>
+	<li><p>importazione dati da bilancio di verifica dell’ERP</p>
+	<li><p>riclassificazione ed aggregazione su schemi di analisi
+	semplificata per evidenziare elementi di analisi per indici, margini
+	o quant’altro.</p>
+</ol>
+<p>Evidentemente è la configurazione che definisce il flusso di
+processo, ed il limite… è la fantasia!</p>
+<p>Nel corso dell’elaborazione, possono essere utilizzati parametri
+definiti a vari livelli (<i>v. infra</i>).</p>
+<p>Uno schema viene definito tramite uno specifico “modello”, che
+va configurato.</p>
+<h2 class="western">Gestione elaborazioni</h2>
+<p>Le elaborazioni sono eseguite tramite dei processi “batch”,
+che vengono definiti in passaggi ordinati, ciascuno dei quali applica
+delle regole di trasformazione da uno schema di partenza verso uno
+schema di destinazione.</p>
+<p>La struttura a batch consente di definire delle sequenze che
+possono, alternativamente ma non esclusivamente, operare con più
+schemi sorgente e/o più schemi destinazione.</p>
+<p>L’ordine delle operazioni è significativo.</p>
+<p>Le singole regole di elaborazione vengono definite in
+configurazione</p>
+<h2 class="western">Gestione importazioni</h2>
+<p>Le importazioni consentono di acquisire dati di partenza in modo
+aggregato, secondo delle regole predefinite e sulla base di
+connessioni definite in configurazione.</p>
+<p>In questo modo è ad esempio possibile definire i collegamenti tra
+i conti di un bilancio di verifica estratto in excel (o csv…)
+dall’ERP in uso e le righe di uno schema di acquisizione definito
+in SM, per poi procedere ad eventuali ulteriori elaborazioni.</p>
+<h1 class="western">Entità di configurazione</h1>
+<h2 class="western">I modelli</h2>
+<p>I modelli definiscono la struttura degli schemi che tramite esso
+possono essere generati.</p>
+<p>La relazione è 1:n, ovvero a fronte di 1 modello possono essere
+generati n schemi, i quali tutti avranno le caratteristiche definite
+dal modello.</p>
+<p>In pratica il modello è lo “stampo” con cui vengono creati
+degli schemi, aventi la medesima struttura ma (probabilmente) valori
+diversi.</p>
+<h2 class="western">Le categorie dei modelli</h2>
+<p>I modelli possono essere associati a delle categorie di
+appartenenza.</p>
+<p>Lo scopo è quello di raggruppare da un punto di vista logico i
+modelli, e di conseguenza gli schemi da essi generati.</p>
+<h2 class="western">Le regole di elaborazione</h2>
+<p>Le regole di elaborazione definiscono come i dati di un modello
+“sorgente” devono essere elaborati per modificare uno schema
+“destinazione”.</p>
+<p>Vanno definite delle righe che rappresentano le regole di
+elaborazione. L’ordine è significativo.</p>
+<p>Le regole di elaborazione possono essere semplici o complesse. Le
+regole semplici prevedono le seguenti opzioni:</p>
+<ul>
+	<li><p>= 0: 	imposta al valore 0 la cella di destinazione</p>
+	<li><p>= (+):	imposta al valore della cella sorgente la cella di
+	destinazione</p>
+	<li><p>= (-):	cambia il segno al valore della cella sorgente e lo
+	mette nella cella destinazione</p>
+	<li><p>+:	somma il valore della cella sorgente al valore corrente
+	della cella destinazione</p>
+	<li><p>-:	sottrae il valore della cella sorgente dal valore corrente
+	della cella destinazione</p>
+</ul>
+<p>In alternativa, può essere definita una formula arbitraria, in
+cui si possono utilizzare le normali operazioni aritmetiche, e si può
+fare riferimento a qualsiasi cella dello schema sorgente o dello
+schema destinazione, e ci si può riferire ad alcuni parametri di
+elaborazione (<i>v. infra</i>).</p>
+<h3 class="western">Sintassi delle formule</h3>
+<p>Nelle formule i parametri vanno racchiusi tra parentesi quadre [ e
+].</p>
+<p>I parametri possono riferirsi alle celle dello schema sorgente,
+alle celle dello schema destinazione, oppure ai parametri (globali,
+della categoria, del modello, dello specifico schema).</p>
+<p>$ si riferisce a valori lato “sorgente”, @ si riferisce a
+valori lato “destinazione”.</p>
+<p>I parametri si sviluppano nel seguente modo</p>
+<p><span style="background: #fff200">[$]</span> valore della cella
+sorgente indicata nella regola</p>
+<p><span style="background: #fff200">[$Rx.Cy]</span> valore della
+cella dello schema sorgente individuata dalla riga Rx e dalla colonna
+Cy (separate dal . -punto-)</p>
+<p><span style="background: #fff200">[@]</span> valore della cella
+destinazione indicata nella regola</p>
+<p><span style="background: #fff200">[@Rx.Cy]</span> valore della
+cella dello schema destinazione individuata dalla riga Rx e dalla
+colonna Cy (separate dal . -punto-)</p>
+<p>Nelle regole possono essere inseriti dei parametri, individuati da
+un “nome”, e dal punto in cui il valore del parametro viene
+definito. I parametri possono essere di tipo:</p>
+<p><b>#G</b> = globale</p>
+<p><b>#C</b> = di categoria (di appartenenza del modello e,
+indirettamente, dello schema)</p>
+<p><b>#M</b> = di modello (e indirettamente degli schemi che fanno
+capo a quel modello)</p>
+<p><b>#S</b> = di schema (specifici dello schema)</p>
+<p>dopo la lettera serve un qualificatore, # per il parametro
+globale, $ per lato sorgente, @ per lato destinazione.</p>
+<p>Si potrà avere pertanto:</p>
+<p><span style="background: #fff200">[#G</span><span style="background: #81d41a">#</span><span style="background: #fff200">nome]</span>
+valore del parametro Globale “nome”</p>
+<p><span style="background: #fff200">[#C</span><span style="background: #81d41a">$</span><span style="background: #fff200">nome]</span>
+valore del parametro “nome” della categoria lato schema sorgente</p>
+<p><span style="background: #fff200">[#M</span><span style="background: #81d41a">$</span><span style="background: #fff200">nome]</span>
+valore del parametro “nome” del modello lato schema sorgente</p>
+<p><span style="background: #fff200">[#S</span><span style="background: #81d41a">$</span><span style="background: #fff200">nome]</span>
+valore del parametro “nome” dello schema sorgente</p>
+<p><span style="background: #fff200">[#C</span><span style="background: #81d41a">@</span><span style="background: #fff200">nome]</span>
+valore del parametro “nome” della categoria lato schema
+destinazione</p>
+<p><span style="background: #fff200">[#M</span><span style="background: #81d41a">@</span><span style="background: #fff200">nome]</span>
+valore del parametro “nome” del modello lato schema destinazione</p>
+<p><span style="background: #fff200">[#S</span><span style="background: #81d41a">@</span><span style="background: #fff200">nome]</span>
+valore del parametro “nome” dello schema destinazione</p>
+<h2 class="western">Classificazione parametri</h2>
+<p>I parametri possono essere usati nel contesto delle regole di
+elaborazione per determinare il valore da attribuire ad una cella.</p>
+<p>Ci sono 4 livelli di parametri:</p>
+<ul>
+	<li><p>G = Globali. Sono i parametri che non sono associati ad uno
+	specifico schema/modello/categoria. Esiste apposito form per la loro
+	gestione.</p>
+	<li><p>C = Categoria. Sono i parametri disponibili per tutti gli
+	schemi il cui modello appartiene a quella categoria. Univoci a
+	livello di categoria.</p>
+	<li><p>M = Modello. Sono i parametri disponibili per tutti gli
+	schemi con tale modello di riferimento.</p>
+	<li><p>S = Schema. Sono i parametri specifici definiti per un
+	singolo schema.</p>
+</ul>
+<p>I parametri sono qualificati da un codice, che li definisce e li
+qualifica (è il “nome” di riferimento negli esempi delle
+formule), una descrizione mnemonica non utilizzata, ed un valore
+numerico utilizzabile nelle formule.</p>
 </body>
+</html>
