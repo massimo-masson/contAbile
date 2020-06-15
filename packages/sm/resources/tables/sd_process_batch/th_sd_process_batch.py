@@ -67,7 +67,9 @@ class Form(BaseComponent):
         # Quando invece viene attivato il "fired", allora scatta.
         fb.dataRpc('.runBatch', self.runBatch, 
                 batch_id='=.record.id', 
-                _fired='^.action_run_batch')
+                _fired='^.action_run_batch',
+                _onResult = 'this.form.reload()'
+                )
 
         # button enabled only if form is not locked (edit mode)
         fb.button('!![it]Elabora batch', action=action_run_batch,

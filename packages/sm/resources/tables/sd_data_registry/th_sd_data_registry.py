@@ -147,6 +147,7 @@ class Form(BaseComponent):
             if (optsel == true) {  
                 FIRE .action_run_import;
                 //window.location.reload(false);
+                //this.form.reload()
                 }  
             else {  
                 alert("Operazione annullata...");
@@ -155,7 +156,8 @@ class Form(BaseComponent):
         pane.dataRpc('.dummy', self.proxyImportBilVer01_lot, 
                     record = '=.record', 
                     lot_code = '=.import.lot',
-                    _fired = '^.action_run_import'
+                    _fired = '^.action_run_import',
+                    _onResult = 'this.form.reload()'
                     )
 
         fb.dbselect(value = '^.import.lot',
@@ -180,13 +182,15 @@ class Form(BaseComponent):
     def registryButtonRicrea(self, pane):
         pane.dataRpc('.reloadSchema', self.proxyRebuildStoreBag, 
         record = '=.record', 
-        _fired = '^.action_recreate_storeBag')
+        _fired = '^.action_recreate_storeBag',
+        _onResult = 'this.form.reload()'
+        )
 
         action_ricrea = '''
             var optsel = confirm("Ricostruzione schema?"); 
             if (optsel == true) {  
                 FIRE .action_recreate_storeBag;
-                window.location.reload(false);
+                //window.location.reload(false);
                 }  
             else {  
                 alert("Operazione annullata...");
@@ -200,13 +204,15 @@ class Form(BaseComponent):
     def registryButtonValoriACaso(self, pane):
         pane.dataRpc('.dummy', self.ValoriACaso, 
         record = '=.record',
-        _fired = '^.ValoriACaso')
+        _fired = '^.ValoriACaso',
+        _onResult = 'this.form.reload()'
+        )
 
         action_random = '''
             var optsel = confirm("Riempio con valori a caso?"); 
             if (optsel == true) {  
                 FIRE .ValoriACaso;
-                window.location.reload(false);
+                //window.location.reload(false);
                 }  
             '''
         pane.button('!![it]Valori a caso', 
@@ -216,7 +222,9 @@ class Form(BaseComponent):
     def registryButtonStampaBag(self, pane):
         pane.dataRpc('.dummy', self.StampaBag,
                 record = '=.record',
-                _fired = '^.StampaBag')
+                _fired = '^.StampaBag',
+                #_onResult = 'this.form.reload()'                
+                )
 
         action_StampaBag = '''
             var optsel = confirm("Stampo Bag?"); 
