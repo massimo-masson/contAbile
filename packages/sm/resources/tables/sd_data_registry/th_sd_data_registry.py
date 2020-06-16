@@ -160,7 +160,10 @@ class Form(BaseComponent):
                     record = '=.record', 
                     lot_code = '=.import.lot',
                     _fired = '^.action_run_import',
-                    _onResult = 'this.form.reload()'
+                    _onResult = '''SET .import.lot=""; \
+                                this.form.reload(); \
+                                alert("Dati importati")
+                                '''
                     )
 
         fb.dbselect(value = '^.import.lot',

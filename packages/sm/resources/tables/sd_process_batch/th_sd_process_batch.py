@@ -68,7 +68,7 @@ class Form(BaseComponent):
         fb.dataRpc('.runBatch', self.runBatch, 
                 batch_id='=.record.id', 
                 _fired='^.action_run_batch',
-                _onResult = 'this.form.reload()'
+                _onResult = 'this.form.reload(); alert("Elaborazione completata")'
                 )
 
         # button enabled only if form is not locked (edit mode)
