@@ -5,6 +5,7 @@ from gnr.web.gnrbaseclasses import BaseComponent
 from gnr.core.gnrdecorator import public_method
 
 from gnr.core.gnrbag import Bag
+import datetime
 import random
 
 class View(BaseComponent):
@@ -20,6 +21,7 @@ class View(BaseComponent):
         r.fieldcell('date_ref_to')
         r.fieldcell('is_protected')
         r.fieldcell('model_category')
+        r.fieldcell('last_import')
 
     def th_order(self):
         return 'code'
@@ -87,7 +89,7 @@ class Form(BaseComponent):
 
         fb.field('code', validate_nodup = True, validate_case = 'upper')
         fb.field('@sm_model__id.@sm_category__id.description', readOnly = True)
-        fb.div()
+        fb.field('last_import', readOnly = True)
 
         fb.field('sm_model__id', auxColumns = '$description,@sm_category__id.description', 
                 hasDownArrow = True)
@@ -136,6 +138,7 @@ class Form(BaseComponent):
 
     def registryImportPanel(self, pane):
         fb = pane.formbuilder(cols = 1, border_spacing = '4px', colswidth = 'auto')
+        
         fb.div('!![it]Selezionare un lotto di dati da bilancio di verifica e importare',
                 background_color = 'lightgreen')
         fb.div('!![it]Si possono selezionare solo lotti con modello corrispondente \
@@ -170,7 +173,9 @@ class Form(BaseComponent):
 
         fb.button('!![it]Importazione', width='20em', 
                 action = action_runImport,
-                disabled = '^.controller.locked')
+                disabled = '^.controller.locked',
+                _onResult = '''alert("Operazione terminata");'''
+                )
 
     def registryButtons(self, pane):
         fb = pane.formbuilder(cols = 10, border_spacing = '4px', align = 'left')
@@ -250,6 +255,7 @@ class Form(BaseComponent):
 
         record['storebag'] = b
         record['status'] = 'ELABORABILE'
+        record['last_import'] = ''
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()
         return b
@@ -263,6 +269,7 @@ class Form(BaseComponent):
         #print('storebag ottenuta:', b)
         record['storebag'] = b
         record['status'] = 'IMPORTED'
+        record['last_import'] = datetime.datetime.now()
         self.db.table('sm.sd_data_registry').calcStoreBag(record['sm_model__id'], record['storebag'])
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()
@@ -282,6 +289,7 @@ class Form(BaseComponent):
                     self.db.table('sm.sd_data_registry')\
                         .setStoreBagCellValue(record['storebag'], r, c, v)        
         record['status'] = 'RANDOM'
+        record['last_import'] = ''
         self.db.table('sm.sd_data_registry').calcStoreBag(record['sm_model__id'], record['storebag'])
         self.db.table('sm.sd_data_registry').update(record)
         self.db.commit()

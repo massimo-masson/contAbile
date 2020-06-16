@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<GenRoBag><menu ext="py" path="menu.py"><it_gestione base="Gestione" en="Management"></it_gestione>
+<it_schemi base="Schemi"></it_schemi>
+<it_elaborazioni base="Elaborazioni" en="Processes"></it_elaborazioni>
+<it_parametri_globali base="Parametri globali" en="Global parameters"></it_parametri_globali>
+<it_parametri base="Parametri" en="Parameters"></it_parametri>
+<it_parametri_categorie_ _tag="it__parametri_categorie_" base="(Parametri categorie)" en="(Category parameters)" it="(Parametri categorie---)"></it_parametri_categorie_>
+<it_parametri_modelli_ _tag="it__parametri_modelli_" base="(Parametri modelli)" en="(Model parameters)"></it_parametri_modelli_>
+<it_parametri_schemi_ _tag="it__parametri_schemi_" base="(Parametri schemi)" en="(Schema parameters)"></it_parametri_schemi_>
+<it_importazioni base="Importazioni" en="Imports"></it_importazioni>
+<it_da_bilancio_di_verifica base="Da bilancio di verifica" en="From trial balance"></it_da_bilancio_di_verifica>
+<it_lotti_importazione base="Lotti importazione" en="Import lots"></it_lotti_importazione>
+<it_righe_lotti base="Righe lotti"></it_righe_lotti>
+<it_configurazione base="Configurazione" en="Configuration"></it_configurazione>
+<it_modelli base="Modelli" en="Lot:"></it_modelli>
+<it_categorie base="Categorie" en="Categories"></it_categorie>
+<it_regole_elaborazione base="Regole elaborazione"></it_regole_elaborazione>
+<it_ruleset_entry base="Ruleset entry"></it_ruleset_entry>
+<it_tipi_riga base="Tipi riga"></it_tipi_riga>
+<it_classificazione_parametri base="Classificazione parametri" en="Parameters classification"></it_classificazione_parametri>
+<it_collegamenti_bilancio_di_verifica base="Collegamenti bilancio di verifica" en="trial balance links"></it_collegamenti_bilancio_di_verifica>
+<it_utilities base="Utilities"></it_utilities>
+<it_import_export base="Import/export" en="Import/export"></it_import_export></menu>
+<model><sd_data_registry ext="py" path="model/sd_data_registry.py"><it_anagrafica_schema base="Anagrafica schema" en="Schema registry"></it_anagrafica_schema>
+<it_anagrafiche_schemi base="Anagrafiche schemi" en="Schema registries"></it_anagrafiche_schemi>
+<it_codice_schema base="Codice schema" en="Schema code"></it_codice_schema>
+<it_descrizione_schema base="Descrizione schema" en="Schema description"></it_descrizione_schema>
+<it_schema base="Schema"></it_schema>
+<it_note base="Note" en="Notes"></it_note>
+<it_modello base="Modello" en="Model"></it_modello>
+<it_categoria base="Categoria" en="Category"></it_categoria>
+<it_storebag base="StoreBag"></it_storebag>
+<it_dati base="Dati" en="Data"></it_dati>
+<it_stato_schema base="Stato schema"></it_stato_schema>
+<it_protetto base="Protetto"></it_protetto>
+<it_data_da base="Data da" en="Date from"></it_data_da>
+<it_data_a base="Data a" en="Date to"></it_data_a>
+<it_periodo_di_riferimento base="Periodo di riferimento"></it_periodo_di_riferimento></sd_data_registry>
+<sd_data_registry_log ext="py" path="model/sd_data_registry_log.py"><it_log_operazioni base="Log operazioni" en="Operations log"></it_log_operazioni>
+<it_schema base="Schema"></it_schema>
+<it_data_elaborazione base="Data elaborazione" en="Elaboration date"></it_data_elaborazione>
+<it_data base="Data" en="Date"></it_data>
+<it_note base="Note" en="Notes"></it_note>
+<it_utente base="Utente"></it_utente>
+<it_set_regole base="Set regole"></it_set_regole>
+<it_schema_origine base="Schema origine"></it_schema_origine>
+<it_storebag_sorgente_dati base="StoreBag sorgente dati"></it_storebag_sorgente_dati>
+<it_storebag_pre_elaborazione base="StoreBag pre-elaborazione"></it_storebag_pre_elaborazione></sd_data_registry_log>
+<sd_parameter_category ext="py" path="model/sd_parameter_category.py"><it_parametro_di_categoria base="Parametro di categoria"></it_parametro_di_categoria>
+<it_parametri_di_categoria base="Parametri di categoria" en="Category parameters"></it_parametri_di_categoria>
+<it_codice_parametro_di_categoria base="Codice parametro di categoria" en="Category parameter code"></it_codice_parametro_di_categoria>
+<it_descrizione_parametro_di_categoria base="Descrizione parametro di categoria" en="Category parameter description"></it_descrizione_parametro_di_categoria>
+<it_valore base="Valore"></it_valore>
+<it_val base="Val"></it_val>
+<it_classe base="Classe" en="Class"></it_classe>
+<it_rif_categoria base="Rif. categoria"></it_rif_categoria></sd_parameter_category>
+<sd_parameter_global ext="py" path="model/sd_parameter_global.py"><it_parametro_globale base="Parametro globale"></it_parametro_globale>
+<it_parametri_globali base="Parametri globali" en="Global parameters"></it_parametri_globali>
+<it_codice_parametro_globale base="Codice parametro globale" en="Global parameter code"></it_codice_parametro_globale>
+<it_descrizione_parametro_globale base="Descrizione parametro globale" en="Global parameter description"></it_descrizione_parametro_globale>
+<it_valore base="Valore"></it_valore>
+<it_val base="Val"></it_val>
+<it_classe base="Classe" en="Class"></it_classe>
+<it_rif_categoria base="Rif. categoria"></it_rif_categoria>
+<it_rif_modello base="Rif. modello"></it_rif_modello>
+<it_rif_schema base="Rif. schema"></it_rif_schema></sd_parameter_global>
+<sd_parameter_model ext="py" path="model/sd_parameter_model.py"><it_parametro_di_modello base="Parametro di modello"></it_parametro_di_modello>
+<it_parametri_di_modello base="Parametri di modello" en="Model parameters"></it_parametri_di_modello>
+<it_codice_parametro_di_modello base="Codice parametro di modello" en="Model parameter code"></it_codice_parametro_di_modello>
+<it_descrizione_parametro_di_modello base="Descrizione parametro di modello" en="Model parameter descritpion"></it_descrizione_parametro_di_modello>
+<it_valore base="Valore"></it_valore>
+<it_val base="Val"></it_val>
+<it_classe base="Classe" en="Class"></it_classe>
+<it_rif_modello base="Rif. modello"></it_rif_modello></sd_parameter_model>
+<sd_parameter_schema ext="py" path="model/sd_parameter_schema.py"><it_parametro_di_schema base="Parametro di schema"></it_parametro_di_schema>
+<it_parametri_di_schema base="Parametri di schema" en="Schema parameters"></it_parametri_di_schema>
+<it_codice_parametro_di_schema base="Codice parametro di schema" en="Schema parameter code"></it_codice_parametro_di_schema>
+<it_descrizione_parametro_di_schema base="Descrizione parametro di schema" en="Schema parameter descritpion"></it_descrizione_parametro_di_schema>
+<it_valore base="Valore"></it_valore>
+<it_val base="Val"></it_val>
+<it_classe base="Classe" en="Class"></it_classe>
+<it_rif_schema base="Rif. schema"></it_rif_schema></sd_parameter_schema>
+<sd_process_batch ext="py" path="model/sd_process_batch.py"><it_lotto_elaborazioni base="Lotto elaborazioni" en="Processes lots"></it_lotto_elaborazioni>
+<it_lotti_elaborazioni base="Lotti elaborazioni" en="Process lots"></it_lotti_elaborazioni>
+<it_codice_lotto base="Codice lotto" en="Lot code"></it_codice_lotto>
+<it_descrizione_schema base="Descrizione schema" en="Schema description"></it_descrizione_schema>
+<it_lotti base="Lotti" en="Lots"></it_lotti>
+<it_note base="Note" en="Notes"></it_note>
+<it_periodo_di_riferimento base="Periodo di riferimento"></it_periodo_di_riferimento></sd_process_batch>
+<sd_process_entry ext="py" path="model/sd_process_entry.py"><it_fase_elaborazione base="Fase elaborazione" en="Process phase"></it_fase_elaborazione>
+<it_fasi_elaborazione base="Fasi elaborazione" en="Process phases"></it_fasi_elaborazione>
+<it_posizione base="Posizione"></it_posizione>
+<it_fase base="Fase" en="Phase"></it_fase>
+<it_descrizione base="Descrizione" en="Description"></it_descrizione>
+<it_lotto_di_elaborazione base="Lotto di elaborazione" en="Process lot"></it_lotto_di_elaborazione>
+<it_lotto base="Lotto" en="Lot"></it_lotto>
+<it_regole_di_elaborazione base="Regole di elaborazione"></it_regole_di_elaborazione>
+<it_regole base="Regole"></it_regole>
+<it_schema_sorgente base="Schema sorgente"></it_schema_sorgente>
+<it_src base="Src"></it_src>
+<it_schema_destinazione base="Schema destinazione"></it_schema_destinazione>
+<it_dst base="Dst" en="Dest"></it_dst></sd_process_entry>
+<si_bilver_01_lot ext="py" path="model/si_bilver_01_lot.py"><it_lotto_importazione_bilancio_di_verifica base="Lotto importazione bilancio di verifica" en="Trial balance import lot"></it_lotto_importazione_bilancio_di_verifica>
+<it_lotti_importazione_bilancio_di_verifica base="Lotti importazione bilancio di verifica" en="Trial balance import lots"></it_lotti_importazione_bilancio_di_verifica>
+<it_codice_lotto_importazione base="Codice lotto importazione" en="Import lot code"></it_codice_lotto_importazione>
+<it_descrizione_lotto_importazione base="Descrizione lotto importazione" en="Import lot description"></it_descrizione_lotto_importazione>
+<it_modello_di_schema_di_riferimento base="Modello di schema di riferimento" en="Reference schema model"></it_modello_di_schema_di_riferimento>
+<it_modello_di_importazione base="Modello di importazione" en="Import model"></it_modello_di_importazione></si_bilver_01_lot>
+<si_bilver_01_lot_row ext="py" path="model/si_bilver_01_lot_row.py"><it_riga_bilancio_per_lotto base="Riga bilancio per lotto"></it_riga_bilancio_per_lotto>
+<it_codice_esterno_riga base="Codice esterno riga" en="External row code"></it_codice_esterno_riga>
+<it_descrizione_esterna_riga base="Descrizione esterna riga" en="External row descritpion"></it_descrizione_esterna_riga>
+<it_valore base="Valore"></it_valore>
+<it_lotto_importazione base="Lotto importazione" en="Import lot"></it_lotto_importazione></si_bilver_01_lot_row>
+<si_bilver_01_model ext="py" path="model/si_bilver_01_model.py"><it_collegamenti_modello base="Collegamenti modello" en="Model links"></it_collegamenti_modello>
+<it_codice_modello_importazione base="Codice modello importazione" en="Import model code"></it_codice_modello_importazione>
+<it_descrizione_modello_importazione base="Descrizione modello importazione" en="Import model description"></it_descrizione_modello_importazione>
+<it_codice_modello base="Codice modello" en="Model code"></it_codice_modello></si_bilver_01_model>
+<si_bilver_01_model_link ext="py" path="model/si_bilver_01_model_link.py"><it_regola_collegamento_modello base="Regola collegamento modello"></it_regola_collegamento_modello>
+<it_modello_di_impostazione base="Modello di impostazione" en="Setup model"></it_modello_di_impostazione>
+<it_modello_di_riferimento base="Modello di riferimento" en="Reference model"></it_modello_di_riferimento>
+<it_codice_esterno_riga base="Codice esterno riga" en="External row code"></it_codice_esterno_riga>
+<it_descrizione_esterna_riga base="Descrizione esterna riga" en="External row descritpion"></it_descrizione_esterna_riga>
+<it_riga_modello_collegata base="Riga modello collegata"></it_riga_modello_collegata>
+<it_colonna_modello_collegata base="Colonna modello collegata" en="Linked model column"></it_colonna_modello_collegata>
+<it_inversione_segno base="Inversione segno" en="Reverse sign"></it_inversione_segno></si_bilver_01_model_link>
+<sm_category ext="py" path="model/sm_category.py"><it_categoria_modello base="Categoria modello" en="Model category"></it_categoria_modello>
+<it_categorie_modello base="Categorie modello" en="Model categories"></it_categorie_modello>
+<it_codice_categoria base="Codice categoria" en="Category code"></it_codice_categoria>
+<it_descrizione_categoria base="Descrizione categoria" en="Category description"></it_descrizione_categoria>
+<it_note base="Note" en="Notes"></it_note></sm_category>
+<sm_model ext="py" path="model/sm_model.py"><it_modello_di_schema base="Modello di schema" en="Schema model"></it_modello_di_schema>
+<it_modelli_di_schemi base="Modelli di schemi" en="Schema models"></it_modelli_di_schemi>
+<it_codice_modello base="Codice modello" en="Model code"></it_codice_modello>
+<it_descrizione_modello base="Descrizione modello" en="Model description"></it_descrizione_modello>
+<it_note base="Note" en="Notes"></it_note>
+<it_categoria_schema base="Categoria schema" en="Schema category"></it_categoria_schema>
+<it_righe_dinamiche base="Righe dinamiche"></it_righe_dinamiche>
+<it_colonne_dinamiche base="Colonne dinamiche" en="Dynamic columns"></it_colonne_dinamiche>
+<it_progressivo_versione_interna base="Progressivo versione interna"></it_progressivo_versione_interna>
+<it_int_vers_ base="int.vers."></it_int_vers_>
+<it_codice base="Codice" en="Code"></it_codice>
+<it_descrizione base="Descrizione" en="Description"></it_descrizione></sm_model>
+<sm_model_col ext="py" path="model/sm_model_col.py"><it_colonna_modello base="Colonna modello" en="Model column"></it_colonna_modello>
+<it_colonne_modello base="Colonne modello" en="Model columns"></it_colonne_modello>
+<it_descrizione_colonna base="Descrizione colonna" en="Column description"></it_descrizione_colonna>
+<it_tipo_campo base="tipo campo"></it_tipo_campo>
+<it_posizione_colonna base="posizione colonna"></it_posizione_colonna>
+<it_note base="Note" en="Notes"></it_note>
+<it_anagrafica_modello base="Anagrafica modello" en="Model registry"></it_anagrafica_modello>
+<it_codice_colonna_duplicato_nel_modello base="Codice colonna duplicato nel modello" en="Column code duplicated in model"></it_codice_colonna_duplicato_nel_modello></sm_model_col>
+<sm_model_formula ext="py" path="model/sm_model_formula.py"><it_formula_cella base="Formula cella" en="Cell formula"></it_formula_cella>
+<it_formule_modello base="Formule modello" en="Model formulas"></it_formule_modello>
+<it_modello base="Modello" en="Model"></it_modello>
+<it_riga_modello base="Riga modello"></it_riga_modello>
+<it_colonna_modello base="Colonna modello" en="Model column"></it_colonna_modello>
+<it_descrizione_formula base="Descrizione formula" en="Formula description"></it_descrizione_formula>
+<it_formula base="Formula" en="Formula"></it_formula>
+<it_cella_di_riferimento base="Cella di riferimento" en="Reference cell"></it_cella_di_riferimento></sm_model_formula>
+<sm_model_row ext="py" path="model/sm_model_row.py"><it_riga_modello base="Riga modello"></it_riga_modello>
+<it_righe_modello base="Righe modello"></it_righe_modello>
+<it_descrizione_riga base="Descrizione riga" en="Row description"></it_descrizione_riga>
+<it_tipo_riga base="Tipo riga"></it_tipo_riga>
+<it_formula_riga base="Formula riga" en="Row formula"></it_formula_riga>
+<it_formula base="Formula" en="Formula"></it_formula>
+<it_posizione_riga base="Posizione riga"></it_posizione_riga>
+<it_note base="Note" en="Notes"></it_note>
+<it_anagrafica_modello base="Anagrafica modello" en="Model registry"></it_anagrafica_modello>
+<it_codice_riga_duplicato_nel_modello base="Codice riga duplicato nel modello" en="Row code duplicated in model"></it_codice_riga_duplicato_nel_modello></sm_model_row>
+<sm_parameter_class ext="py" path="model/sm_parameter_class.py"><it_classe_del_parametro base="Classe del parametro" en="Parameter's class"></it_classe_del_parametro>
+<it_classi_dei_parametri base="Classi dei parametri" en="Parameters Classes"></it_classi_dei_parametri>
+<it_codice_tipo_parametro base="Codice tipo parametro" en="Parameter type code"></it_codice_tipo_parametro>
+<it_descrizione_classe_parametro base="Descrizione classe parametro" en="Parameter's class description"></it_descrizione_classe_parametro></sm_parameter_class>
+<sm_ruleset ext="py" path="model/sm_ruleset.py"><it_regola_di_trasformazione base="Regola di trasformazione"></it_regola_di_trasformazione>
+<it_regole_di_trasformazione base="Regole di trasformazione"></it_regole_di_trasformazione>
+<it_codice_set_di_regole base="Codice set di regole" en="Ruleset code"></it_codice_set_di_regole>
+<it_descrizione base="Descrizione" en="Description"></it_descrizione>
+<it_note base="Note" en="Notes"></it_note>
+<it_inizializza_destinazione base="Inizializza destinazione" en="Initialize destination"></it_inizializza_destinazione>
+<it_inizializza base="Inizializza" en="Initialize"></it_inizializza>
+<it_modello_sorgente base="Modello sorgente" en="Source model"></it_modello_sorgente>
+<it_modello_destinazione base="Modello destinazione" en="Destination model"></it_modello_destinazione>
+<it_regole base="Regole"></it_regole></sm_ruleset>
+<sm_ruleset_entry ext="py" path="model/sm_ruleset_entry.py"><it_trasformazione_cella_modello base="Trasformazione cella modello"></it_trasformazione_cella_modello>
+<it_trasformazione_celle_modello base="Trasformazione celle modello"></it_trasformazione_celle_modello>
+<it_posizione base="Posizione"></it_posizione>
+<it_pos base="Pos"></it_pos>
+<it_descrizione base="Descrizione" en="Description"></it_descrizione>
+<it_ruleset base="Ruleset"></it_ruleset>
+<it_riga_sorgente base="Riga sorgente"></it_riga_sorgente>
+<it_src_sm_model_id _tag="it_src_sm_model__id" base="src_sm_model__id"></it_src_sm_model_id>
+<it_colonna_sorgente base="Colonna sorgente" en="Source column"></it_colonna_sorgente>
+<it_riga_destinazione base="Riga destinazione"></it_riga_destinazione>
+<it_dst_sm_model_id _tag="it_dst_sm_model__id" base="dst_sm_model__id"></it_dst_sm_model_id>
+<it_colonna_destinazione base="Colonna destinazione" en="Destination column"></it_colonna_destinazione>
+<it_ricalcola_prima_di_applicare_la_regola base="Ricalcola prima di applicare la regola"></it_ricalcola_prima_di_applicare_la_regola>
+<it_ricalcola base="Ricalcola"></it_ricalcola>
+<it_operazione base="Operazione" en="Operation"></it_operazione>
+<it_formula base="Formula" en="Formula"></it_formula>
+<it_fn base="fn"></it_fn>
+<it_regole base="Regole"></it_regole></sm_ruleset_entry></model>
+<resources><tables><sd_data_registry><th_sd_data_registry ext="py" path="resources/tables/sd_data_registry/th_sd_data_registry.py"><it_tutti base="Tutti"></it_tutti>
+<it_clienti base="Clienti" en="Customer"></it_clienti>
+<it_fornitori base="Fornitori" en="Supplier"></it_fornitori>
+<it_schema base="Schema"></it_schema>
+<it_parametri_schema base="Parametri schema"></it_parametri_schema>
+<it_log_attività base="Log attività" en="Activities log"></it_log_attività>
+<it_importazione_dati base="Importazione dati" en="Data import"></it_importazione_dati>
+<it_selezionare_un_lotto_di_dati_da_bilancio_di_verifica_e_importare base="Selezionare un lotto di dati da bilancio di verifica e importare"></it_selezionare_un_lotto_di_dati_da_bilancio_di_verifica_e_importare>
+<it_lotto_da_importare base="Lotto da importare" en="Import lot"></it_lotto_da_importare>
+<it_importazione base="Importazione" en="Import"></it_importazione>
+<it_ricrea_schema base="Ricrea schema"></it_ricrea_schema>
+<it_valori_a_caso base="Valori a caso"></it_valori_a_caso>
+<it_stampa_bag base="Stampa Bag"></it_stampa_bag></th_sd_data_registry></sd_data_registry>
+<sd_process_batch><th_sd_process_batch ext="py" path="resources/tables/sd_process_batch/th_sd_process_batch.py"><it_fasi_del_processo_di_elaborazione base="Fasi del processo di elaborazione" en="Batch process phase"></it_fasi_del_processo_di_elaborazione>
+<it_elabora_batch base="Elabora batch" en="Batch process"></it_elabora_batch></th_sd_process_batch></sd_process_batch>
+<sd_process_entry><th_sd_process_entry ext="py" path="resources/tables/sd_process_entry/th_sd_process_entry.py"><it_lotto_ base="Lotto:" en="Lot:"></it_lotto_>
+<it_set_di_regole base="Set di regole"></it_set_di_regole>
+<it_da_ base="Da:" en="From:"></it_da_>
+<it_a_ base="A:" en="To:"></it_a_></th_sd_process_entry></sd_process_entry>
+<si_bilver_01_lot><th_si_bilver_01_lot ext="py" path="resources/tables/si_bilver_01_lot/th_si_bilver_01_lot.py"><it_modello_import base="Modello import" en="Import model"></it_modello_import>
+<it_per_importazione_dati_utilizzare_nella_prima_colonna_il_codice_del_lotto_ base="Per importazione dati utilizzare nella prima colonna il codice del lotto."></it_per_importazione_dati_utilizzare_nella_prima_colonna_il_codice_del_lotto_>
+<it_dati base="Dati" en="Data"></it_dati>
+<it_righe_lotto base="Righe lotto"></it_righe_lotto></th_si_bilver_01_lot></si_bilver_01_lot>
+<si_bilver_01_model><th_si_bilver_01_model ext="py" path="resources/tables/si_bilver_01_model/th_si_bilver_01_model.py"><it_codice_per_importazione base="Codice per importazione" en="Code for import"></it_codice_per_importazione>
+<it_utilizzare_il_codice_indicato_come_colonna_chiave_per_importazione_dati_ base="Utilizzare il codice indicato come colonna chiave per importazione dati."></it_utilizzare_il_codice_indicato_come_colonna_chiave_per_importazione_dati_>
+<it_dettaglio base="Dettaglio" en="Detail"></it_dettaglio>
+<it_collegamenti base="Collegamenti" en="Links"></it_collegamenti></th_si_bilver_01_model></si_bilver_01_model>
+<sm_category><th_sm_category ext="py" path="resources/tables/sm_category/th_sm_category.py"><it_parametri base="Parametri" en="Parameters"></it_parametri></th_sm_category></sm_category>
+<sm_model><th_sm_model ext="py" path="resources/tables/sm_model/th_sm_model.py"><it_righe base="Righe"></it_righe>
+<it_colonne base="Colonne" en="Columns"></it_colonne>
+<it_formule base="Formule" en="Formulas"></it_formule>
+<it_parametri_modello base="Parametri modello"></it_parametri_modello></th_sm_model></sm_model>
+<sm_ruleset><th_sm_ruleset ext="py" path="resources/tables/sm_ruleset/th_sm_ruleset.py"><it_modelli_origine_e_destinazione base="Modelli origine e destinazione" en="Source and destination models"></it_modelli_origine_e_destinazione>
+<it_operazioni_componenti_la_regola base="Operazioni componenti la regola" en="Rule set operations"></it_operazioni_componenti_la_regola>
+<it_modello_sorgente base="Modello sorgente" en="Source model"></it_modello_sorgente>
+<it_modello_destinazione base="Modello destinazione" en="Destination model"></it_modello_destinazione></th_sm_ruleset></sm_ruleset>
+<sm_ruleset_entry><th_sm_ruleset_entry ext="py" path="resources/tables/sm_ruleset_entry/th_sm_ruleset_entry.py"><it_righe base="Righe"></it_righe>
+<it_colonne base="Colonne" en="Columns"></it_colonne>
+<it_operazioni base="Operazioni" en="Operations"></it_operazioni>
+<it_formula base="Formula" en="Formula"></it_formula>
+<it_da_sorgente base="DA SORGENTE" en="FROM SOURCE"></it_da_sorgente>
+<it_da_destinazione base="DA DESTINAZIONE" en="FROM DESTINATION"></it_da_destinazione>
+<it_b_b_valore_della_cella_sorgente_indicata_nella_regola_vedi_sopra_ _tag="it__b_b_valore_della_cella_sorgente_indicata_nella_regola_vedi_sopra_" base="&lt;b&gt;[$]&lt;/b&gt; valore della cella sorgente indicata nella regola (vedi sopra)" en="[$] source cell value, from base rule"></it_b_b_valore_della_cella_sorgente_indicata_nella_regola_vedi_sopra_>
+<it_b_b_valore_della_cella_destinazione_indicata_nella_regola_vedi_sopra_ _tag="it__b_b_valore_della_cella_destinazione_indicata_nella_regola_vedi_sopra_" base="&lt;b&gt;[@]&lt;/b&gt; valore della cella destinazione indicata nella regola (vedi sopra)" en="[@] destination cell value, from base rule"></it_b_b_valore_della_cella_destinazione_indicata_nella_regola_vedi_sopra_>
+<it_b_rx_cy_b_valore_della_cella_sorgente_riga_rx_colonna_cy _tag="it__b_rx_cy_b_valore_della_cella_sorgente_riga_rx_colonna_cy" base="&lt;b&gt;[$Rx.Cy]&lt;/b&gt; valore della cella sorgente riga Rx colonna Cy" en="[$Rx.Cy] source cell value, row RX column Cy"></it_b_rx_cy_b_valore_della_cella_sorgente_riga_rx_colonna_cy>
+<it_b_rx_cy_b_valore_della_cella_destinazione_riga_rx_colonna_cy _tag="it__b_rx_cy_b_valore_della_cella_destinazione_riga_rx_colonna_cy" base="&lt;b&gt;[@Rx.Cy]&lt;/b&gt; valore della cella destinazione riga Rx colonna Cy" en="[@Rx.Cy] destination cell value, row Rx column Cy"></it_b_rx_cy_b_valore_della_cella_destinazione_riga_rx_colonna_cy>
+<it_b_g_nome_b_valore_del_parametro_globale_definito_da_nome_ _tag="it__b_g_nome_b_valore_del_parametro_globale_definito_da_nome_" base='&lt;b&gt;[#G#nome]&lt;/b&gt; valore del parametro globale definito da "nome"' en='[#G#name] global parameter "name"'></it_b_g_nome_b_valore_del_parametro_globale_definito_da_nome_>
+<it_python base="Python"></it_python>
+<it_non_implementato_ base="Non implementato." en="Not implemented"></it_non_implementato_></th_sm_ruleset_entry></sm_ruleset_entry></tables></resources></GenRoBag>
