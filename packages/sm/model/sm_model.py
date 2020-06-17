@@ -161,7 +161,7 @@ class Table(object):
         
         # model columns
         model_cols = self.db.table('sm.sm_model_col').query(
-                columns = '$code, $description',
+                columns = '$code, $description, $field_type',
                 where = '$sm_model__id=:model__id', model__id = model,
                 order_by = '$position'
                 ).fetch()
@@ -176,7 +176,32 @@ class Table(object):
 
         # add model columns from model
         for c in model_cols:
-                cols.addItem(c['code'], None, name = c['description'], width = '10em')
-         
+            # column code and description
+            cols.addItem(c['code'], None, name = c['description'], width = '10em')
+
+            # ATTRIBUTES
+            
+            # editable
+            cols.setAttr(c['code'], edit = False)
+
+            # field type
+            ft = c['field_type']
+            if (ft.upper() == 'N'):
+                field_type = 'N'
+            elif (ft.upper() == ''):
+                field_type = 'N'
+            else:
+                field_type = 'N'
+            cols.setAttr(c['code'], dtype = field_type)
+
+            # red negatives
+            cols.setAttr(c['code'], range_negative = 'value < 0')
+            cols.setAttr(c['code'], range_negative_color = 'Red')
+
+            #provette
+            # cols.setAttr(c['code'], range_high = 'code == "R010"')
+            # cols.setAttr(c['code'], range_high_color = 'Green')
+            # cols.setAttr(c['code'], range_high_font_weight = 'bold')
+        
         return structBag
         # END OF getStructBagFromModel

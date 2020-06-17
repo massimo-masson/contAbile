@@ -112,12 +112,14 @@ class Form(BaseComponent):
 
         # storebag schema
         sb = tc.contentPane(title = '!![it]Schema')
-
         frame = sb.bagGrid(#frameCode='registry_model',
                             datapath = '#FORM.model_dati',
                             storepath = '#FORM.record.storebag',
-                            structpath = '#FORM.record.registrystruct')
-
+                            structpath = '#FORM.record.registrystruct',
+                            addrow = False,
+                            delrow = False
+                            )
+        
         # schema parameters
         params = tc.contentPane(title = '!![it]Parametri schema')
         params.dialogTableHandler(relation = '@schema_parameters',

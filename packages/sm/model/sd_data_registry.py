@@ -151,10 +151,12 @@ class Table(object):
 
             # first 2 columns, fixed: 'code', 'description'
             current_storeBag[r['code']].setItem('code', r['code'])
+            current_storeBag[r['code']].setAttr('code', row_type = r['row_type'])
             current_storeBag[r['code']].setItem('description', r['description'])
 
             for c in model_cols:
                 current_storeBag[r['code']].setItem(c['code'], '')
+                #current_storeBag[r['code']].setAttr(c['code'], row_type = r['row_type'])
                 current_storeBag[r['code']].setAttr(c['code'], field_type = c['field_type'])
                 # data, formula or description?
                 if (r['row_type'] == 'desc'):
