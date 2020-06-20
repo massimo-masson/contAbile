@@ -23,6 +23,10 @@ class Table(object):
         tbl.column('field_type', dtype='A', size=':22', 
                 name_long='!![it]tipo campo')
 
+        tbl.column('field_format', dtype='A', size=':128', 
+                name_long='!![it]Formattazione campo', 
+                name_short='!![it]Formato col.')
+
         tbl.column('position', dtype='N', 
                 name_long='!![it]posizione colonna')
 
@@ -36,6 +40,18 @@ class Table(object):
         tbl_sm_model__id.relation('sm.sm_model.id', mode='foreignkey',
                 relation_name='columns',
                 onDelete='raise')
+
+    def CONST_field_type(self):
+        '''Return the constant values for the "field_type" field.
+        '''
+        CONST = 'N: Numerico'
+        return CONST
+
+    def CONST_field_format(self):
+        '''Return the constant values for the "field_format" field.
+        '''
+        CONST = "#_###.00:Con decimali, #_###: Arrotondati all'intero"
+        return CONST
 
     def validateCodeUniquePerModel(self, record = None):
         '''code must be unique inside a single model'''

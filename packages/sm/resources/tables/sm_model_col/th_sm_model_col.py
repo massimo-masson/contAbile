@@ -28,7 +28,16 @@ class ViewFromModel(BaseComponent):
         r.fieldcell('position', edit=True)
         r.fieldcell('code', edit=True)
         r.fieldcell('description', edit=True)
-        r.fieldcell('field_type', edit=True)
+        values_type = self.db.table('sm.sm_model_col').CONST_field_type()
+        r.fieldcell('field_type', edit=dict( 
+                tag = 'filteringSelect', 
+                values = values_type)
+                )
+        values_format = self.db.table('sm.sm_model_col').CONST_field_format()
+        r.fieldcell('field_format', edit=dict(
+                tag = 'filteringSelect',
+                values = values_format)
+                )
         r.fieldcell('notes', edit=True)
 
     def th_order(self):
@@ -46,6 +55,7 @@ class Form(BaseComponent):
         fb.field('code')
         fb.field('description')
         fb.field('field_type')
+        fb.field('field_format')
         fb.field('notes')
         fb.field('sm_model__id')
 

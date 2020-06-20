@@ -161,7 +161,7 @@ class Table(object):
         
         # model columns
         model_cols = self.db.table('sm.sm_model_col').query(
-                columns = '$code, $description, $field_type',
+                columns = '$code, $description, $field_type, $field_format',
                 where = '$sm_model__id=:model__id', model__id = model,
                 order_by = '$position'
                 ).fetch()
@@ -180,6 +180,12 @@ class Table(object):
             cols.addItem(c['code'], None, name = c['description'], width = '10em')
 
             # ATTRIBUTES
+
+            # format
+            if (c['field_format'] not in (None, '')):
+                cols.setAttr(c['code'], format = c['field_format'].replace('_', ','))
+            else:
+                cols.setAttr(c['code'], format = '#,###.00')
             
             # editable
             cols.setAttr(c['code'], edit = False)
