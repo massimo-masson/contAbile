@@ -50,5 +50,14 @@ def config(root,application=None):
                         table='sm.si_bilver_01_model')
 
     # menu utilities
-    #utilities = contAbile.branch('!![it]Utilities')
-    #utilities_impexp = utilities.branch('!![it]Import/export')
+    utilities = contAbile.branch('!![it]Utilities')
+
+    utilities.thpage('!![it]Modifica manuale dati schema', 
+            table = 'sm.sd_data_registry',
+            #viewResoruce = '',
+            formResource = 'FormEditable')
+
+    # utilities - raw tables
+    utilities_rawtabs = utilities.branch('!![it]Tabelle')
+    utilities_rawtabs.thpage('!![it]Modelli - righe', table = 'sm.sm_model_row')
+    utilities_rawtabs.thpage('!![it]Modelli - colonne', table = 'sm.sm_model_col')

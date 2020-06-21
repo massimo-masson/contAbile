@@ -105,7 +105,8 @@ class Form(BaseComponent):
         fb.field('status', readOnly = True)
         fb.field('is_protected')
 
-        fb.field('notes', tag = 'simpletextarea', colspan = 3, widht = '100%', height = '5em')
+        fb.field('notes', tag = 'simpletextarea', colspan = 3, 
+                widht = '100%', height = '5em')
 
     def registryBody(self, pane):
         tc = pane.tabContainer()
@@ -303,3 +304,13 @@ class Form(BaseComponent):
     @public_method
     def StampaBag(self, record = None, **kwargs):
         print(record['storebag'])
+
+
+class FormEditable(Form):
+
+    @public_method
+    def th_onLoading(self, record, newrecord, loadingParameters, recInfo):
+        structure_bag = self.db.table('sm.sm_model')\
+            .getStructBagFromModel(record['sm_model__id'],
+            edit_mode = True)
+        record['registrystruct'] = structure_bag

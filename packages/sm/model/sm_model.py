@@ -156,7 +156,7 @@ class Table(object):
 
         # END OF formulasDelete
 
-    def getStructBagFromModel(self, model):
+    def getStructBagFromModel(self, model, edit_mode = False):
         structBag = Bag()
         
         # model columns
@@ -188,7 +188,7 @@ class Table(object):
                 cols.setAttr(c['code'], format = '#,###.00')
             
             # editable
-            cols.setAttr(c['code'], edit = False)
+            cols.setAttr(c['code'], edit = edit_mode)
 
             # field type
             ft = c['field_type']
