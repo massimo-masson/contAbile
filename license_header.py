@@ -32,24 +32,3 @@
 # a proprietary license applies. In this case, contact the author
 # for a dedicated propietary license.
 # 
-
-class Table(object):
-    def config_db(self, pkg):
-        '''sm: schema management, categories'''
-        tbl = pkg.table('sm_category', pkey='id', 
-                name_long='!![it]Categoria modello',
-                name_plural='!![it]Categorie modello',
-                caption_field='code')
-
-        self.sysFields(tbl)
-
-        tbl.column('code', dtype='A', size=':22', 
-                name_long='!![it]Codice categoria',
-                unique=True, validate_notnull=True, indexed=True)
-
-        tbl.column('description', dtype='A', size=':256', 
-                name_long='!![it]Descrizione categoria', 
-                validate_notnull=True)
-
-        tbl.column('notes', dtype='A', size=':1024', 
-                name_long='!![it]Note')
