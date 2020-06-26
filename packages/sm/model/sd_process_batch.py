@@ -82,6 +82,7 @@ class Table(object):
         # 8.        get the ruleset_entry list for the current sd_process_entry
         # 9.        loop on every rule of the ruleset
         # 10.          apply the rule from source to destination
+        # 10a.      recalculate destination
         # 11.       update destination schema record
         # 12.       log activities and previous version schema
         # 13.   update batch status
@@ -150,6 +151,10 @@ class Table(object):
                         rs_src_store['id'], rs_dst_store['id'],
                         rule_entry['formula']
                         )
+            
+            # 10a. recalculate destination
+            self.db.table('sm.sd_data_registry')\
+                .calcStoreBag(ruleset['dst_sm_model__id'], dst_storeBag)
 
             # 11. update destination schema
             self.updateDataRegistryStoreBag(rs_dst_store['id'], dst_storeBag)
