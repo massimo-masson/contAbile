@@ -48,7 +48,7 @@ class Table(object):
 
         tbl.column('code', dtype = 'A', size = ':22', 
                 name_long = '!![it]Codice parametro di schema',
-                unique = True, validate_notnull = True)
+                validate_notnull = True)
 
         tbl.column('description', dtype = 'A', size = ':256', 
                 name_long = '!![it]Descrizione parametro di schema')
@@ -67,3 +67,27 @@ class Table(object):
                 name_long = '!![it]Rif. schema')
         fk.relation('sm.sd_data_registry.id', mode = 'foreignkey',
                 relation_name = 'schema_parameters', onDelete = 'raise')
+
+    def trigger_onInserting(self, record):
+        if self.validateCodeUniquePerParameterSchema(record) == True:
+            raise self.exception('protect_validate', record = record,
+                                msg = '!![it]Codice riga duplicato nello schema'
+        )
+
+    def validateCodeUniquePerParameterSchema(self, record = None):
+        '''parameter's code must be unique inside a single schema'''
+
+        duplicated = False
+
+        rs = self.db.table('sm.sd_parameter_schema').query(
+            columns = '$id, $code, $description',
+            where = '@sd_data_registry__id.id = :current_schema \
+                    AND $code = :current_code',
+            current_schema = record['sd_data_registry__id'],
+            current_code = record['code']
+        ).fetch()
+
+        if len(rs) > 0:
+            duplicated = True
+
+        return duplicated

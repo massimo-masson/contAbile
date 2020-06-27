@@ -49,7 +49,7 @@ class Table(object):
 
         tbl.column('code', dtype = 'A', size = ':22', 
                 name_long = '!![it]Codice parametro di categoria',
-                unique = True, validate_notnull = True)
+                validate_notnull = True)
 
         tbl.column('description', dtype = 'A', size = ':256', 
                 name_long = '!![it]Descrizione parametro di categoria')
@@ -68,3 +68,27 @@ class Table(object):
                 name_long = '!![it]Rif. categoria')
         fk.relation('sm.sm_category.id', mode = 'foreignkey',
                 relation_name = 'category_parameters', onDelete = 'raise')
+
+    def trigger_onInserting(self, record):
+        if self.validateCodeUniquePerParameterCategory(record) == True:
+            raise self.exception('protect_validate', record = record,
+                                msg = '!![it]Codice riga duplicato nella categoria'
+        )
+
+    def validateCodeUniquePerParameterCategory(self, record = None):
+        '''parameter's code must be unique inside a single category'''
+
+        duplicated = False
+
+        rs = self.db.table('sm.sd_parameter_category').query(
+            columns = '$id, $code, $description',
+            where = '@sm_category__id.id = :current_category \
+                    AND $code = :current_code',
+            current_category = record['sm_category__id'],
+            current_code = record['code']
+        ).fetch()
+
+        if len(rs) > 0:
+            duplicated = True
+
+        return duplicated

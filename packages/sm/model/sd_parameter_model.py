@@ -49,7 +49,7 @@ class Table(object):
 
         tbl.column('code', dtype = 'A', size = ':22', 
                 name_long = '!![it]Codice parametro di modello',
-                unique = True, validate_notnull = True)
+                validate_notnull = True)
 
         tbl.column('description', dtype = 'A', size = ':256', 
                 name_long = '!![it]Descrizione parametro di modello')
@@ -68,3 +68,27 @@ class Table(object):
                 name_long = '!![it]Rif. modello')
         fk.relation('sm.sm_model.id', mode = 'foreignkey',
                 relation_name = 'model_parameters', onDelete = 'raise')
+
+    def trigger_onInserting(self, record):
+        if self.validateCodeUniquePerParameterModel(record) == True:
+            raise self.exception('protect_validate', record = record,
+                                msg = '!![it]Codice riga duplicato nel modello'
+        )
+
+    def validateCodeUniquePerParameterModel(self, record = None):
+        '''parameter's code must be unique inside a single model'''
+
+        duplicated = False
+
+        rs = self.db.table('sm.sd_parameter_model').query(
+            columns = '$id, $code, $description',
+            where = '@sm_model__id.id = :current_model \
+                    AND $code = :current_code',
+            current_model = record['sm_model__id'],
+            current_code = record['code']
+        ).fetch()
+
+        if len(rs) > 0:
+            duplicated = True
+
+        return duplicated
