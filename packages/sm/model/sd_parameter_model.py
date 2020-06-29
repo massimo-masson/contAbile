@@ -69,11 +69,11 @@ class Table(object):
         fk.relation('sm.sm_model.id', mode = 'foreignkey',
                 relation_name = 'model_parameters', onDelete = 'raise')
 
-    def trigger_onInserting(self, record):
+    def protect_validate(self, record):
         if self.validateCodeUniquePerParameterModel(record) == True:
             raise self.exception('protect_validate', record = record,
                                 msg = '!![it]Codice riga duplicato nel modello'
-        )
+                                )
 
     def validateCodeUniquePerParameterModel(self, record = None):
         '''parameter's code must be unique inside a single model'''

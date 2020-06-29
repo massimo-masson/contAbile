@@ -69,12 +69,18 @@ class Table(object):
         fk.relation('sm.sm_category.id', mode = 'foreignkey',
                 relation_name = 'category_parameters', onDelete = 'raise')
 
-    def trigger_onInserting(self, record):
-        if self.validateCodeUniquePerParameterCategory(record) == True:
-            raise self.exception('protect_validate', record = record,
-                                msg = '!![it]Codice riga duplicato nella categoria'
-        )
+#     def trigger_onInserting(self, record):
+#         if self.validateCodeUniquePerParameterCategory(record) == True:
+#             raise self.exception('protect_validate', record = record,
+#                                 msg = '!![it]Codice riga duplicato nella categoria'
+#         )
 
+    def protect_validate(self, record):
+        if self.validateCodeUniquePerParameterCategory(record) == True:
+            raise self.exception('protect_update', record = record,
+                                msg = '!![it]Codice riga duplicato nella categoria'
+                                )
+    
     def validateCodeUniquePerParameterCategory(self, record = None):
         '''parameter's code must be unique inside a single category'''
 
@@ -92,3 +98,4 @@ class Table(object):
             duplicated = True
 
         return duplicated
+

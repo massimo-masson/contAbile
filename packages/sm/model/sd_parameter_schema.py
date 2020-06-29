@@ -68,11 +68,11 @@ class Table(object):
         fk.relation('sm.sd_data_registry.id', mode = 'foreignkey',
                 relation_name = 'schema_parameters', onDelete = 'raise')
 
-    def trigger_onInserting(self, record):
+    def protect_validate(self, record):
         if self.validateCodeUniquePerParameterSchema(record) == True:
             raise self.exception('protect_validate', record = record,
                                 msg = '!![it]Codice riga duplicato nello schema'
-        )
+                                )
 
     def validateCodeUniquePerParameterSchema(self, record = None):
         '''parameter's code must be unique inside a single schema'''
