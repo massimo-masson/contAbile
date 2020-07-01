@@ -66,7 +66,7 @@ class Table(object):
         fk = tbl.column('sd_data_registry__id', dtype = 'A', size = '22',
                 name_long = '!![it]Rif. schema')
         fk.relation('sm.sd_data_registry.id', mode = 'foreignkey',
-                relation_name = 'schema_parameters', onDelete = 'raise')
+                relation_name = 'schema_parameters', onDelete = 'cascade')
 
     def protect_validate(self, record):
         if self.validateCodeUniquePerParameterSchema(record) == True:

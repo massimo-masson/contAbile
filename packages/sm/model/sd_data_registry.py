@@ -35,6 +35,7 @@
 
 from gnr.core.gnrbag import Bag
 from simpleeval import simple_eval
+from gnr.sql.gnrsql_exceptions import RecordNotExistingError
 
 class Table(object):
     def config_db(self, pkg):
@@ -113,6 +114,12 @@ class Table(object):
 
     def trigger_onInserting(self, record = None):
         self.buildUpStoreBag(record)
+
+    def trigger_onInserted(self, record = None):
+        self.paramTemplateSyncFromModel(record)
+
+    def trigger_onUpdated(self, record = None, old_record = None):
+        self.paramTemplateSyncFromModel(record)
 
     def buildUpStoreBag(self, record = None, filler = 0):
         '''Make a storage schema based on selected model'''
@@ -298,3 +305,40 @@ class Table(object):
             pass
 
         return result
+
+    def paramTemplateSyncFromModel(self, record):
+        '''Syncronize schema parameters from model's template parameters'''
+
+        param_columns = '$id,$code,$description,$value,$sm_parameter_class__id'
+        rst_parameters = self.db.table('sm.sm_param_template_m2s').query(
+                columns = param_columns,
+                where = '$sm_model__id=:model__id',
+                model__id = record['sm_model__id']
+                ).fetch()
+        
+        for param in rst_parameters:
+            found = True
+
+            try:
+                schema_parameter = self.db.table('sm.sd_parameter_schema')\
+                        .record(code = param['code'], 
+                        sd_data_registry__id = record['id']
+                        ).output('bag')
+            except RecordNotExistingError:
+                #gnr.sql.gnrsql_exceptions.RecordNotExistingError
+                found = False
+            
+            if not found:
+                #print('ADD: ', param['code'])
+                nuovo_parametro = dict(
+                        code = param['code'],
+                        description = param['description'],
+                        value = param['value'],
+                        sm_parameter_class__id = param['sm_parameter_class__id'],
+                        sd_data_registry__id = record['id']
+                        )
+                self.db.table('sm.sd_parameter_schema').insert(nuovo_parametro)
+            # else:
+            #     print('do nothing for: ', param['code'])
+        
+        self.db.commit()
