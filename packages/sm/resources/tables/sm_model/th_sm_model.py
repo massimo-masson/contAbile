@@ -125,5 +125,13 @@ class Form(BaseComponent):
                 margin = '2px',
                 searchOn = True)
 
+        # tab template parameters for schema
+        tab_params_template_m2s = tc.contentPane(title = '!![it]Template parametri schema')
+        tab_params_template_m2s.dialogTableHandler(relation = '@model_param_template_m2s',
+                viewResource = 'ViewFromModel',
+                formResource = 'FormFromModel',
+                margin = '2px',
+                searchOn = True)
+
     def th_options(self):
         return dict(dialog_height = '400px', dialog_width = '600px')
