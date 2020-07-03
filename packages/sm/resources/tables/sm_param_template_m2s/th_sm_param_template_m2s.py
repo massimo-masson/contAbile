@@ -64,16 +64,17 @@ class Form(BaseComponent):
         fb.field('sm_parameter_class__id')
         fb.field('sm_model__id')
 
-
     def th_options(self):
         return dict(dialog_height = '400px', dialog_width = '600px')
+
 
 class ViewFromModel(View):
     pass
 
+
 class FormFromModel(Form):
 
     def th_options(self):
-        return dict(dialog_parentRatio=0.6, 
-            modal=False, 
-            showtoolbar=True)
+        return dict(dialog_parentRatio = 0.6, 
+            modal = False, 
+            showtoolbar = True)

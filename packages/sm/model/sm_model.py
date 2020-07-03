@@ -34,6 +34,7 @@
 # 
 
 from gnr.core.gnrbag import Bag
+from gnr.sql.gnrsql_exceptions import RecordNotExistingError
 
 class Table(object):
     def config_db(self, pkg):
@@ -83,6 +84,12 @@ class Table(object):
     def trigger_onUpdating(self, record = None, old_record = None):
         last = old_record['progressive_version'] or 1
         record['progressive_version'] = last + 1
+
+    def trigger_onInserted(self, record = None):
+        self.paramTemplateSyncFromCategory(record)
+
+    def trigger_onUpdated(self, record = None, old_record = None):
+        self.paramTemplateSyncFromCategory(record)
 
     def formulasSyncronize(self, model_id=None):
         self.formulasInsertOrUpdate(model_id)
@@ -243,3 +250,40 @@ class Table(object):
         
         return structBag
         # END OF getStructBagFromModel
+
+    def paramTemplateSyncFromCategory(self, record):
+        '''Syncronize model parameters from category's template parameters'''
+
+        param_columns = '$id,$code,$description,$value,$sm_parameter_class__id'
+        rst_parameters = self.db.table('sm.sm_param_template_c2m').query(
+                columns = param_columns,
+                where = '$sm_category__id = :category__id',
+                category__id = record['sm_category__id']
+                ).fetch()
+        
+        for param in rst_parameters:
+            found = True
+
+            try:
+                model_parameter = self.db.table('sm.sd_parameter_model')\
+                        .record(code = param['code'], 
+                        sm_model__id = record['id']
+                        ).output('bag')
+            except RecordNotExistingError:
+                #gnr.sql.gnrsql_exceptions.RecordNotExistingError
+                found = False
+            
+            if not found:
+                #print('ADD: ', param['code'])
+                nuovo_parametro = dict(
+                        code = param['code'],
+                        description = param['description'],
+                        value = param['value'],
+                        sm_parameter_class__id = param['sm_parameter_class__id'],
+                        sm_model__id = record['id']
+                        )
+                self.db.table('sm.sd_parameter_model').insert(nuovo_parametro)
+            # else:
+            #     print('do nothing for: ', param['code'])
+        
+        self.db.commit()

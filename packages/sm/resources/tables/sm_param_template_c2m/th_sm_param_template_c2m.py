@@ -42,56 +42,40 @@ class View(BaseComponent):
         r = struct.view().rows()
         r.fieldcell('code')
         r.fieldcell('description')
-        r.fieldcell('notes')
+        r.fieldcell('value')
+        r.fieldcell('sm_parameter_class__id')
+        r.fieldcell('sm_category__id')
 
     def th_order(self):
         return 'code'
 
     def th_query(self):
-        return dict(column='code', op='contains', val='', runOnStart=True)
-
-    def th_options(self):
-        return dict(widget='border')
+        return dict(column = 'code', op = 'contains', val = '')
 
 
 class Form(BaseComponent):
 
     def th_form(self, form):
-        # pane = form.record
-        # fb = pane.formbuilder(cols=2, border_spacing='4px')
-        bc = form.center.borderContainer()
-        self.categoryInfo(bc.contentPane(region = 'top', datapath = '.record'))
-        self.categoryBody(bc.contentPane(region = 'center'))
-
-    def categoryInfo(self, pane):
-        fb = pane.formbuilder(cols = 3, border_spacing = '4px')
-
+        pane = form.record
+        fb = pane.formbuilder(cols = 2, border_spacing = '4px')
         fb.field('code')
-        fb.field('description', colspan = 2, width = '100%')
-
-        fb.field('notes', colspan = 2, width = '100%', height = '100%')
-
-    def categoryBody(self, pane):
-        tc = pane.tabContainer()
-
-        # tab parameters
-        tab_parameters = tc.contentPane(title = '!![it]Parametri')
-        tab_parameters.dialogTableHandler(relation = '@category_parameters',
-                pbl_classes = True,
-                viewResource = 'ViewFromCategory',
-                formResource = 'FormFromCategory',
-                grid_selfDragRows = True,
-                margin = '2px',
-                searchOn = True)
-        
-        # tab template parameters for model
-        tab_params_template_c2m = tc.contentPane(title = '!![it]Template parametri modelli')
-        tab_params_template_c2m.dialogTableHandler(relation = '@category_param_template_c2m',
-                viewResource = 'ViewFromCategory',
-                formResource = 'FormFromCategory',
-                margin = '2px',
-                searchOn = True
-                )
+        fb.field('description')
+        fb.field('value')
+        fb.field('sm_parameter_class__id')
+        fb.field('sm_category__id')
 
     def th_options(self):
         return dict(dialog_height='400px', dialog_width='600px')
+
+
+class ViewFromCategory(View):
+    pass
+
+
+class FormFromCategory(Form):
+
+    def th_options(self):
+        return dict(dialog_parentRatio = 0.6,
+            modal = False,
+            showtoolbar = True
+            )

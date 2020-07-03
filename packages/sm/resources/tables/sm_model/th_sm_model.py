@@ -126,7 +126,7 @@ class Form(BaseComponent):
                 searchOn = True)
 
         # tab template parameters for schema
-        tab_params_template_m2s = tc.contentPane(title = '!![it]Template parametri schema')
+        tab_params_template_m2s = tc.contentPane(title = '!![it]Template parametri schemi')
         tab_params_template_m2s.dialogTableHandler(relation = '@model_param_template_m2s',
                 viewResource = 'ViewFromModel',
                 formResource = 'FormFromModel',
