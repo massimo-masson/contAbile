@@ -1,0 +1,8 @@
+Versione 0.0.1 del 20200712
+- categorie
+- modelli
+-- tipi riga descrittivo, dati, formula
+-- tipi colonna n
+- schemi
+- importazione a lotti "bilver01"
+- elaborazioni batch
